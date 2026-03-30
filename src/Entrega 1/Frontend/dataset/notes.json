@@ -1,0 +1,21 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "arroz"
+    },
+    {
+      "id": 1,
+      "name": "feij\u00e3o"
+    },
+    {
+      "id": 2,
+      "name": "\u00f3leo_de_cozinha"
+    }
+  ],
+  "info": {
+    "year": 2026,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}

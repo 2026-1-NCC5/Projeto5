@@ -1,0 +1,6 @@
+path: C:\Users\dudal\OneDrive\READET~1\REPOSI~1\Projeto5\src\ENTREG~1\Frontend\dataset
+train: images
+val: images
+
+nc: 3
+names: ['arroz', 'feijão', 'óleo_de_cozinha']
