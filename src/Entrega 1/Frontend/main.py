@@ -5,7 +5,9 @@ from ultralytics import YOLO
 # 1. Carregar o modelo customizado gerado pelo seu treinamento
 # O YOLO salva os resultados na pasta 'runs/detect/' na raiz do repositório.
 # Se você treinar de novo e gerar um 'train13', lembre-se de atualizar esse caminho!
-caminho_modelo = r'..\..\..\runs\detect\train12\weights\best.pt'
+caminho_modelo = r'runs\detect\train12\weights\best.pt' 
+
+#caminho_modelo = 'yolov8n.pt' # Comentado temporariamente
 
 if not os.path.exists(caminho_modelo):
     print(f"AVISO: Arquivo do modelo não encontrado em: {caminho_modelo}")
@@ -15,7 +17,7 @@ if not os.path.exists(caminho_modelo):
 model = YOLO(caminho_modelo)
 
 # 2. Iniciar a captura da webcam (0 costuma ser a webcam integrada)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if not cap.isOpened():
     print("Erro ao abrir a webcam")
@@ -30,6 +32,7 @@ while True:
 
     # 3. Executar a inferência no frame atual
     # O parâmetro conf=0.5 filtra detecções com menos de 50% de confiança
+    # (Restaurado para 0.5 pois o modelo yolov8n base é muito bem treinado)
     results = model(frame, conf=0.5)
 
     # 4. Visualizar os resultados no frame (Desenha as caixas e labels)
