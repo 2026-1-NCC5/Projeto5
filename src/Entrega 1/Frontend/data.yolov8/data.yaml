@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 0
+names: []
+
+roboflow:
+  workspace: dudas-workspace
+  project: dudas-workspace
+  version: dataset
+  license: Private
+  url: https://app.roboflow.com/dudas-workspace/dudas-workspace/dataset
