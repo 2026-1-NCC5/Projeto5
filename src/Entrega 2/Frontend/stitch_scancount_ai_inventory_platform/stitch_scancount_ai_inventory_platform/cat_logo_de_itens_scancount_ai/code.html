@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#eadfed",
+                        "on-secondary-fixed": "#36003e",
+                        "on-primary": "#490080",
+                        "inverse-on-surface": "#342e38",
+                        "surface-dim": "#16111b",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "surface": "#16111b",
+                        "on-tertiary-fixed": "#281900",
+                        "surface-container-lowest": "#110c15",
+                        "on-tertiary-container": "#3a2600",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1f1a23",
+                        "surface-tint": "#ddb7ff",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#7c008e",
+                        "surface-variant": "#39323d",
+                        "on-surface": "#eadfed",
+                        "on-primary-fixed": "#2c0051",
+                        "surface-bright": "#3d3741",
+                        "on-primary-container": "#400071",
+                        "inverse-primary": "#842bd2",
+                        "tertiary-fixed": "#ffdead",
+                        "surface-container": "#231e27",
+                        "secondary-container": "#ae05c6",
+                        "primary": "#ddb7ff",
+                        "surface-container-highest": "#39323d",
+                        "on-secondary-container": "#ffd8fd",
+                        "on-tertiary": "#432c00",
+                        "on-error-container": "#ffdad6",
+                        "background": "#16111b",
+                        "inverse-surface": "#eadfed",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#fabc4e",
+                        "secondary-fixed-dim": "#fbabff",
+                        "outline-variant": "#4d4354",
+                        "outline": "#988d9f",
+                        "tertiary": "#fabc4e",
+                        "surface-container-high": "#2e2832",
+                        "tertiary-container": "#bd871a",
+                        "primary-container": "#b76dff",
+                        "secondary-fixed": "#ffd6fd",
+                        "on-surface-variant": "#cfc2d6",
+                        "on-secondary": "#580065",
+                        "secondary": "#fbabff",
+                        "primary-fixed": "#f0dbff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1rem",
+                        "base": "4px",
+                        "xs": "0.25rem",
+                        "2xl": "3rem",
+                        "sm": "0.5rem",
+                        "xl": "2rem",
+                        "container-padding": "2rem",
+                        "grid-gutter": "1.5rem",
+                        "lg": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "code": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "code": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-sm": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background: rgba(35, 30, 39, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(183, 109, 255, 0.4);
+        }
+        .neon-glow-hover:hover {
+            box-shadow: 0 0 25px rgba(183, 109, 255, 0.6);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-6 w-full fixed top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">ScanCount AI</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-slate-400">
+<button class="material-symbols-outlined hover:text-purple-300 transition-all active:scale-95 duration-200" data-icon="dark_mode">dark_mode</button>
+<button class="material-symbols-outlined hover:text-purple-300 transition-all active:scale-95 duration-200" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined hover:text-purple-300 transition-all active:scale-95 duration-200" data-icon="apps">apps</button>
+</div>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="User profile with RBAC role badge" class="h-full w-full object-cover" data-alt="A professional user profile avatar for a digital system. The character is a modern professional with a clean-cut look, wearing stylized tech-focused glasses and a dark tactical vest over a purple shirt. The background is a soft, deep violet gradient, maintaining the high-tech command center aesthetic of the ScanCount AI platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOoFROqI-1nk3dEWo7iozJGvSC-TLIcAETCiQj4-hera2b7HsrHCjWyk_kH2VFh2uW0Zo4T31pqnO1Dtsyat-O2ZGHM3AZXOW4ujH8yx3LtKVoS-8LJk8muWTjofAmHmKDA8VpWwVNZQfZa_I9sPzs-ChzU_5fuEYNHsNUtD64Ao2bB-4noIhG1orrVcrqfvKLpfToBmCI9_9p8D98P2-NB2EMjqtgNtSyimyFIkqeFE_GLNZrIxzqwwcPcxUfaEheS5xnz9K2ZH8"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-6 z-40 bg-slate-950/90 backdrop-blur-xl border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
+<div class="h-10 w-10 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="factory">factory</span>
+</div>
+<div>
+<p class="text-white font-bold text-sm">Acme Corp</p>
+<p class="text-slate-500 text-[10px] uppercase tracking-widest">Enterprise Plan</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="reproducibility">repeat</span>
+<span>Cycles</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>Classes</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Groups</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest bg-purple-500/10 text-purple-400 border-r-2 border-purple-500 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)] transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-bold">Catalog</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span>
+<span>AI Checkout</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span>Ranking</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-1">
+<button class="w-full mb-4 py-3 px-4 rounded-xl bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-bold text-xs uppercase tracking-tighter flex items-center justify-center gap-2 neon-glow-primary hover:scale-[1.02] transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                Upgrade Power
+            </button>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg font-inter text-xs uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 cursor-pointer" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="h-2 w-2 rounded-full bg-primary neon-glow-primary animate-pulse"></span>
+<span class="text-primary font-label-sm uppercase tracking-widest">Inventário em Tempo Real</span>
+</div>
+<h1 class="font-h1 text-h1 text-on-background mb-2">Catálogo de Itens</h1>
+<p class="text-on-surface-variant font-body-lg max-w-2xl">Gerencie os produtos autorizados para detecção por IA no ciclo atual de inventário industrial.</p>
+</div>
+<div>
+<button class="flex items-center gap-3 px-6 py-3 rounded-xl bg-surface-container-high border border-primary/30 text-primary font-bold hover:bg-primary/10 transition-all active:scale-95 neon-glow-hover">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                        Clonar do Ciclo Anterior
+                    </button>
+</div>
+</div>
+<!-- Dashboard Stats (Mini Bento) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-slate-400 text-xs uppercase tracking-widest mb-1">Itens Ativos</p>
+<h3 class="font-h3 text-h3 text-white">128</h3>
+</div>
+<div class="h-12 w-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+<span class="material-symbols-outlined text-3xl" data-icon="inventory">inventory</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-slate-400 text-xs uppercase tracking-widest mb-1">Total EANs</p>
+<h3 class="font-h3 text-h3 text-white">432</h3>
+</div>
+<div class="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+<span class="material-symbols-outlined text-3xl" data-icon="barcode">barcode</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-slate-400 text-xs uppercase tracking-widest mb-1">Sincronização</p>
+<h3 class="font-h3 text-h3 text-white">100%</h3>
+</div>
+<div class="h-12 w-12 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400">
+<span class="material-symbols-outlined text-3xl" data-icon="sync">sync</span>
+</div>
+</div>
+</div>
+<!-- High-Tech Table Section -->
+<div class="glass-card rounded-2xl overflow-hidden shadow-2xl">
+<!-- Search & Filters -->
+<div class="p-6 border-b border-white/10 flex flex-col sm:row items-center justify-between gap-4">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-xl pl-12 pr-4 py-3 text-sm transition-all outline-none" placeholder="Pesquisar por nome ou EAN..." type="text"/>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-4 py-3 rounded-xl bg-surface-container border border-outline-variant text-sm font-medium hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                            Filtros
+                        </button>
+<button class="flex-1 sm:flex-none px-4 py-3 rounded-xl bg-primary text-on-primary font-bold text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                            Novo Item
+                        </button>
+</div>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-white/5 border-b border-white/10">
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">Item</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">Categoria</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 text-right">Peso (Kg)</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">Código EAN-13</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400">Status IA</th>
+<th class="px-6 py-4 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 text-center">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- Row 1 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="relative h-12 w-12 rounded-lg bg-surface-container-highest p-1 border border-outline-variant overflow-hidden group-hover:border-primary/50 transition-colors">
+<img class="h-full w-full object-cover rounded-md" data-alt="A high-resolution product shot of a high-quality white rice package, styled in a professional industrial product catalog manner. The lighting is crisp and even, highlighting the texture of the grains visible through a transparent section. The image is set against a dark, minimalist background with subtle purple lens flares to match the ScanCount AI brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzk2TRzRnZ5EzPCb3EEavTqbcZXYAKLU7ihCtdB7BlguKbHKTYR8VBY1TLcr9OWfYI5ax4EH2y35s-wJLxQHmSH7TaaKzksIWIFjsbtMf-lxsXbWi-ZtVGlKAMS5gt0yCkbjcdmtSQ4jp3AY6A_WEWSxscrPephzKd2WkF39zW6_v6F_kdhbHSaXeQWCGa-S-y6pHhEgH29L_Aky7DbrwACQW-LjtUHo_ZK1okQuB5CvH-XgxQ3pR52Xn_7AUPfQk_DyNW0IMi1vc"/>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs" data-icon="zoom_in">zoom_in</span>
+</div>
+</div>
+<div>
+<p class="font-bold text-white">Arroz Agulhinha T1</p>
+<p class="text-xs text-slate-500">Cereal Premium</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-[11px] font-bold text-slate-300">Alimentos Secos</span>
+</td>
+<td class="px-6 py-4 text-right font-code text-on-surface">5.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm" data-icon="barcode">barcode</span>
+<span class="font-code text-primary/80">7891020304050</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-green-400">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Treinado</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center gap-2">
+<button class="h-8 w-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="h-8 w-8 rounded-lg hover:bg-error/10 flex items-center justify-center text-slate-400 hover:text-error transition-all"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="relative h-12 w-12 rounded-lg bg-surface-container-highest p-1 border border-outline-variant overflow-hidden group-hover:border-primary/50 transition-colors">
+<img class="h-full w-full object-cover rounded-md" data-alt="A macro studio shot of premium black beans in a transparent bag, showing rich texture and deep color. The visual style is modern industrial with high-contrast cinematic lighting. A soft purple glow outlines the product edges, representing the AI bounding box detection of the ScanCount AI system in a dark mode interface environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z9SnvOtmPLMKURuJG7lzFgU_RVuFpCye1-cnH3GOnMeWU8scCgswoaZKYpA94COQ9V7-a1YzmkCSwyTkC_qYdEruckueaC-keBm5KTxvLrY3rjZehOp0QF34v3GmJxUpz0OT-pSQPsu5SPWJDKWIO1GA-e_BkQzru-XsVo7Vsf1Tq0zS8nhu9zncVv4-0na94GsSzWkiOk4hxpJ7n-bBrTeTgfXv1ZmDAKndj54upBG-vE3lLMNKtdY5hixUxODiX_BNN7k5vqI"/>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs" data-icon="zoom_in">zoom_in</span>
+</div>
+</div>
+<div>
+<p class="font-bold text-white">Feijão Preto Extra</p>
+<p class="text-xs text-slate-500">Grãos e Leguminosas</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-[11px] font-bold text-slate-300">Alimentos Secos</span>
+</td>
+<td class="px-6 py-4 text-right font-code text-on-surface">1.000</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm" data-icon="barcode">barcode</span>
+<span class="font-code text-primary/80">7892233445566</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-green-400">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Treinado</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center gap-2">
+<button class="h-8 w-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="h-8 w-8 rounded-lg hover:bg-error/10 flex items-center justify-center text-slate-400 hover:text-error transition-all"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="relative h-12 w-12 rounded-lg bg-surface-container-highest p-1 border border-outline-variant overflow-hidden group-hover:border-primary/50 transition-colors">
+<img class="h-full w-full object-cover rounded-md" data-alt="Close-up of a high-quality coffee grounds bag with elegant metallic foil packaging. The surface reflects a cool blue and purple ambient light typical of a futuristic warehouse terminal. The composition is dynamic and sharp, highlighting the premium nature of the product while maintaining the technical visual language of an AI-powered inventory tracking system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH5ESRV8e6WQuSRu9to3zuFJ9uEj3epCRdvic0wzPbjG36_g_b2N7B2AKTagGaj38HrHehPtwBZzwWeUhMaW_VRKcg7xdp892LUslXR7ng_Uia5UQ7umGRNdarPaHkVG2R8L_gmvFtuaJuhnEr81pXlc9iOZHAkuGUu1Y38jMU29E5UndN4r4gMdEcI70L0Xta_HEX5rWdn3ISIzS7lQmJ1zA29WYh0k1GcgyMa5YOeXbdlKVCrl1IaHZux24R7QdA05kXwcxZDFQ"/>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs" data-icon="zoom_in">zoom_in</span>
+</div>
+</div>
+<div>
+<p class="font-bold text-white">Café Gourmet Moído</p>
+<p class="text-xs text-slate-500">Bebidas e Infusões</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-[11px] font-bold text-slate-300">Mercearia Doce</span>
+</td>
+<td class="px-6 py-4 text-right font-code text-on-surface">0.500</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm" data-icon="barcode">barcode</span>
+<span class="font-code text-primary/80">7893344556677</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-tertiary">
+<span class="material-symbols-outlined text-sm animate-spin" data-icon="settings_suggest">settings_suggest</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Processando...</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center gap-2">
+<button class="h-8 w-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="h-8 w-8 rounded-lg hover:bg-error/10 flex items-center justify-center text-slate-400 hover:text-error transition-all"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="relative h-12 w-12 rounded-lg bg-surface-container-highest p-1 border border-outline-variant overflow-hidden group-hover:border-primary/50 transition-colors">
+<img class="h-full w-full object-cover rounded-md" data-alt="A clean, studio-lit image of a clear vegetable oil bottle with a minimalist label. The lighting is soft and directional, creating a realistic depth. The overall aesthetic fits a high-tech dark UI, with subtle deep purple shadows and sharp, precise edges that emphasize the scanner-ready quality of the object's digital twin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuH-Ylh5QQRdYys5fajbO-ohuAnjp6aUVZzIw9tJlWsK3DrVryGM9Ftpzb66mixLjdTwgoWlWqo8RiX0zjLZqZ7V-uohvje4BYHQybJb9Fn0MwgEQCAeyU79stNCTlZ0r-6sUnBXLI7AfN1OeHxftOr-CAtDeVwNJqf_q_9d2qGr0G_idaWJJ_6WxydtXqlqPTXnQxFkzKE2ppa6uOjb0U3s8FgUyisfm2Ea0T4tT7CjmdfF7Jc72oSOzk6mffyjB_qkSXTA-ol54"/>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xs" data-icon="zoom_in">zoom_in</span>
+</div>
+</div>
+<div>
+<p class="font-bold text-white">Óleo de Soja Especial</p>
+<p class="text-xs text-slate-500">Óleos e Condimentos</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant text-[11px] font-bold text-slate-300">Mercearia Salgada</span>
+</td>
+<td class="px-6 py-4 text-right font-code text-on-surface">0.900</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm" data-icon="barcode">barcode</span>
+<span class="font-code text-primary/80">7894455667788</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-green-400">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Treinado</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center gap-2">
+<button class="h-8 w-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="edit">edit</span></button>
+<button class="h-8 w-8 rounded-lg hover:bg-error/10 flex items-center justify-center text-slate-400 hover:text-error transition-all"><span class="material-symbols-outlined text-sm" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer Pagination -->
+<div class="p-6 bg-white/5 border-t border-white/10 flex items-center justify-between">
+<p class="text-xs text-slate-500">Exibindo <span class="text-on-background font-bold">1-4</span> de <span class="text-on-background font-bold">128</span> itens</p>
+<div class="flex items-center gap-2">
+<button class="h-10 px-4 rounded-lg bg-surface-container border border-outline-variant text-slate-400 hover:text-white transition-all disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="h-10 w-10 rounded-lg bg-primary text-on-primary font-bold">1</button>
+<button class="h-10 w-10 rounded-lg bg-surface-container border border-outline-variant text-slate-400 hover:text-white transition-all">2</button>
+<button class="h-10 w-10 rounded-lg bg-surface-container border border-outline-variant text-slate-400 hover:text-white transition-all">3</button>
+<span class="text-slate-500 px-2">...</span>
+<button class="h-10 px-4 rounded-lg bg-surface-container border border-outline-variant text-slate-400 hover:text-white transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual FAB -->
+<button class="fixed bottom-8 right-8 h-16 w-16 rounded-full bg-gradient-to-tr from-primary to-secondary-container text-on-primary-container shadow-2xl flex items-center justify-center neon-glow-primary hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="qr_code_scanner" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</button>
+</div>
+</main>
+</body></html>

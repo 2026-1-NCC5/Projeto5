@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#eadfed",
+                    "on-secondary-fixed": "#36003e",
+                    "on-primary": "#490080",
+                    "inverse-on-surface": "#342e38",
+                    "surface-dim": "#16111b",
+                    "on-tertiary-fixed-variant": "#604100",
+                    "surface": "#16111b",
+                    "on-tertiary-fixed": "#281900",
+                    "surface-container-lowest": "#110c15",
+                    "on-tertiary-container": "#3a2600",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1f1a23",
+                    "surface-tint": "#ddb7ff",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "on-error": "#690005",
+                    "on-secondary-fixed-variant": "#7c008e",
+                    "surface-variant": "#39323d",
+                    "on-surface": "#eadfed",
+                    "on-primary-fixed": "#2c0051",
+                    "surface-bright": "#3d3741",
+                    "on-primary-container": "#400071",
+                    "inverse-primary": "#842bd2",
+                    "tertiary-fixed": "#ffdead",
+                    "surface-container": "#231e27",
+                    "secondary-container": "#ae05c6",
+                    "primary": "#ddb7ff",
+                    "surface-container-highest": "#39323d",
+                    "on-secondary-container": "#ffd8fd",
+                    "on-tertiary": "#432c00",
+                    "on-error-container": "#ffdad6",
+                    "background": "#16111b",
+                    "inverse-surface": "#eadfed",
+                    "primary-fixed-dim": "#ddb7ff",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#fabc4e",
+                    "secondary-fixed-dim": "#fbabff",
+                    "outline-variant": "#4d4354",
+                    "outline": "#988d9f",
+                    "tertiary": "#fabc4e",
+                    "surface-container-high": "#2e2832",
+                    "tertiary-container": "#bd871a",
+                    "primary-container": "#b76dff",
+                    "secondary-fixed": "#ffd6fd",
+                    "on-surface-variant": "#cfc2d6",
+                    "on-secondary": "#580065",
+                    "secondary": "#fbabff",
+                    "primary-fixed": "#f0dbff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "1rem",
+                    "base": "4px",
+                    "xs": "0.25rem",
+                    "2xl": "3rem",
+                    "sm": "0.5rem",
+                    "xl": "2rem",
+                    "container-padding": "2rem",
+                    "grid-gutter": "1.5rem",
+                    "lg": "1.5rem"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "code": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "h3": ["Inter"],
+                    "h2": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "code": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-sm": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "h2": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(22, 17, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .neon-glow-focus:focus-within {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+            border-color: #b76dff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-slate-950/80 backdrop-blur-md flex justify-between items-center h-16 px-6 w-full fixed top-0 z-50 border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">ScanCount AI</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-slate-400 hover:text-purple-300 transition-all active:scale-95"><span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span></button>
+<button class="text-slate-400 hover:text-purple-300 transition-all active:scale-95 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="text-slate-400 hover:text-purple-300 transition-all active:scale-95"><span class="material-symbols-outlined" data-icon="apps">apps</span></button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-purple-500/50">
+<img alt="User profile with RBAC role badge" data-alt="A detailed professional headshot of a young male administrator with a focused expression, set against a blurred high-tech warehouse background. The lighting is dramatic, with purple and blue neon highlights reflecting off his skin. The image is crisp and modern, matching the ScanCount AI brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2VKY80CIekS3frp0JLmk9zt3o0AIsiu1y0fKMRV69tDytJ0zPApwB0IRCjrWUadBaV5tk_gKPm-uPBsz8jDP-kDCjfVlEPreB_i8Wed-mZJpvUn_bJNKsAZyz-wk_0tvIlpqgE_f-yWPop8AwMiEN5eD_m9e2VN1wlq-YBUDi91aDzRQWCAiLhmzsyEdf6wemhRx_4gzKz7ydpoOmSZWWWKnIZSn2DB1xm_Db5XT4r1oxnd74yd0s5DTWDi8uowTvUGbJjW09HCc"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen flex flex-col pt-20 pb-6 z-40 bg-slate-950/90 backdrop-blur-xl w-64 border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.5)] hidden md:flex">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_10px_rgba(168,85,247,0.5)]">
+<span class="material-symbols-outlined text-on-primary text-sm" data-icon="token">token</span>
+</div>
+<div>
+<p class="text-lg font-bold text-white leading-none">Acme Corp</p>
+<p class="font-inter text-[10px] uppercase tracking-widest text-slate-500">Plano Enterprise</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<div class="text-slate-500 text-[10px] uppercase tracking-widest px-2 mb-2 font-bold">Principal</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-inter text-xs uppercase tracking-widest">Home</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="reproducibility">repeat</span>
+<span class="font-inter text-xs uppercase tracking-widest">Cycles</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="school">school</span>
+<span class="font-inter text-xs uppercase tracking-widest">Classes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-purple-500/10 text-purple-400 border-r-2 border-purple-500 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-inter text-xs uppercase tracking-widest font-bold">Groups</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="inventory_2">inventory_2</span>
+<span class="font-inter text-xs uppercase tracking-widest">Catalog</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="photo_camera">photo_camera</span>
+<span class="font-inter text-xs uppercase tracking-widest">AI Checkout</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-xs uppercase tracking-widest">Ranking</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full bg-gradient-to-r from-purple-600 to-magenta-600 py-2 rounded-lg text-white text-[10px] uppercase font-bold tracking-widest shadow-[0_0_15px_rgba(168,85,247,0.4)] active:scale-95 transition-all">
+                Upgrade Power
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span class="font-inter text-xs uppercase tracking-widest">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help_center">help_center</span>
+<span class="font-inter text-xs uppercase tracking-widest">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-6 md:ml-64 min-h-screen">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-2 py-0.5 bg-primary-container text-on-primary-container text-[10px] font-bold uppercase tracking-wider rounded">Módulo Acadêmico</span>
+<span class="text-outline text-xs">•</span>
+<span class="text-outline text-xs">Grupo: Equipe Beta-7</span>
+</div>
+<h1 class="font-h1 text-h1 text-on-background">Convidar Alunos</h1>
+<p class="text-on-surface-variant max-w-xl mt-2">Busque por novos talentos para integrar o seu ciclo operacional de contagem por IA.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-5 py-2.5 glass-card rounded-xl text-on-background hover:bg-white/10 transition-all border-outline/30 font-label-sm">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                        FILTRAR
+                    </button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-container to-secondary-container rounded-xl text-white font-label-sm neon-glow-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="mail" style="font-variation-settings: 'FILL' 1;">mail</span>
+                        CONVITES ENVIADOS (12)
+                    </button>
+</div>
+</div>
+<!-- Search Bar with Neon Glow -->
+<div class="mb-12 relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-20 group-focus-within:opacity-50 transition duration-500"></div>
+<div class="relative glass-card rounded-2xl flex items-center px-6 py-4 neon-glow-focus transition-all duration-300">
+<span class="material-symbols-outlined text-primary mr-4" data-icon="search">search</span>
+<input class="bg-transparent border-none text-on-background placeholder:text-slate-500 focus:ring-0 w-full text-lg font-body-md" placeholder="Pesquisar por nome, matrícula ou especialidade técnica..." type="text"/>
+<kbd class="hidden md:flex items-center gap-1 px-2 py-1 glass-card rounded text-[10px] text-slate-500 border-white/10">
+<span class="material-symbols-outlined text-[12px]" data-icon="keyboard_command_key">keyboard_command_key</span> K
+                    </kbd>
+</div>
+</div>
+<!-- Bento Grid List -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Student Card 1 -->
+<div class="glass-card rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="relative">
+<img alt="Avatar" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20" data-alt="Close-up portrait of a male student with short hair wearing a navy blue lab coat. He is illuminated by a magenta side light, emphasizing his focused gaze. The setting is a futuristic educational lab with soft bokeh of electronic equipment. High-end digital photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4GeX3mpWdBsZRziCKbCAK3FHAXDBJTGLaLm5IxAy49-lRivkofKrEGcW5fPdwO0SMBZRMz3wJl6LQmZIAKmK-sBRdLjxuRUQxjfdii0eW28CuaqHDoreVeTwigMJ9spARg2OePoelZ-TkVeH2jn3H4zH30bxcfLj5FwvSdZj3jTj5ev4O4EXbib023tbQWHTtufE7VrgN_WEugFg1vLcxD3jJ0lKTyFwAID7BPX5NBRhC8zht84SWuMWhBMdP2-jMqeLemKzk3BI"/>
+<div class="absolute -bottom-2 -right-2 bg-green-500 w-4 h-4 rounded-full border-2 border-surface border-glow shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Rank #14</span>
+<div class="flex items-center justify-end gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.9</span>
+</div>
+</div>
+</div>
+<h3 class="font-h3 text-xl text-on-background mb-1">Ricardo Santos</h3>
+<p class="text-xs text-slate-500 mb-4 font-code">Matrícula: SC-2024-001</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Logística</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">IA Vision</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">+2</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400">
+<span>Eficiência de Ciclo</span>
+<span>98%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[98%] shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl border border-primary/30 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+                        ENVIAR CONVITE
+                    </button>
+</div>
+<!-- Student Card 2 -->
+<div class="glass-card rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="relative">
+<img alt="Avatar" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20" data-alt="A portrait of a smiling female student with long dark hair, wearing a white tech-wear jacket. Her face is lit by cool blue ambient light with a soft purple glow on the edge of her hair. The background consists of vertical glowing light tubes in a dark tech-corridor. Modern, high-contrast aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkzn591jS-KNd32Dmq_0GTqCDRM5DS_hWv5NtQeiQOovELI6s7Nss8up3LhBID2d8j1cwp4bSqJP6v2fipIPFz8mg6cSiwZKDCiLzP1dbFqNRf9j6F05qI4GhyMotQg3ApYNzCrtp9w89O-KMBGmOXI0_J_fJxwbL8YRwarf-_1vMGbn571-flPV8VRdJKLYolBI1Cgv6f74hkE3Q5QlNEv9Vf0XL_nRIVgpUMT2L-yWJyE8PZJCXXeFAuAXL9T-RsFqITfDq-Xq4"/>
+<div class="absolute -bottom-2 -right-2 bg-slate-500 w-4 h-4 rounded-full border-2 border-surface"></div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Rank #32</span>
+<div class="flex items-center justify-end gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.7</span>
+</div>
+</div>
+</div>
+<h3 class="font-h3 text-xl text-on-background mb-1">Ana Beatriz Costa</h3>
+<p class="text-xs text-slate-500 mb-4 font-code">Matrícula: SC-2024-042</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Estatística</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Contagem</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400">
+<span>Eficiência de Ciclo</span>
+<span>85%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[85%] shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl border border-primary/30 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+                        ENVIAR CONVITE
+                    </button>
+</div>
+<!-- Student Card 3 -->
+<div class="glass-card rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="relative">
+<img alt="Avatar" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20" data-alt="A studio portrait of a young man with glasses, looking directly at the camera with a confident smile. He is wearing a dark tech-fiber hoodie. The lighting is characterized by a bright neon purple ring light reflected in his lenses and a magenta backlight that creates a sharp silhouette. Highly detailed 8k rendering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc2Lao-rbavSvBZZTRc7ifuFSrnLdmBHaUxXBVCvAJNcCMBqUYxuHQWB48gRqngVgjg8eueESOZXzCs0irLV_Ttv5CBdZ18wS-zwtK1L-Jeg5fICAqHaFrvBqA3rfVCoG-IaYFp4Ip-LuQIQa0eItWdndSv-iBoqzwWFD32T41nSKDFuUvHYoVNBt963jSURFNOlDZxsMj-Wuqr8lvp69P42deKwRio0ExlWyTD_KQW2mzKIMgWB-p5j8QwJayNxTi3V65O93ag6U"/>
+<div class="absolute -bottom-2 -right-2 bg-green-500 w-4 h-4 rounded-full border-2 border-surface border-glow shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Rank #08</span>
+<div class="flex items-center justify-end gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">5.0</span>
+</div>
+</div>
+</div>
+<h3 class="font-h3 text-xl text-on-background mb-1">Marcos Oliveira</h3>
+<p class="text-xs text-slate-500 mb-4 font-code">Matrícula: SC-2024-118</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Gestão</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">WMS</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Big Data</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400">
+<span>Eficiência de Ciclo</span>
+<span>94%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[94%] shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl bg-primary-container text-white font-bold text-xs uppercase tracking-widest active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        CONVITE ENVIADO
+                    </button>
+</div>
+<!-- Student Card 4 -->
+<div class="glass-card rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="relative">
+<img alt="Avatar" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20" data-alt="A portrait of a focused young woman with her hair in a bun, wearing a grey minimalist tech-fabric polo shirt. The scene is illuminated by warm orange and cool purple lights from the side, creating high-contrast lighting. The background is a clean, minimalist digital warehouse visualization. Cinematographic and polished." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjz4djjiDaHrfheYsIvFmArYSvqCZ7nPzl6_5VzAmpPYZ_NSvbnjehJxvfuEgQgH4q8fYw3bsrFQ_Q50X3wE6ipZLRDxiUu08fgeD9zFCPTqc3Irolpcqqfa4s68k-DN2Jmg5s2Rex_3167l6BIWTQNfrJduYx-WFomeTnYFsCmQQjoZfwzK1Xd0WDyDTHYLLZbhkXbruc7UvTC31M4WwjqVdV6PG7ZTb3i65ueb6eWTPf2jprSqXfkbS7kVAn6R6MTMVJo3r95ys"/>
+<div class="absolute -bottom-2 -right-2 bg-green-500 w-4 h-4 rounded-full border-2 border-surface border-glow shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Rank #57</span>
+<div class="flex items-center justify-end gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.5</span>
+</div>
+</div>
+</div>
+<h3 class="font-h3 text-xl text-on-background mb-1">Julia Mendes</h3>
+<p class="text-xs text-slate-500 mb-4 font-code">Matrícula: SC-2024-089</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Contagem Ativa</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400">
+<span>Eficiência de Ciclo</span>
+<span>78%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[78%] shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl border border-primary/30 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+                        ENVIAR CONVITE
+                    </button>
+</div>
+<!-- Student Card 5 -->
+<div class="glass-card rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 group">
+<div class="flex justify-between items-start mb-4">
+<div class="relative">
+<img alt="Avatar" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20" data-alt="A medium shot of a young man with a slight beard, wearing a high-tech black jumpsuit with a ScanCount logo embroidered in glowing purple thread. He is standing in front of a futuristic control panel, his face lit by the screen's glow. Sharp focus, dramatic lighting, and deep color saturation. Hyper-modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDscysJLP7FM1Z3JWRMlUvsphSfuE3zOgMGipOVPEd7bVT6PdtLbVCOYVDYeMIgcWdzukjQqiDS7OdEONOJv_FjiIB6gaH1UHVbfHg1oHpHDKujgWvw4UvccWmFoQSBrAXQrnu2TZ6yRCxRLG1-oJCcRiTBBF4v8Q8ryvPF9K_jbK62Y9nn5BzlCSDRBv7mSXC7F8qaWL7gpdg7nvG14e5WmmGaBAUDCzrQggCYJC2-j2LHkwo3GX9RwtC4bVYKvSfJjWbiNzCSIys"/>
+<div class="absolute -bottom-2 -right-2 bg-yellow-500 w-4 h-4 rounded-full border-2 border-surface border-glow shadow-[0_0_8px_rgba(234,179,8,0.6)]"></div>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-1">Rank #21</span>
+<div class="flex items-center justify-end gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.8</span>
+</div>
+</div>
+</div>
+<h3 class="font-h3 text-xl text-on-background mb-1">Felipe Amaral</h3>
+<p class="text-xs text-slate-500 mb-4 font-code">Matrícula: SC-2024-203</p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Hardware</span>
+<span class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-300 font-medium">Sensores</span>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-[10px] uppercase font-bold tracking-wider text-slate-400">
+<span>Eficiência de Ciclo</span>
+<span>91%</span>
+</div>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[91%] shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div>
+</div>
+</div>
+<button class="w-full py-3 rounded-xl border border-primary/30 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/10 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+                        ENVIAR CONVITE
+                    </button>
+</div>
+<!-- Empty "Invite External" Bento Card -->
+<div class="glass-card rounded-2xl p-6 border-dashed border-2 border-primary/20 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-primary/5 transition-all">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="add_link">add_link</span>
+</div>
+<h3 class="font-h3 text-lg text-on-background mb-2">Convidar Externo</h3>
+<p class="text-xs text-slate-500 max-w-[180px]">Não encontrou quem procurava? Envie um link de acesso externo.</p>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex items-center justify-between border-t border-white/10 pt-8">
+<span class="text-xs text-slate-500 font-medium uppercase tracking-widest">Exibindo 1-5 de 248 alunos</span>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg glass-card text-slate-400 hover:text-white transition-all disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold text-xs">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg glass-card text-slate-400 hover:text-white hover:bg-white/5 transition-all text-xs font-bold">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg glass-card text-slate-400 hover:text-white hover:bg-white/5 transition-all text-xs font-bold">3</button>
+<span class="text-slate-600 px-2">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg glass-card text-slate-400 hover:text-white hover:bg-white/5 transition-all text-xs font-bold">50</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg glass-card text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950/80 backdrop-blur-md h-16 flex items-center justify-around z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] px-4">
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[9px] uppercase font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-[9px] uppercase font-bold">Aulas</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-purple-400">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[9px] uppercase font-bold">Grupos</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span>
+<span class="text-[9px] uppercase font-bold">Scan</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[9px] uppercase font-bold">Perfil</span>
+</button>
+</nav>
+</body></html>

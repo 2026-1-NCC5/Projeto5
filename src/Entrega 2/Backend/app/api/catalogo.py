@@ -32,11 +32,16 @@ def criar_item_permitido(
 
 
 @router.get("/itens-permitidos/{desafio_id}", response_model=List[ItemPermitidoOut])
-def listar_itens_permitidos(desafio_id: int, db: Session = Depends(get_db)):
+def listar_itens_permitidos(
+    desafio_id: int, 
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(get_db)
+):
     """
     Retorna a lista de categorias (Arroz, Feijão, etc.) disponíveis num desafio para o App usar no formulário.
     """
-    return CatalogoService.listar_itens_permitidos(db, desafio_id)
+    return db.query(models.ItemPermitido).filter(models.ItemPermitido.desafio_id == desafio_id).offset(skip).limit(limit).all()
 
 
 @router.post("/clonar-itens", status_code=201, response_model=List[ItemPermitidoOut])

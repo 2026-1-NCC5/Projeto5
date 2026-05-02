@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#eadfed",
+                    "on-secondary-fixed": "#36003e",
+                    "on-primary": "#490080",
+                    "inverse-on-surface": "#342e38",
+                    "surface-dim": "#16111b",
+                    "on-tertiary-fixed-variant": "#604100",
+                    "surface": "#16111b",
+                    "on-tertiary-fixed": "#281900",
+                    "surface-container-lowest": "#110c15",
+                    "on-tertiary-container": "#3a2600",
+                    "error-container": "#93000a",
+                    "surface-container-low": "#1f1a23",
+                    "surface-tint": "#ddb7ff",
+                    "on-primary-fixed-variant": "#6900b3",
+                    "on-error": "#690005",
+                    "on-secondary-fixed-variant": "#7c008e",
+                    "surface-variant": "#39323d",
+                    "on-surface": "#eadfed",
+                    "on-primary-fixed": "#2c0051",
+                    "surface-bright": "#3d3741",
+                    "on-primary-container": "#400071",
+                    "inverse-primary": "#842bd2",
+                    "tertiary-fixed": "#ffdead",
+                    "surface-container": "#231e27",
+                    "secondary-container": "#ae05c6",
+                    "primary": "#ddb7ff",
+                    "surface-container-highest": "#39323d",
+                    "on-secondary-container": "#ffd8fd",
+                    "on-tertiary": "#432c00",
+                    "on-error-container": "#ffdad6",
+                    "background": "#16111b",
+                    "inverse-surface": "#eadfed",
+                    "primary-fixed-dim": "#ddb7ff",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#fabc4e",
+                    "secondary-fixed-dim": "#fbabff",
+                    "outline-variant": "#4d4354",
+                    "outline": "#988d9f",
+                    "tertiary": "#fabc4e",
+                    "surface-container-high": "#2e2832",
+                    "tertiary-container": "#bd871a",
+                    "primary-container": "#b76dff",
+                    "secondary-fixed": "#ffd6fd",
+                    "on-surface-variant": "#cfc2d6",
+                    "on-secondary": "#580065",
+                    "secondary": "#fbabff",
+                    "primary-fixed": "#f0dbff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "1rem",
+                    "base": "4px",
+                    "xs": "0.25rem",
+                    "2xl": "3rem",
+                    "sm": "0.5rem",
+                    "xl": "2rem",
+                    "container-padding": "2rem",
+                    "grid-gutter": "1.5rem",
+                    "lg": "1.5rem"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "code": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "h3": ["Inter"],
+                    "h2": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .glass-card {
+            background: rgba(22, 17, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bounding-box {
+            position: absolute;
+            border: 2px solid #ddb7ff;
+            pointer-events: none;
+        }
+        .bounding-box::before, .bounding-box::after, .bounding-box span::before, .bounding-box span::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 2px solid #ddb7ff;
+        }
+        .bounding-box::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+        .bounding-box::after { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+        .bounding-box-inner { position: relative; height: 100%; width: 100%; }
+        .bounding-box-inner::before { bottom: -2px; left: -2px; border: 2px solid #ddb7ff; border-right: 0; border-top: 0; content: ''; position: absolute; width: 8px; height: 8px; }
+        .bounding-box-inner::after { bottom: -2px; right: -2px; border: 2px solid #ddb7ff; border-left: 0; border-top: 0; content: ''; position: absolute; width: 8px; height: 8px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-6 w-full fixed top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">ScanCount AI</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-slate-400">
+<span class="material-symbols-outlined hover:text-purple-300 cursor-pointer transition-all active:scale-95 duration-200" data-icon="dark_mode">dark_mode</span>
+<span class="material-symbols-outlined hover:text-purple-300 cursor-pointer transition-all active:scale-95 duration-200" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined hover:text-purple-300 cursor-pointer transition-all active:scale-95 duration-200" data-icon="apps">apps</span>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-purple-500/30">
+<img alt="User profile" data-alt="A professional headshot of a warehouse manager in a modern industrial setting. The lighting is high-contrast with subtle purple rim light, matching a high-tech command center aesthetic. The individual has a focused expression, wearing a sleek dark utility vest." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWkgnBDP0XejDz2nG82uSk7OK6ACj4UgGIlJwqSjJAKG9ueIxFMtsdIxqx8AAwwSJlrMs06kI6MhChRYF49gLuWcqg7qXl7aH-X9EYlZhGV6C2NBWvHiYqFWx13liVO7qXfLA0GK-lCkp2YdRApVG_Xut_H-uDyapO0SqUSeSbSnBZMbEZfhOc66-iIiS5Wgu7kfvBG22nLUrcXBIdxUIeSH_6pWSfjvQi00zbow9hjuzWs67CnWuDcQokPaUfsXnS0pkaIWdknk0"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen flex flex-col pt-20 pb-6 z-40 bg-slate-950/90 backdrop-blur-xl w-64 border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center border border-purple-500/40">
+<span class="material-symbols-outlined text-purple-500" data-icon="reproducibility">repeat</span>
+</div>
+<div>
+<div class="text-lg font-bold text-white">Acme Corp</div>
+<div class="text-[10px] uppercase tracking-widest text-slate-500">Enterprise Plan</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Home
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="reproducibility">repeat</span> Cycles
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span> Classes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span> Groups
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span> Catalog
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-500/10 text-purple-400 border-r-2 border-purple-500 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)] font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span> AI Checkout
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors duration-200 font-inter text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span> Ranking
+            </a>
+</nav>
+<div class="px-3 mt-auto">
+<button class="w-full py-3 mb-4 rounded-lg bg-purple-500/20 border border-purple-500/50 text-purple-300 font-bold text-xs uppercase tracking-tighter hover:bg-purple-500/30 transition-all active:scale-95">
+                Upgrade Power
+            </button>
+<div class="flex flex-col gap-1 border-t border-white/10 pt-4">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:text-slate-200 transition-colors duration-200 text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-slate-500 hover:text-slate-200 transition-colors duration-200 text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span> Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Context Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-h1 text-h1 text-on-background mb-2">Fluxo de Correção</h1>
+<p class="text-on-surface-variant font-body-md">Ajuste as detecções da IA antes da finalização do inventário.</p>
+</div>
+<div class="flex gap-4">
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-3 border-purple-500/30">
+<span class="material-symbols-outlined text-purple-400" data-icon="check_circle">check_circle</span>
+<div>
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Confiança</div>
+<div class="text-sm font-bold text-purple-300">98.4%</div>
+</div>
+</div>
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-3 border-orange-500/30">
+<span class="material-symbols-outlined text-orange-400" data-icon="warning">warning</span>
+<div>
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Pendentes</div>
+<div class="text-sm font-bold text-orange-300">03 Itens</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- AI Visual Feed (Visual Scanner View) -->
+<div class="col-span-12 lg:col-span-7 h-[600px] glass-card rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 z-0">
+<img alt="Warehouse storage" class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A cinematic, wide-angle shot of a high-tech warehouse aisle filled with stacked pallets. The scene is bathed in a futuristic deep blue and purple lighting setup, with neon laser grid lines projected across the floor. The overall mood is industrial, precise, and hyper-modern, fitting a top-tier digital command center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGbD4CACUp63Yg8jDihhjRjcwJ_5xswbmiy1ZfX8Jpb0ia77XmsGl9FUcZWz-dgoihO9z2dj4EV8S5V0oVLYdDGjhljQ669pKHkbJXEcL5q0UsNQYYQ4pW5dEBr1GptUb27EDUW_GJNevuVD1Izj_1MfmgWyexhhG_rUKWIo6pXhkwjJN87-Zxlg8UjDMuSJMc1zWMc3UAd1d5660zz4Go0SBsPJZ6tBWdGUFqJ239zXc-_Do80wM1Yn9NFP2yrg6eBTHD8eWVkfE"/>
+</div>
+<!-- Neon Scanning Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
+<!-- Bounding Boxes Simulations -->
+<div class="bounding-box" style="top: 20%; left: 15%; width: 120px; height: 120px;">
+<div class="bounding-box-inner"></div>
+<div class="absolute -top-8 left-0 bg-purple-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-[0_0_10px_rgba(168,85,247,0.8)]">Caixa_A (12)</div>
+</div>
+<div class="bounding-box" style="top: 45%; left: 40%; width: 150px; height: 100px;">
+<div class="bounding-box-inner"></div>
+<div class="absolute -top-8 left-0 bg-purple-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-[0_0_10px_rgba(168,85,247,0.8)]">Palete_X (01)</div>
+</div>
+<div class="bounding-box border-orange-500" style="top: 30%; left: 65%; width: 100px; height: 140px; border-color: #fbabff;">
+<div class="bounding-box-inner" style="border-color: #fbabff;"></div>
+<div class="absolute -top-8 left-0 bg-secondary-container text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-[0_0_10px_rgba(174,5,198,0.8)]">Dúvida_AI</div>
+</div>
+<!-- Scan Indicators -->
+<div class="absolute bottom-6 left-6 flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-slate-900/80 backdrop-blur rounded-full border border-white/10">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300">Live Feed Active</span>
+</div>
+<div class="px-3 py-1.5 bg-slate-900/80 backdrop-blur rounded-full border border-white/10">
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300">Res: 4K Optimized</span>
+</div>
+</div>
+</div>
+<!-- Correction Panel -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-6">
+<div class="glass-card rounded-xl p-6 flex flex-col h-full border-purple-500/20">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h3 text-h3 text-on-background">Lista de Detecção</h3>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Total: 48 Itens</span>
+</div>
+<div class="flex-1 space-y-4 overflow-y-auto pr-2 max-h-[420px]">
+<!-- Item 1 -->
+<div class="glass-card p-4 rounded-lg group hover:border-purple-500/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-400" data-icon="inventory">inventory</span>
+</div>
+<div>
+<div class="text-sm font-bold">Lote #882 - Componentes G</div>
+<div class="text-xs text-slate-500">ID: CN-8820-X</div>
+</div>
+</div>
+<button class="text-slate-500 hover:text-red-400 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-center bg-slate-900/50 p-2 rounded">
+<span class="text-xs font-medium text-slate-400 uppercase tracking-widest">Quantidade</span>
+<div class="flex items-center gap-4">
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">-</button>
+<span class="text-lg font-black text-purple-400">12</span>
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">+</button>
+</div>
+</div>
+</div>
+<!-- Item 2 (Warning/False Positive Candidate) -->
+<div class="glass-card p-4 rounded-lg border-orange-500/30 bg-orange-500/5">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-orange-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-400" data-icon="question_mark">question_mark</span>
+</div>
+<div>
+<div class="text-sm font-bold text-orange-200">Possível Falso Positivo</div>
+<div class="text-xs text-orange-500/70">Confiança Baixa (64%)</div>
+</div>
+</div>
+<button class="text-orange-500 hover:text-red-400 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex justify-between items-center bg-slate-900/50 p-2 rounded">
+<span class="text-xs font-medium text-slate-400 uppercase tracking-widest text-[10px]">Confirmar Quantidade?</span>
+<div class="flex items-center gap-4">
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">-</button>
+<span class="text-lg font-black text-on-background">01</span>
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">+</button>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="glass-card p-4 rounded-lg group hover:border-purple-500/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-400" data-icon="package_2">package_2</span>
+</div>
+<div>
+<div class="text-sm font-bold">Unidade de Carga V4</div>
+<div class="text-xs text-slate-500">ID: UV-441-A</div>
+</div>
+</div>
+<button class="text-slate-500 hover:text-red-400 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-center bg-slate-900/50 p-2 rounded">
+<span class="text-xs font-medium text-slate-400 uppercase tracking-widest">Quantidade</span>
+<div class="flex items-center gap-4">
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">-</button>
+<span class="text-lg font-black text-purple-400">35</span>
+<button class="w-6 h-6 flex items-center justify-center rounded border border-white/10 hover:border-purple-500 text-slate-300">+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-white/10">
+<button class="w-full py-4 rounded-lg bg-gradient-to-r from-primary to-secondary-container text-on-primary font-bold text-sm uppercase tracking-widest neon-glow hover:brightness-110 active:scale-[0.98] transition-all">
+                                Confirmar Checkout AI
+                            </button>
+<p class="text-center text-[10px] text-slate-500 mt-4 uppercase tracking-tighter">
+                                Ao confirmar, os dados serão sincronizados com o ERP global.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Gamification / Speed Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+<div class="glass-card p-4 rounded-xl">
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Tempo de Scan</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-black text-on-background">1.4s</span>
+<span class="text-[10px] text-green-400 mb-1">(-0.2s)</span>
+</div>
+</div>
+<div class="glass-card p-4 rounded-xl">
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Itens Identificados</div>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-black text-on-background">4,812</span>
+<span class="text-[10px] text-purple-400 mb-1">HOJE</span>
+</div>
+</div>
+<div class="glass-card p-4 rounded-xl border-l-4 border-purple-500">
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Performance AI</div>
+<div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-purple-500 to-magenta-500 shadow-[0_0_8px_rgba(168,85,247,0.6)]" style="width: 88%;"></div>
+</div>
+<div class="text-right text-[10px] font-bold mt-1 text-purple-400">88% Eficiência</div>
+</div>
+<div class="glass-card p-4 rounded-xl border-l-4 border-secondary">
+<div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1">Ranking Turno</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="text-sm font-bold">#2 Global</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Suppression Rule Applied: No FAB on Task-Focused Screens -->
+</body></html>

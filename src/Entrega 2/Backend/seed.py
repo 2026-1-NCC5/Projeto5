@@ -2,11 +2,12 @@ from sqlalchemy.orm import Session
 from app.core.database import SessionLocal
 from app.models import models
 from app.core import security
+from app.core.logger import logger
 
 def seed_db():
     db = SessionLocal()
     try:
-        print("[INICIO] Iniciando o semeio da estrutura base...")
+        logger.info("[INICIO] Iniciando o semeio da estrutura base...")
 
         # 1. Criar Usuário (O executor/administrador)
         user_email = "professor@fecap.br"
@@ -20,7 +21,7 @@ def seed_db():
             db.add(user)
             db.commit()
             db.refresh(user)
-            print(f"[OK] Usuário {user_email} criado.")
+            logger.info(f"[OK] Usuário {user_email} criado.")
 
         # 2. Criar Projeto (O Tenant/Organização)
         projeto_nome = "ScanCount Social"
@@ -34,7 +35,7 @@ def seed_db():
             db.add(projeto)
             db.commit()
             db.refresh(projeto)
-            print(f"[OK] Tenant '{projeto_nome}' criado.")
+            logger.info(f"[OK] Tenant '{projeto_nome}' criado.")
 
         # 3. Vincular Usuário ao Projeto como ADM
         # Isso valida a sua lógica de Multi-tenancy (um usuário tem um papel em um projeto)
@@ -49,7 +50,7 @@ def seed_db():
                 papel="ADM"
             )
             db.add(vinculo)
-            print(f"[OK] Vínculo de ADM estabelecido entre Usuário e Tenant.")
+            logger.info(f"[OK] Vínculo de ADM estabelecido entre Usuário e Tenant.")
 
         # 4. Criar Desafio (O evento/semestre dentro do Tenant)
         desafio_semestre = "2026.1"
@@ -65,13 +66,13 @@ def seed_db():
                 max_alunos_por_grupo=6
             )
             db.add(desafio)
-            print(f"[OK] Desafio {desafio_semestre} criado dentro do Tenant '{projeto_nome}'.")
+            logger.info(f"[OK] Desafio {desafio_semestre} criado dentro do Tenant '{projeto_nome}'.")
 
         db.commit()
-        print("[FIM] Estrutura base finalizada com sucesso!")
+        logger.info("[FIM] Estrutura base finalizada com sucesso!")
 
     except Exception as e:
-        print(f"[ERRO] Erro ao semear banco: {e}")
+        logger.error(f"[ERRO] Erro ao semear banco: {e}")
         db.rollback()
     finally:
         db.close()

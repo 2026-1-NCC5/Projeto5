@@ -4,7 +4,7 @@ from app.models import models
 
 class RankingService:
     @staticmethod
-    def obter_ranking_turmas(db: Session, desafio_id: int):
+    def obter_ranking_turmas(db: Session, desafio_id: int, limit: int = 10):
         """
         Calcula o ranking das turmas baseado na quantidade total de itens doados.
         """
@@ -18,12 +18,13 @@ class RankingService:
          .filter(models.Turma.desafio_id == desafio_id)\
          .group_by(models.Turma.id)\
          .order_by(func.sum(models.ItemDoado.quantidade * models.CatalogoProduto.peso_volume).desc())\
+         .limit(limit)\
          .all()
         
         return ranking
 
     @staticmethod
-    def obter_ranking_grupos_por_turma(db: Session, turma_id: int):
+    def obter_ranking_grupos_por_turma(db: Session, turma_id: int, limit: int = 10):
         """
         Calcula o ranking dos grupos dentro de uma turma específica.
         """
@@ -37,12 +38,13 @@ class RankingService:
          .filter(models.Grupo.turma_id == turma_id)\
          .group_by(models.Grupo.id)\
          .order_by(func.sum(models.ItemDoado.quantidade * models.CatalogoProduto.peso_volume).desc())\
+         .limit(limit)\
          .all()
         
         return ranking
 
     @staticmethod
-    def obter_ranking_geral_grupos(db: Session, desafio_id: int):
+    def obter_ranking_geral_grupos(db: Session, desafio_id: int, limit: int = 10):
         """
         Calcula o ranking geral de grupos de todo o desafio independente da turma.
         """
@@ -57,12 +59,13 @@ class RankingService:
          .filter(models.Turma.desafio_id == desafio_id)\
          .group_by(models.Grupo.id)\
          .order_by(func.sum(models.ItemDoado.quantidade * models.CatalogoProduto.peso_volume).desc())\
+         .limit(limit)\
          .all()
         
         return ranking
 
     @staticmethod
-    def obter_ranking_financeiro_combinado(db: Session, desafio_id: int):
+    def obter_ranking_financeiro_combinado(db: Session, desafio_id: int, limit: int = 10):
         """
         Retorna a soma dos valores em dinheiro arrecadados, separados por turma e por grupo.
         """
@@ -74,6 +77,7 @@ class RankingService:
          .filter(models.Turma.desafio_id == desafio_id)\
          .group_by(models.Turma.id)\
          .order_by(func.sum(models.ArrecadacaoDinheiro.valor).desc())\
+         .limit(limit)\
          .all()
          
         ranking_grupos = db.query(
@@ -85,6 +89,7 @@ class RankingService:
          .filter(models.Turma.desafio_id == desafio_id)\
          .group_by(models.Grupo.id)\
          .order_by(func.sum(models.ArrecadacaoDinheiro.valor).desc())\
+         .limit(limit)\
          .all()
 
         return {

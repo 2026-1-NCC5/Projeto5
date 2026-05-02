@@ -78,15 +78,25 @@ def enviar_convite(
 
 # 2. Alunos Disponíveis (Sua rota com ajuste de Schema)
 @router.get("/alunos-disponiveis/{turma_id}")
-def listar_disponiveis(turma_id: int, db: Session = Depends(get_db)):
+def listar_disponiveis(
+    turma_id: int, 
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(get_db)
+):
     return db.query(models.Aluno).filter(
         models.Aluno.turma_id == turma_id,
         models.Aluno.grupo_id == None
-    ).all()
+    ).offset(skip).limit(limit).all()
 
 # 3. Meus Convites (Ajustado com Join para o Front ver o nome do Grupo)
 @router.get("/meus-convites")
-def ver_convites(db: Session = Depends(get_db), current_user = Depends(deps.get_current_user)):
+def ver_convites(
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(get_db), 
+    current_user = Depends(deps.get_current_user)
+):
     aluno = db.query(models.Aluno).filter(models.Aluno.usuario_id == current_user.id).first()
     if not aluno:
         raise HTTPException(status_code=404, detail="Perfil de aluno não encontrado.")
@@ -94,7 +104,7 @@ def ver_convites(db: Session = Depends(get_db), current_user = Depends(deps.get_
     # Usamos o join para garantir que o objeto Grupo venha junto e o Front saiba QUEM convidou
     return db.query(models.ConviteGrupo).filter(
         models.ConviteGrupo.aluno_id == aluno.id
-    ).all()
+    ).offset(skip).limit(limit).all()
 
 # 4. Aceitar Convite (A lógica de limpeza que conversamos)
 @router.post("/aceitar-convite/{convite_id}")

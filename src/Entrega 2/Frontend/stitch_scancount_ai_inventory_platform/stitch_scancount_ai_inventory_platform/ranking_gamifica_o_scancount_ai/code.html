@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(22, 17, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-purple {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .neon-glow-magenta {
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#eadfed",
+                      "on-secondary-fixed": "#36003e",
+                      "on-primary": "#490080",
+                      "inverse-on-surface": "#342e38",
+                      "surface-dim": "#16111b",
+                      "on-tertiary-fixed-variant": "#604100",
+                      "surface": "#16111b",
+                      "on-tertiary-fixed": "#281900",
+                      "surface-container-lowest": "#110c15",
+                      "on-tertiary-container": "#3a2600",
+                      "error-container": "#93000a",
+                      "surface-container-low": "#1f1a23",
+                      "surface-tint": "#ddb7ff",
+                      "on-primary-fixed-variant": "#6900b3",
+                      "on-error": "#690005",
+                      "on-secondary-fixed-variant": "#7c008e",
+                      "surface-variant": "#39323d",
+                      "on-surface": "#eadfed",
+                      "on-primary-fixed": "#2c0051",
+                      "surface-bright": "#3d3741",
+                      "on-primary-container": "#400071",
+                      "inverse-primary": "#842bd2",
+                      "tertiary-fixed": "#ffdead",
+                      "surface-container": "#231e27",
+                      "secondary-container": "#ae05c6",
+                      "primary": "#ddb7ff",
+                      "surface-container-highest": "#39323d",
+                      "on-secondary-container": "#ffd8fd",
+                      "on-tertiary": "#432c00",
+                      "on-error-container": "#ffdad6",
+                      "background": "#16111b",
+                      "inverse-surface": "#eadfed",
+                      "primary-fixed-dim": "#ddb7ff",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed-dim": "#fabc4e",
+                      "secondary-fixed-dim": "#fbabff",
+                      "outline-variant": "#4d4354",
+                      "outline": "#988d9f",
+                      "tertiary": "#fabc4e",
+                      "surface-container-high": "#2e2832",
+                      "tertiary-container": "#bd871a",
+                      "primary-container": "#b76dff",
+                      "secondary-fixed": "#ffd6fd",
+                      "on-surface-variant": "#cfc2d6",
+                      "on-secondary": "#580065",
+                      "secondary": "#fbabff",
+                      "primary-fixed": "#f0dbff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "1rem",
+                      "base": "4px",
+                      "xs": "0.25rem",
+                      "2xl": "3rem",
+                      "sm": "0.5rem",
+                      "xl": "2rem",
+                      "container-padding": "2rem",
+                      "grid-gutter": "1.5rem",
+                      "lg": "1.5rem"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "code": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "h1": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "h3": ["Inter"],
+                      "h2": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "label-sm": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "h2": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-6 w-full fixed top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">ScanCount AI</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-inter text-sm font-medium text-slate-400 hover:text-purple-300 hover:bg-white/5 transition-all px-3 py-1 rounded" href="#">Home</a>
+<a class="font-inter text-sm font-medium text-slate-400 hover:text-purple-300 hover:bg-white/5 transition-all px-3 py-1 rounded" href="#">Ciclos</a>
+<a class="font-inter text-sm font-medium text-purple-400 font-bold px-3 py-1 rounded" href="#">Ranking</a>
+</nav>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-purple-400">dark_mode</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-purple-400">notifications</span>
+<div class="w-8 h-8 rounded-full border border-purple-500/50 bg-surface-container overflow-hidden">
+<img alt="User profile with RBAC role badge" class="w-full h-full object-cover" data-alt="A high-quality professional portrait avatar of a tech-savvy user in a dark mode interface environment. The lighting is dramatic with purple and magenta highlights reflecting off the person's face. The style is hyper-modern and sleek, matching a command center aesthetic with vibrant neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzmLKK0ptVuriEVxN_w34lDTuy9S87JDLYdrduWMzQNZUJDFSHOKn9RqEE-5_Yb7fSwdZ28oVlHwDdzcZTBmnNdTKMjqj8k7cMx3fCHYPC56FL_DaYf0D10ZA2pEQBE49B6Uzfsi-10dlx4jWW6t4hBOVOIpd-nvm3REMOiEbM7rVtUUhwDYGqCoGTWMP4NQxZ2uHiiah-dsxey4ftz9nstjWh-tGd6VhSP1N9Gcm5AyhUBsyAtvi6kKgqVJwi0RbKlexZv0dfuOo"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-6 z-40 bg-slate-950/90 backdrop-blur-xl border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 glass-card rounded-xl border-purple-500/20">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">precision_manufacturing</span>
+</div>
+<div>
+<div class="text-xs font-bold text-white uppercase tracking-widest">Acme Corp</div>
+<div class="text-[10px] text-slate-500 uppercase tracking-widest">Enterprise Plan</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-white/5 hover:text-slate-200 cursor-pointer transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-inter text-xs uppercase tracking-widest">Home</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-white/5 hover:text-slate-200 cursor-pointer transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="reproducibility">repeat</span>
+<span class="font-inter text-xs uppercase tracking-widest">Cycles</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-white/5 hover:text-slate-200 cursor-pointer transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-inter text-xs uppercase tracking-widest">Classes</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-500/10 text-purple-400 border-r-2 border-purple-500 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)] active:translate-x-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-inter text-xs uppercase tracking-widest">Ranking</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-white/5 hover:text-slate-200 cursor-pointer transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="photo_camera">photo_camera</span>
+<span class="font-inter text-xs uppercase tracking-widest">AI Checkout</span>
+</div>
+</nav>
+<div class="px-4 mt-auto pt-6 space-y-1 border-t border-white/5">
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-white/5 hover:text-slate-200 cursor-pointer transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-xs uppercase tracking-widest">Settings</span>
+</div>
+<button class="w-full mt-4 bg-gradient-to-r from-purple-600 to-magenta-600 p-3 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-[0_0_15px_rgba(168,85,247,0.4)] active:scale-95 transition-all">
+                Upgrade Power
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-12 pb-12 min-h-screen bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/10 via-background to-background">
+<!-- Header & Filters -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h1 class="font-h1 text-h1 text-on-background mb-2">Ranking Global</h1>
+<p class="text-on-surface-variant font-body-md">Desempenho de detecção e precisão em tempo real.</p>
+</div>
+<div class="flex gap-2 p-1 glass-card rounded-xl border-white/5">
+<button class="px-6 py-2 rounded-lg bg-primary text-on-primary font-label-sm shadow-[0_0_15px_rgba(221,183,255,0.3)]">Geral</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-white/5 font-label-sm transition-all">Por Classe</button>
+<button class="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-white/5 font-label-sm transition-all">Sazonal</button>
+</div>
+</div>
+<!-- Podium Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end mb-16">
+<!-- 2nd Place -->
+<div class="order-2 md:order-1 group">
+<div class="flex flex-col items-center">
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full border-4 border-slate-400/30 p-1 group-hover:scale-110 transition-transform duration-500">
+<img alt="Runner up avatar" class="w-full h-full rounded-full object-cover" data-alt="A focused portrait of a warehouse logistics manager in a high-tech setting. The lighting is cinematic with subtle blue and grey tones reflecting off metallic surfaces. The overall aesthetic is industrial but clean and technologically advanced, matching the ScanCount AI dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb2CKX5yQJEWvom3iaBfBgTZr8MFrHcUzRbCWtDtoCmmhZnv2U1Fv7TrSRzNjY4bDtzJH1W0kNLbuIhxirG40ahPZs8dIJTQHAHRqbZeOQcrMIX5RAnn5jMukzNs3vAAAFQsEbBga-HAgrE72KdTZBSKsYTdsFoBduxEH26sDPwWTLEH7oWkqrAAH960LV6HPVQ5MHBOcuBubRhDDal-GuO5e6uADDmSTFuxMduIkchHkmMe5UE1q5yq2fzA6ObMel51fVb73tQW8"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-400 text-slate-950 font-black text-xs px-3 py-1 rounded-full shadow-lg">#2</div>
+</div>
+<div class="w-full glass-card border-slate-400/20 rounded-t-2xl p-6 text-center h-48 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-slate-400/50"></div>
+<div>
+<h3 class="font-h3 text-h3 text-white mb-1">Ricardo S.</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Logística Norte</p>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] uppercase tracking-tighter text-slate-400">
+<span>Precisão</span>
+<span>94.2%</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[94.2%] bg-slate-400 rounded-full shadow-[0_0_8px_rgba(148,163,184,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 1st Place -->
+<div class="order-1 md:order-2 group">
+<div class="flex flex-col items-center">
+<div class="relative mb-8">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2">
+<span class="material-symbols-outlined text-tertiary text-4xl drop-shadow-[0_0_15px_rgba(250,188,78,0.6)]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div class="w-32 h-32 rounded-full border-4 border-primary p-1 neon-glow-purple group-hover:scale-110 transition-transform duration-500">
+<img alt="Champion avatar" class="w-full h-full rounded-full object-cover" data-alt="A triumphant portrait of a professional female data analyst wearing futuristic eyewear. Intense purple and magenta lighting illuminates her face from multiple angles, creating a sharp, neon-drenched look. The background is a soft-focus digital grid, emphasizing a high-tech, futuristic command center environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG4XQaQauIw05gddWUKaTQ6WaZzNiPrc_AGzeI3drLFmQPhzaxRlSyEBXac-xEB_PLWi_1SPdcIV1J5ykL1bg2GgdGTpuolFg1yTkAfVoBF8tDvrU_-igBYTbliJ5o-kUXA1kF-jWqaFIKKrS1QwoSDsQaKgNlt12fQBpuMq1sMMvHdzi13cLr1UimInOr3XhDY-f6ppIhvGOChOQ467AL9wjSzJe4Kr8rK27IaW7VJd2E_UtC8cWjFnuGJ5c58sRpUcZHrCWTLR0"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-on-primary font-black text-sm px-4 py-1 rounded-full shadow-[0_0_20px_rgba(168,85,247,0.6)]">#1</div>
+</div>
+<div class="w-full glass-card border-primary/40 rounded-t-3xl p-8 text-center h-64 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-secondary to-primary animate-pulse"></div>
+<div>
+<h3 class="font-h3 text-h3 text-white mb-1">Beatriz L.</h3>
+<p class="text-xs text-primary uppercase tracking-widest font-black">Centro de Distribuição HQ</p>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-xs uppercase tracking-tighter text-primary">
+<span class="font-bold">Precisão Absoluta</span>
+<span class="font-black">99.8%</span>
+</div>
+<div class="h-3 w-full bg-white/5 rounded-full overflow-hidden p-[2px]">
+<div class="h-full w-[99.8%] bg-gradient-to-r from-primary to-secondary rounded-full neon-glow-magenta"></div>
+</div>
+<p class="text-[10px] text-slate-500 italic mt-2">"A IA é minha melhor ferramenta."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="order-3 md:order-3 group">
+<div class="flex flex-col items-center">
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full border-4 border-tertiary/30 p-1 group-hover:scale-110 transition-transform duration-500">
+<img alt="Third place avatar" class="w-full h-full rounded-full object-cover" data-alt="A professional portrait of an inventory specialist in a warehouse environment featuring warm copper and amber lighting. The style is crisp and modern with a slight shallow depth of field, highlighting the person against a background of high-tech scanning equipment and logistics shelves." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYGW3COwI38p04SwniO7w7evlqvVR68SGzIUEpaLWsrCzA-EdXSsoR-MPPuZi-7GimVRQKWcwp32hEFEqZvA8RujDYwxhbk475FrU08nifPWNkjLl2Vzg2Meu2HHrC0_bbMRcies39zf_Ia5hRiOvlRx9_RF1vodofRO_RBkppJAaNsnHx7ul79APXO4-Xi2ZqbahabiCUFY5ZMAGxPGCMeBW5NISBa2JdCTzPmyD3wOnG9hlVFK_T7hhnhdmhW4oRKYAwqyZKhok"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-tertiary/80 text-on-tertiary font-black text-xs px-3 py-1 rounded-full shadow-lg">#3</div>
+</div>
+<div class="w-full glass-card border-tertiary/20 rounded-t-2xl p-6 text-center h-40 flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-tertiary/50"></div>
+<div>
+<h3 class="font-h3 text-h3 text-white mb-1">Carlos M.</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Unidade Industrial B</p>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] uppercase tracking-tighter text-slate-400">
+<span>Precisão</span>
+<span>91.5%</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[91.5%] bg-tertiary rounded-full shadow-[0_0_8px_rgba(250,188,78,0.4)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Leaderboard Table -->
+<div class="glass-card rounded-2xl overflow-hidden border-white/5 shadow-2xl">
+<div class="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+<h3 class="font-h3 text-body-lg text-white">Classificação Geral</h3>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
+<input class="bg-surface-container border-white/10 rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-primary focus:border-primary w-64" placeholder="Buscar operador..." type="text"/>
+</div>
+<button class="p-2 rounded-lg hover:bg-white/10 text-slate-400">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] uppercase tracking-widest text-slate-500 border-b border-white/5">
+<th class="px-8 py-4 font-black">Posição</th>
+<th class="px-8 py-4 font-black">Operador</th>
+<th class="px-8 py-4 font-black">Departamento</th>
+<th class="px-8 py-4 font-black">Escaneamentos</th>
+<th class="px-8 py-4 font-black">Precisão IA</th>
+<th class="px-8 py-4 font-black">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-8 py-5">
+<span class="text-sm font-code text-slate-400 group-hover:text-primary transition-colors">04</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10">
+<img alt="Rank 4 avatar" class="w-full h-full rounded-full object-cover" data-alt="Professional profile photo of a male operations lead. The lighting is cold blue, highlighting sharp facial features. High-tech digital overlays and interface elements are subtly visible in the out-of-focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCseyNGk3Mqb9Ngr_0hnx3Vt61JyWVFtA_nwAutzBCACuFl1qVUaHia_3giEsaU2rkCU-29mZhr1sHtWJhjVgC8HVI898aAAfC86PMwD1-sU7Ia5f9Kec7WutCgqxsbXgTbBYb17aowJ3NvEqJsBGXi5Wtm3OwnRQCjZtlCkQnZARaQ4fu9S423DMlsQx8j8GcpGVUJ9mqXNPHd_CQnxbGBrq7QhK94-fe8DFKz4DjcnhcX88TDZBUvAxx03tnCBJpgQ2_mFKZedmI"/>
+</div>
+<span class="text-sm font-bold text-white">Marcos Vinícius</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs text-slate-400">Armazém Sul</span>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs font-code text-slate-200">12.450</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 w-24 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[89%] bg-primary-container rounded-full"></div>
+</div>
+<span class="text-xs font-code text-primary-container">89.4%</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wide border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Ativo
+                                </span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-8 py-5">
+<span class="text-sm font-code text-slate-400 group-hover:text-primary transition-colors">05</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10">
+<img alt="Rank 5 avatar" class="w-full h-full rounded-full object-cover" data-alt="A portrait of a senior inventory analyst with salt-and-pepper hair, lit with magenta and deep purple accent lights. The style is sharp and futuristic, emphasizing industrial professionalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwclzoI1F8-O2EGYtKgAtdGi4sJ1aMY3-w2M1h7JAqoGf2a5ly9DU0Q-5Zlw1ZlCu9kEWi5F06wkQ6PuNmfIFVPQfN0BzMCAeudOwuLlTwVstKUT0uB0L_0Vol41dvvh71Pnk902ldxHWhazWDXFI95662GOVYuSOeb0xm2N--8oPejbvTiFuZrCh_jZMAmqK8RuGYLOEtrxGQ1EYiEYMJRrsYrdt5ep9OILqX9SSxP2fhVwhbUHmJZvL5DIEQn64yt-i2vR02IoA"/>
+</div>
+<span class="text-sm font-bold text-white">Ana Cláudia</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs text-slate-400">Logística Centro</span>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs font-code text-slate-200">11.902</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 w-24 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[87%] bg-primary-container rounded-full"></div>
+</div>
+<span class="text-xs font-code text-primary-container">87.1%</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wide border border-emerald-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Ativo
+                                </span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors cursor-pointer group">
+<td class="px-8 py-5">
+<span class="text-sm font-code text-slate-400 group-hover:text-primary transition-colors">06</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-800 border border-white/10">
+<img alt="Rank 6 avatar" class="w-full h-full rounded-full object-cover" data-alt="A young tech professional portrait with vibrant amber lighting and a dark tech background. Sharp focus on face, cinematic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaBknUOXmDh4qCqy-OHb0sor0KoqNbAOlabhchmgbYC8ICAdS5HHzw41KzqWQHRyTGR7YDZ7C3yC00WOOvCqLLzsEsWPkDF9shA-r2ApPd3ekN4dY7GUlUljKVlQwh3rLzgvHtdA-l3JJW-SFE6-fTfOm_L3M8MR2TEpYyg9KaxF9ti-AhUEuCUyKRBbNWhSmXbsxLFUFzpwe6aaTCVta2PqpLC8VlvHuFlerLDxJvb6uulOs8HDcsj5G-0DzZmZXS22f6IYJqFlY"/>
+</div>
+<span class="text-sm font-bold text-white">João Pedro</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs text-slate-400">Expedição Oeste</span>
+</td>
+<td class="px-8 py-5">
+<span class="text-xs font-code text-slate-200">10.120</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1.5 w-24 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-primary-container rounded-full"></div>
+</div>
+<span class="text-xs font-code text-primary-container">85.6%</span>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-500/10 text-slate-500 text-[10px] font-bold uppercase tracking-wide border border-white/10">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                    Ausente
+                                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-4 bg-slate-900/50 border-t border-white/5 flex justify-between items-center">
+<span class="text-xs text-slate-500">Exibindo 6 de 142 operadores</span>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-white/10 text-slate-400 hover:bg-white/5 disabled:opacity-30">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg border border-white/10 text-slate-400 hover:bg-white/5">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-slate-950/90 backdrop-blur-md border-t border-white/10 flex justify-around items-center h-16 z-50">
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] uppercase font-bold">Início</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-purple-400 font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="text-[10px] uppercase font-bold">Ranking</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">photo_camera</span>
+<span class="text-[10px] uppercase font-bold">Scan</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] uppercase font-bold">Config</span>
+</div>
+</nav>
+</body></html>

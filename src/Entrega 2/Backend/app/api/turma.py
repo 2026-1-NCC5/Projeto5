@@ -28,20 +28,24 @@ def criar_turma(
 @router.get("/desafio/{desafio_id}", response_model=List[TurmaOut])
 def listar_turmas_por_desafio(
     desafio_id: int, 
+    skip: int = 0,
+    limit: int = 20,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(deps.get_current_user)
 ):
-    return db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).all()
+    return db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).offset(skip).limit(limit).all()
 
 @router.get("/lista-filtros/{desafio_id}", response_model=list[dict])
 def listar_turmas_para_filtro(
     desafio_id: int, 
+    skip: int = 0,
+    limit: int = 100,
     db: Session = Depends(get_db)
 ):
     """
     Retorna apenas ID e Nome das turmas para preencher o SelectBox do Front-end.
     """
-    turmas = db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).all()
+    turmas = db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).offset(skip).limit(limit).all()
     
     # Retornamos um formato que o React Native Picker adora
     return [{"label": t.nome, "value": t.id} for t in turmas]

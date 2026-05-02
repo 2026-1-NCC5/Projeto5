@@ -1,3 +1,5 @@
+from app.core.logger import logger
+
 class EmailService:
     @staticmethod
     def enviar_link_convite(email_destino: str, nome_aluno: str, token: str):
@@ -19,10 +21,10 @@ class EmailService:
         """
         
         # No futuro, aqui entra a lógica de smtplib.sendmail()
-        print("\n" + "="*30)
-        print(f"📧 E-MAIL ENVIADO PARA: {email_destino}")
-        print(f"ASSUNTO: Convite ScanCount AI")
-        print(corpo_email)
-        print("="*30 + "\n")
+        logger.info("\n" + "="*30)
+        logger.info(f"📧 E-MAIL ENVIADO PARA: {email_destino}")
+        logger.info(f"ASSUNTO: Convite ScanCount AI")
+        logger.info(corpo_email)
+        logger.info("="*30 + "\n")
         
         return True

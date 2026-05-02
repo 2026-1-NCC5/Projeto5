@@ -10,11 +10,13 @@ router = APIRouter(prefix="/projetos", tags=["Projetos (Tenants)"])
 
 @router.get("/", response_model=List[ProjetoOut])
 def listar_projetos(
+    skip: int = 0,
+    limit: int = 20,
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(deps.get_current_user)
 ):
     """Lista todos os projetos cadastrados (Requer Login)"""
-    return db.query(models.Projeto).all()
+    return db.query(models.Projeto).offset(skip).limit(limit).all()
 
 @router.post("/", response_model=ProjetoOut)
 def criar_projeto(

@@ -1,16 +1,16 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import engine, Base
-from app.models import models  # Importamos os modelos aqui para o Base conhecê-los
-from app.models.models import oauth2_scheme  # Importante para o botão Authorize
-from app.api import auth, projeto, desafio, turma, aluno, grupo, doacao, ranking, catalogo, financeiro
-# 1. Sincronização Automática do Banco de Dados
-# Isso lê o seu models.py e cria as tabelas no PostgreSQL
+from app.models import models
+from app.models.models import oauth2_scheme
+from app.api import auth, projeto, desafio, turma, aluno, grupo, doacao, ranking, catalogo, financeiro, usuario, preferencia, vinculo, checkout
+from app.core.logger import logger
+
 try:
     Base.metadata.create_all(bind=engine)
-    print("[OK] Banco de dados sincronizado com sucesso.")
+    logger.info("[OK] Banco de dados sincronizado com sucesso.")
 except Exception as e:
-    print(f"[ERRO] Erro ao sincronizar o banco: {e}")
+    logger.error(f"[ERRO] Erro ao sincronizar o banco: {e}")
 
 app = FastAPI(
     title="ScanCount AI API",
@@ -18,8 +18,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# 2. Configuração de CORS
-# Permite que o seu App mobile ou Front-end acesse a API sem bloqueios
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,7 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. Registro de Rotas (Endpoints)
 app.include_router(auth.router)
 app.include_router(projeto.router)
 app.include_router(desafio.router)
@@ -39,12 +36,13 @@ app.include_router(doacao.router)
 app.include_router(ranking.router)
 app.include_router(catalogo.router)
 app.include_router(financeiro.router)
+app.include_router(usuario.router)
+app.include_router(preferencia.router)
+app.include_router(vinculo.router)
+app.include_router(checkout.router)
 
 @app.get("/", tags=["Status"])
 def root():
-    """
-    Retorna o status da API e links úteis.
-    """
     return {
         "status": "online",
         "projeto": "ScanCount AI",
@@ -52,7 +50,6 @@ def root():
         "documentacao": "/docs"
     }
 
-# 4. Rota de exemplo para ativar o cadeado no Swagger
 @app.get("/perfil", tags=["Usuário"])
 def testar_autorizacao(token: str = Depends(oauth2_scheme)):
     return {

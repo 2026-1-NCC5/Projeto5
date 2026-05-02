@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScanCount AI - Gestão de Equipes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#eadfed",
+                        "on-secondary-fixed": "#36003e",
+                        "on-primary": "#490080",
+                        "inverse-on-surface": "#342e38",
+                        "surface-dim": "#16111b",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "surface": "#16111b",
+                        "on-tertiary-fixed": "#281900",
+                        "surface-container-lowest": "#110c15",
+                        "on-tertiary-container": "#3a2600",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1f1a23",
+                        "surface-tint": "#ddb7ff",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "on-error": "#690005",
+                        "on-secondary-fixed-variant": "#7c008e",
+                        "surface-variant": "#39323d",
+                        "on-surface": "#eadfed",
+                        "on-primary-fixed": "#2c0051",
+                        "surface-bright": "#3d3741",
+                        "on-primary-container": "#400071",
+                        "inverse-primary": "#842bd2",
+                        "tertiary-fixed": "#ffdead",
+                        "surface-container": "#231e27",
+                        "secondary-container": "#ae05c6",
+                        "primary": "#ddb7ff",
+                        "surface-container-highest": "#39323d",
+                        "on-secondary-container": "#ffd8fd",
+                        "on-tertiary": "#432c00",
+                        "on-error-container": "#ffdad6",
+                        "background": "#16111b",
+                        "inverse-surface": "#eadfed",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#fabc4e",
+                        "secondary-fixed-dim": "#fbabff",
+                        "outline-variant": "#4d4354",
+                        "outline": "#988d9f",
+                        "tertiary": "#fabc4e",
+                        "surface-container-high": "#2e2832",
+                        "tertiary-container": "#bd871a",
+                        "primary-container": "#b76dff",
+                        "secondary-fixed": "#ffd6fd",
+                        "on-surface-variant": "#cfc2d6",
+                        "on-secondary": "#580065",
+                        "secondary": "#fbabff",
+                        "primary-fixed": "#f0dbff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1rem",
+                        "base": "4px",
+                        "xs": "0.25rem",
+                        "2xl": "3rem",
+                        "sm": "0.5rem",
+                        "xl": "2rem",
+                        "container-padding": "2rem",
+                        "grid-gutter": "1.5rem",
+                        "lg": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "code": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "code": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-sm": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h2": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #16111b;
+            color: #eadfed;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(22, 17, 27, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(221, 183, 255, 0.3);
+        }
+        .neon-border-glow:focus-within {
+            box-shadow: 0 0 15px rgba(221, 183, 255, 0.5);
+            border-color: #ddb7ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center h-16 px-6 w-full fixed top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">ScanCount AI</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6 font-inter text-sm font-medium">
+<a class="text-slate-400 hover:text-purple-300 hover:bg-white/5 transition-all px-2 py-1 rounded" href="#">Dashboard</a>
+<a class="text-purple-400 font-bold px-2 py-1 rounded bg-white/5" href="#">Grupos</a>
+<a class="text-slate-400 hover:text-purple-300 hover:bg-white/5 transition-all px-2 py-1 rounded" href="#">Catálogo</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400 hover:text-purple-300 cursor-pointer transition-all active:scale-95">dark_mode</span>
+<span class="material-symbols-outlined text-slate-400 hover:text-purple-300 cursor-pointer transition-all active:scale-95">notifications</span>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-purple-500/30">
+<img alt="User profile" data-alt="A close-up portrait of a professional male user in a high-tech environment. The lighting is moody and cinematic with purple and blue neon reflections on his face. He has a focused expression, representing a warehouse operator or technical leader. The image has a clean, high-contrast aesthetic consistent with a dark-themed AI dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi1fh4d4fESov91lnLvCBmmPpHX8x0yGg_-NHGmzwf1uhmymK9CLlCq7gRZk9QdqzRJu5SmTKUSpuoT22sAeDHkq5h8yu9LlSUjqzKc4D122e1NxbmSmvlZEcHGM4KHnP2qlWH2HPqWMURaEXVK7prqGxV9qIhrQ6t0kdilteHTW0Hdu3dA6y3yZEaAb5dfCfIDKzQ0w2JaxDJxb0LT7CE-JdDg8k_YVZEKZQK-ctoSdJ1b7p-e2HCxFm0u_UWVuNU3SaBPgW2SF8"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-6 z-40 bg-slate-950/90 backdrop-blur-xl border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.5)] hidden md:flex">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="h-10 w-10 bg-purple-600 rounded flex items-center justify-center font-bold text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]">AC</div>
+<div>
+<h3 class="text-lg font-bold text-white leading-tight">Acme Corp</h3>
+<p class="text-[10px] uppercase tracking-widest text-slate-500">Plano Enterprise</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Home</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">repeat</span>
+<span>Cycles</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">school</span>
+<span>Classes</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-purple-500/10 text-purple-400 border-r-2 border-purple-500 shadow-[inset_0_0_10px_rgba(168,85,247,0.2)] font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">group</span>
+<span>Groups</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Catalog</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">photo_camera</span>
+<span>AI Checkout</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors cursor-pointer font-inter text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined">leaderboard</span>
+<span>Ranking</span>
+</div>
+</nav>
+<div class="px-4 mt-auto pt-6 border-t border-white/5 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-colors font-inter text-xs uppercase tracking-widest cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 transition-colors font-inter text-xs uppercase tracking-widest cursor-pointer">
+<span class="material-symbols-outlined">help_center</span>
+<span>Support</span>
+</div>
+<button class="w-full mt-4 py-2 bg-gradient-to-r from-purple-600 to-magenta-600 rounded-lg text-[10px] font-bold uppercase tracking-tighter text-white neon-glow-primary active:scale-95 transition-all">
+                Upgrade Power
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-64 pt-24 pb-12 px-6 min-h-screen">
+<div class="max-w-7xl mx-auto space-y-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-h1 text-h1 text-on-background">Minha Equipe</h1>
+<p class="font-body-md text-body-md text-outline">Gerencie seus colegas e convide novos membros para o projeto AI.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 py-3 rounded-xl glass-card font-label-sm text-label-sm hover:bg-white/10 transition-all border border-white/10">
+<span class="material-symbols-outlined text-xl">share</span>
+                        Compartilhar
+                    </button>
+<button class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-container text-on-primary-container font-label-sm text-label-sm hover:brightness-110 transition-all neon-glow-primary">
+<span class="material-symbols-outlined text-xl">group_add</span>
+                        Criar Novo Grupo
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- UUID Card (Large) -->
+<div class="md:col-span-4 glass-card p-8 rounded-2xl flex flex-col justify-between space-y-6 relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/20 blur-[80px] rounded-full"></div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">key</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Código de Convite</span>
+</div>
+<h3 class="font-h3 text-h3">ID da Equipe</h3>
+</div>
+<div class="p-4 bg-surface-container rounded-xl border border-white/5 flex items-center justify-between group neon-border-glow">
+<code class="font-code text-code text-primary-fixed-dim">550e8400-e29b-41d4-a716-446655440000</code>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+<p class="text-sm text-outline">Compartilhe este código UUID com seus colegas de classe para que eles possam se juntar à sua equipe de processamento de dados.</p>
+</div>
+<!-- Stats Grid (Right of UUID) -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="glass-card p-6 rounded-2xl flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+<span class="material-symbols-outlined text-3xl">groups</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Total Membros</p>
+<p class="font-h2 text-h2">08 / 12</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center gap-4">
+<div class="w-14 h-14 rounded-xl bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Ranking Geral</p>
+<p class="font-h2 text-h2">#04</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl col-span-full flex flex-col justify-center relative overflow-hidden">
+<div class="flex justify-between items-center mb-4">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Progresso do Ciclo</p>
+<span class="text-primary font-bold">78%</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[78%] bg-gradient-to-r from-primary to-secondary shadow-[0_0_10px_rgba(221,183,255,0.6)]"></div>
+</div>
+</div>
+</div>
+<!-- Members List (Full Width) -->
+<div class="md:col-span-12 glass-card rounded-2xl overflow-hidden">
+<div class="p-6 border-b border-white/5 flex justify-between items-center">
+<h3 class="font-h3 text-h3">Membros da Equipe</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-primary focus:border-primary w-64" placeholder="Filtrar membros..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-high/50 text-outline text-xs uppercase tracking-widest font-bold">
+<tr>
+<th class="px-6 py-4">Membro</th>
+<th class="px-6 py-4">Cargo</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Data de Ingresso</th>
+<th class="px-6 py-4 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 overflow-hidden">
+<img alt="Leader Profile" data-alt="A portrait of a male student leader in a modern setting. He is wearing high-tech glasses with a data overlay reflection. The lighting is cool-toned with purple and blue hues, creating a futuristic academic atmosphere. High-end photography with sharp focus on the facial features and soft bokeh in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcLkF8DuE1Ba0FbmyIXav927g0o56tmU4zPhNttp_pQK3stCiEw5talk2T7JrPLdG_rgjNeFutoGBQ6SX9ZPbkdsLgegXQvNy-FQhqNcKCg20TC_Y_rXOVZB19vx88fFauCqeNUHfWf9Sq3qv0TIFS1p913Fu6Odf1Sxl7RNxw0xepmqLcuYkdpDuJJMeK-viiedurr8166aEfVz6_tAqrRwzmZeURcWk-Bnq3x0H7f_1xGDq0nql3oVp0RmdbmyJyNVupxjxXb2Y"/>
+</div>
+<div>
+<p class="font-bold">Ricardo Silva</p>
+<p class="text-xs text-outline">ricardo.s@scancount.ai</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">
+                                            Líder
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-emerald-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="text-sm">Online</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-outline">12 Out, 2023</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-white"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/20 overflow-hidden">
+<img alt="Member Profile" data-alt="A professional female warehouse technical analyst in a dark environment illuminated by magenta neon light tubes. She has a confident expression, symbolizing teamwork and technical expertise. The background features blurred warehouse machinery and digital glowing grids, maintaining a cohesive futuristic design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLOkqZwbxIYJ2cFTxmh0CXs_1dqBYjY_kifvrvsJs1t0uoKI7TNheQzcp__EeGIH7-H1HnWzFGyiKOB42CA7LJUD8gOpi-SEujmfuGZ2zXnvsRxFcFQcZIHFzgT00uNueDlGqaVVfJL4ldhuRZT4sENZtML3E9cypAoEH2Bb3DqjPCJfS8uCyDnmH1wSC2zmSpdTAYgPOt6ynri2FT9WbUbkrFnt-GDlJORpseYb4tQ4mJL3dD-GKIYcElYPGzTpJCEcZ37rnorW8"/>
+</div>
+<div>
+<p class="font-bold">Mariana Costa</p>
+<p class="text-xs text-outline">mariana.c@scancount.ai</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-white/5 text-slate-300 text-xs font-bold border border-white/10">
+                                            Membro
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-slate-500">
+<span class="w-2 h-2 rounded-full bg-slate-500"></span>
+<span class="text-sm">Offline</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-outline">15 Out, 2023</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-white"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary/20 overflow-hidden">
+<img alt="Member Profile" data-alt="A portrait of a male computer science student working with industrial robotics. The lighting uses warm orange and deep purple tones. He is wearing a sleek headset, focused on a holographic terminal not seen in frame. The style is hyper-modern and sleek, matching the high-tech AI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMIkuyRxfgvQj2_-Eyjbo7TVjKQGlphqppYuSkLlfheVNkfa32RXTsX1OTx1hDvZoi9ty9sSo31TjXoCo2uH-axbNASptpl_diXtPBlAz_9MqPawRj63eV3Y2YMchqkDw6S0VcYaVGcykKU49dlWiHxjF4f_JaOyS1wDfu-GOFtaGbgNovoD5_QSLxD2lDUf9cwRT82QzCxcq42Gr_r9_3p7wSW_AtG31dMiudxYplnn3Z4IPQjLN3AvJXEFX9eGlmiyZ0xzzSUGU"/>
+</div>
+<div>
+<p class="font-bold">André Santos</p>
+<p class="text-xs text-outline">andre.s@scancount.ai</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-white/5 text-slate-300 text-xs font-bold border border-white/10">
+                                            Membro
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-emerald-400">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="text-sm">Online</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-outline">18 Out, 2023</td>
+<td class="px-6 py-4 text-right">
+<button class="text-outline hover:text-white"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Invite New Members Quick Card -->
+<div class="md:col-span-12 glass-card p-6 rounded-2xl bg-gradient-to-r from-primary/5 to-secondary/5 border-primary/20 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined text-4xl">mail</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Convide via E-mail</h4>
+<p class="text-sm text-outline">Envie convites diretos para novos membros sem precisar do código UUID.</p>
+</div>
+</div>
+<div class="flex w-full md:w-auto gap-2">
+<input class="flex-1 md:w-80 bg-surface border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-primary focus:border-primary" placeholder="email@universidade.edu" type="email"/>
+<button class="px-6 py-3 bg-primary text-on-primary font-bold rounded-xl active:scale-95 transition-all">Enviar</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-slate-950/90 backdrop-blur-md border-t border-white/10 flex justify-around items-center h-16 z-50">
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-purple-400" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Grupos</span>
+</a>
+<div class="relative -top-6">
+<button class="w-12 h-12 bg-primary rounded-full shadow-[0_0_20px_rgba(221,183,255,0.6)] flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Catálogo</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter">Ranking</span>
+</a>
+</nav>
+</body></html>

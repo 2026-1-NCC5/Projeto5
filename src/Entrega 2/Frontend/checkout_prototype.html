@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protótipo - Checkout Inteligente</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --panel-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        .container {
+            display: flex;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .status {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status.connected { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status.disconnected { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Protótipo de Checkout</h1>
+
+    <div style="width: 100%; max-width: 1200px; margin-bottom: 1rem; display: flex; gap: 1rem; justify-content: center;">
+        <input type="text" id="jwtToken" placeholder="Cole seu Token JWT aqui (para o commit funcionar)" style="padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--panel-bg); color: white; width: 100%; max-width: 600px;">
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <h2 style="margin-top: 0;">Feed da Câmera</h2>
+            <div class="video-container">
+                <video id="videoElement" autoplay playsinline></video>
+                <canvas id="canvasElement"></canvas>
+            </div>
+            <div id="wsStatus" class="status disconnected">WebSocket: Desconectado</div>
+            <div id="camStatus" class="status disconnected">Câmera: Aguardando permissão...</div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-top: 0;">Itens Detectados</h2>
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Ordem</th>
+                        <th>Nome do Item</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            
+            <button id="btnFinalizar" class="btn btn-success" disabled>Finalizar Compra</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoElement');
+        const canvas = document.getElementById('canvasElement');
+        const ctx = canvas.getContext('2d');
+        const itemsTableBody = document.querySelector('#itemsTable tbody');
+        const wsStatus = document.getElementById('wsStatus');
+        const camStatus = document.getElementById('camStatus');
+        const btnFinalizar = document.getElementById('btnFinalizar');
+
+        let ws;
+        let frameInterval;
+        let availableClasses = [];
+        const sessionId = "sessao-teste-123"; 
+
+        async function fetchClasses() {
+            try {
+                const response = await fetch('http://localhost:8000/checkout/classes');
+                if (response.ok) {
+                    availableClasses = await response.json();
+                }
+            } catch (err) {
+                console.error("Erro ao buscar classes:", err);
+            }
+        }
+        
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function connectWebSocket() {
+            ws = new WebSocket(`ws://localhost:8000/checkout/ws/${sessionId}`);
+
+            ws.onopen = () => {
+                wsStatus.textContent = "WebSocket: Conectado";
+                wsStatus.className = "status connected";
+                startSendingFrames();
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.event === "new_detection") {
+                    updateItemsTable(data.items);
+                    if (data.just_detected && data.just_detected.length > 0) {
+                        playBeep();
+                    }
+                }
+            };
+
+            ws.onclose = () => {
+                wsStatus.textContent = "WebSocket: Desconectado";
+                wsStatus.className = "status disconnected";
+                stopSendingFrames();
+                setTimeout(connectWebSocket, 3000);
+            };
+
+            ws.onerror = (error) => {
+                console.error("Erro no WebSocket:", error);
+            };
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                camStatus.textContent = "Câmera: Ativa";
+                camStatus.className = "status connected";
+                
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+            } catch (err) {
+                console.error("Erro ao acessar a câmera:", err);
+                camStatus.textContent = "Câmera: Erro ao acessar ou permissão negada";
+                camStatus.className = "status disconnected";
+                alert("Não foi possível acessar a webcam. Verifique as permissões do navegador.");
+            }
+        }
+
+        function startSendingFrames() {
+            if (frameInterval) clearInterval(frameInterval);
+            
+            frameInterval = setInterval(() => {
+                if (ws.readyState === WebSocket.OPEN && video.readyState === video.HAVE_ENOUGH_DATA) {
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const base64Frame = canvas.toDataURL('image/jpeg', 0.5);
+                    ws.send(base64Frame);
+                }
+            }, 500);
+        }
+
+        function stopSendingFrames() {
+            if (frameInterval) {
+                clearInterval(frameInterval);
+                frameInterval = null;
+            }
+        }
+
+        function updateItemsTable(itemsArray) {
+            itemsTableBody.innerHTML = '';
+            
+            itemsArray.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.id = `row-${item.id}`;
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td id="name-${item.id}">${item.name}</td>
+                    <td>
+                        <button onclick="enableEdit('${item.id}', '${item.name}')" style="background:#f59e0b; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">Editar</button>
+                        <button onclick="deleteItem('${item.id}')" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-left:4px;">X</button>
+                    </td>
+                `;
+                itemsTableBody.appendChild(row);
+            });
+            
+            btnFinalizar.disabled = itemsArray.length === 0;
+        }
+
+        function enableEdit(itemId, currentName) {
+            const nameTd = document.getElementById(`name-${itemId}`);
+            
+            let selectHTML = `<select id="select-${itemId}" style="padding:4px; border-radius:4px;">`;
+            availableClasses.forEach(cls => {
+                const selected = cls === currentName ? "selected" : "";
+                selectHTML += `<option value="${cls}" ${selected}>${cls}</option>`;
+            });
+            selectHTML += `</select>`;
+            
+            nameTd.innerHTML = `
+                ${selectHTML}
+                <button onclick="saveEdit('${itemId}')" style="background:#10b981; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-left:4px;">Salvar</button>
+                <button onclick="cancelEdit('${itemId}', '${currentName}')" style="background:#64748b; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-left:4px;">Cancelar</button>
+            `;
+        }
+
+        function cancelEdit(itemId, originalName) {
+            const nameTd = document.getElementById(`name-${itemId}`);
+            nameTd.innerHTML = originalName;
+        }
+
+        async function saveEdit(itemId) {
+            const selectEl = document.getElementById(`select-${itemId}`);
+            const newName = selectEl.value;
+            
+            try {
+                const response = await fetch(`http://localhost:8000/checkout/item/${sessionId}/${itemId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ new_name: newName })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateItemsTable(data.items);
+                }
+            } catch (err) {
+                console.error("Erro ao editar:", err);
+            }
+        }
+
+        async function deleteItem(itemId) {
+            try {
+                const response = await fetch(`http://localhost:8000/checkout/item/${sessionId}/${itemId}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    updateItemsTable(data.items);
+                }
+            } catch (err) {
+                console.error("Erro ao deletar:", err);
+            }
+        }
+
+        function clearScreen() {
+            itemsTableBody.innerHTML = '';
+            btnFinalizar.disabled = true;
+        }
+
+        btnFinalizar.addEventListener('click', async () => {
+            const token = document.getElementById('jwtToken').value;
+            if (!token) {
+                alert("Por favor, cole o Token JWT antes de finalizar a compra.");
+                return;
+            }
+            
+            btnFinalizar.disabled = true;
+            btnFinalizar.textContent = "Processando...";
+            
+            try {
+                const response = await fetch(`http://localhost:8000/checkout/commit/${sessionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert(`Sucesso: ${data.message}`);
+                    clearScreen();
+                } else {
+                    alert(`Erro: ${data.detail || 'Falha ao finalizar transação.'}`);
+                }
+            } catch (err) {
+                console.error("Erro ao fazer commit:", err);
+                alert("Erro de conexão ao tentar finalizar a compra.");
+            } finally {
+                btnFinalizar.textContent = "Finalizar Compra";
+                if (itemCount > 0) btnFinalizar.disabled = false;
+            }
+        });
+
+        window.addEventListener('load', async () => {
+            await fetchClasses();
+            startCamera();
+            connectWebSocket();
+        });
+    </script>
+</body>
+</html>
