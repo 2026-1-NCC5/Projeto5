@@ -1,0 +1,132 @@
+/* src/components/Navbar/Navbar.module.css */
+
+.navbar {
+  height: 64px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  border-bottom: 1px solid var(--panel-border);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--accent-lavender), var(--accent-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Container para Usuário Autenticado */
+.authenticatedWrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative; /* Necessário para posicionar o PerfilBox corretamente */
+}
+
+.icon {
+  font-size: 22px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.icon:hover {
+  color: var(--foreground);
+  transform: translateY(-1px);
+}
+
+/* Gatilho do Avatar */
+.avatarTrigger {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.avatarContainer {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(168, 85, 247, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #1e1b26;
+}
+
+.avatarContainer:hover {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 12px var(--primary-glow);
+  transform: scale(1.08);
+}
+
+.avatarContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Botões de Autenticação (Visitante) */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.loginBtn {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: opacity 0.2s;
+}
+
+.loginBtn:hover {
+  opacity: 0.8;
+}
+
+.registerBtn {
+  background: var(--primary-purple);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 0 15px var(--primary-glow);
+  transition: all 0.2s;
+}
+
+.registerBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* Responsividade Básica */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0 16px;
+  }
+  
+  .loginBtn {
+    display: none; /* Esconde 'Entrar' em telas muito pequenas para dar espaço ao 'Começar' */
+  }
+}

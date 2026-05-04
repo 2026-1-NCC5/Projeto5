@@ -1,0 +1,149 @@
+.card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-purple);
+}
+
+.banner {
+  position: relative;
+  height: 140px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.active {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.inactive {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.info {
+  padding: 20px;
+}
+
+.nome {
+  color: var(--foreground);
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.meta span:first-child {
+  font-size: 16px;
+}
+
+.actionBtn {
+  width: 100%;
+  background: #2d2a37;
+  color: var(--accent-lavender);
+  border: 1px solid var(--panel-border);
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: var(--primary-purple);
+  color: white;
+}
+
+.roleBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 0.1em;
+}
+
+.adm { background: var(--primary-purple); box-shadow: 0 0 10px var(--primary-glow); }
+.membro { background: #475569; }
+
+.linkWrapper {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* Faz o link ocupar todo o card[cite: 1] */
+}
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.activeDot { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
+.inactiveDot { background-color: #ef4444; }
+
+.tipoLabel {
+  font-size: 11px;
+  color: var(--accent-lavender);
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--panel-border);
+  color: var(--primary-purple);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.actionBtn {
+  letter-spacing: 0.05em;
+}

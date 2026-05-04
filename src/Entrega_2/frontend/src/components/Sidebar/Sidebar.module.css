@@ -1,0 +1,109 @@
+.sidebar {
+  background-color: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  border-right: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  width: 256px;
+  height: calc(100vh - 64px);
+  position: fixed;
+  left: 0;
+  top: 64px; /* Abaixo da Navbar[cite: 3] */
+  z-index: 90;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collapsed {
+  width: 80px; /* Largura retraída[cite: 3] */
+}
+
+.collapseBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  color: var(--accent-lavender);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.collapsed .collapseBtn {
+  right: 50%;
+  transform: translateX(50%);
+}
+
+.tenantHeader {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px; /* Espaço para o botão superior */
+  overflow: hidden;
+}
+
+.tenantIcon {
+  min-width: 36px;
+  height: 36px;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-purple);
+}
+
+.menuList {
+  flex: 1;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #64748b;
+  text-decoration: none;
+  border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.menuItemActive {
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--accent-lavender);
+  border-right: 3px solid var(--primary-purple);
+}
+
+.footer {
+  padding: 20px;
+  border-top: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.avatarContainer {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid var(--primary-purple);
+}
+
+.avatarContainer img { width: 100%; height: 100%; object-fit: cover; }
+
+.settingsIcon { color: #64748b; }
+
+.collapsed .footer { justify-content: center; }
+.collapsed .settingsIcon { display: none; }

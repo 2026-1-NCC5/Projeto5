@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  margin-top: 64px; /* Altura da Navbar */
+}
+
+.content {
+  flex: 1;
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+}
+
+/* Espaçamento dinâmico baseado no estado da Sidebar */
+.withSidebarOpen {
+  padding-left: 256px;
+}
+
+.withSidebarCollapsed {
+  padding-left: 80px;
+}
+
+@media (max-width: 768px) {
+  .withSidebarOpen, .withSidebarCollapsed {
+    padding-left: 0; /* No mobile, a sidebar costuma virar um overlay ou sumir */
+  }
+}
