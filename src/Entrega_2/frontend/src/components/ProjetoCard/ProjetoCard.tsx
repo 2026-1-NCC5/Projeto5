@@ -4,7 +4,7 @@ import styles from './ProjetoCard.module.css';
 import { Projeto } from '@/types';
 
 export default function ProjetoCard({ projeto }: { projeto: Projeto }) {
-  const hrefLink = `/projeto/${projeto.slug}`;
+  const hrefLink = `/${projeto.slug}`;
 
   return (
     <div className={styles.card}>

@@ -15,17 +15,17 @@ export function SidebarProjeto({ slugProjeto, isCollapsed }: SidebarProjetoProps
     { 
       name: 'Desafios', 
       icon: 'format_list_bulleted', 
-      path: `/projeto/${slugProjeto}/desafios` 
+      path: `/${slugProjeto}` 
     },
     { 
       name: 'Informações', 
       icon: 'info', 
-      path: `/projeto/${slugProjeto}/informacoes_do_projeto` 
+      path: `/${slugProjeto}/informacoes_do_projeto` 
     },
     { 
       name: 'Métricas (Dashboard)', 
       icon: 'show_chart', 
-      path: `/projeto/${slugProjeto}/metricas_do_projeto` 
+      path: `/${slugProjeto}/metricas_do_projeto` 
     },
   ];
 

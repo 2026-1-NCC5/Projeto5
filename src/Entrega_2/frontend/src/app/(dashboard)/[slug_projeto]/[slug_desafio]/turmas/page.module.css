@@ -1,0 +1,286 @@
+.container {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+
+.mainTitle {
+  font-size: 38px;
+  font-weight: 850;
+  color: var(--foreground);
+  letter-spacing: -0.04em;
+}
+
+.subTitle {
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* Listagem e Scroll[cite: 4] */
+.turmasScrollArea {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0 30px 0;
+  margin-bottom: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+  align-items: center;
+}
+
+.turmasScrollArea::-webkit-scrollbar {
+  height: 8px;
+}
+
+.turmasScrollArea::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 10px;
+}
+
+.turmaCard {
+  min-width: 300px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.turmaCard:hover {
+  border-color: var(--primary-purple);
+  transform: translateY(-4px);
+}
+
+.cardCodigo {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--primary-purple);
+  text-transform: uppercase;
+}
+
+.cardTitle {
+  margin: 12px 0 4px 0;
+  font-size: 20px;
+  color: white;
+}
+
+.cardStats {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.manageBtn {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.manageBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Criação Inline[cite: 4] */
+.addTurmaInline {
+  min-width: 60px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed var(--panel-border);
+  border-radius: 16px;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.addTurmaInline:hover {
+  background: rgba(168, 85, 247, 0.05);
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+}
+
+.creatingCard {
+  border-color: var(--primary-purple);
+  background: rgba(168, 85, 247, 0.02);
+  animation: fadeIn 0.3s ease;
+}
+
+.creatingActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: #64748b;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 50%;
+  align-items: center;
+}
+
+/* Grid de Gestão[cite: 4] */
+.managementGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 20px;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.panelIcon {
+  color: var(--primary-purple);
+}
+
+.panelTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.formStacked {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.inputField {
+  background: #110d16;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--foreground);
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.inputField:focus {
+  border-color: var(--primary-purple);
+  outline: none;
+}
+
+.primaryBtn {
+  background: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.2s;
+  width: 50%;
+  align-items: center;
+}
+
+.primaryBtn:hover {
+  filter: brightness(1.1);
+}
+
+/* Área de Drop[cite: 4] */
+.dropzone {
+  flex: 1;
+  border: 2px dashed #334155;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s;
+}
+
+.dropzone:hover {
+  border-color: var(--primary-purple);
+}
+
+.uploadIconCircle {
+  width: 64px;
+  height: 64px;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-purple);
+  margin-bottom: 16px;
+}
+
+.infoBox {
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--panel-border);
+}
+
+.infoIcon {
+  color: #eab308;
+}
+
+.infoText {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.infoText b {
+  color: var(--accent-lavender);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

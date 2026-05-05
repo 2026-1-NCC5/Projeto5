@@ -12,7 +12,7 @@ interface SidebarDesafioProps {
 export function SidebarDesafio({ slugProjeto, slugDesafio, isCollapsed }: SidebarDesafioProps) {
   const pathname = usePathname();
   // Caminho base atualizado para refletir a nova pasta /desafios/[slug_desafio][cite: 4, 5]
-  const basePath = `/projeto/${slugProjeto}/desafios/${slugDesafio}`;
+  const basePath = `/${slugProjeto}/${slugDesafio}`;
   
   const menu = [
     { name: 'Turmas', icon: 'school', path: `${basePath}/turmas` },

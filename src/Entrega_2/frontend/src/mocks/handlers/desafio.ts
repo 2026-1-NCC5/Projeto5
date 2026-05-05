@@ -1,24 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { Desafio } from '@/types';
-
-const desafiosMock: Desafio[] = [
-  {
-    id: 1,
-    nome: "2025.1",
-    slug: "2025-1",
-    dataInicio: "2025-01-01",
-    dataFim: "2025-03-30",
-    projetoSlug: "liderancas-empaticas"
-  },
-  {
-    id: 2,
-    nome: "2026.1",
-    slug: "auditagem-inverno",
-    dataInicio: "2026-05-01",
-    dataFim: "2026-08-30",
-    projetoSlug: "liderancas-empaticas"
-  }
-];
+import { desafiosMock } from '../list/desafio';
 
 export const desafioHandlers = [
   http.get('*/projetos/:slug/desafios', ({ params }) => {

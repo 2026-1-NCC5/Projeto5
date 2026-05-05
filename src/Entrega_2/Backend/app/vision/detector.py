@@ -42,7 +42,14 @@ class YOLODetector:
                 for box in r.boxes:
                     class_id = int(box.cls[0])
                     class_name = self.model.names[class_id]
-                    detected_items.append(class_name)
+                    confidence = float(box.conf[0])
+                    # Get normalized xyxy coordinates
+                    b = box.xyxyn[0].tolist()
+                    detected_items.append({
+                        "name": class_name,
+                        "confidence": confidence,
+                        "bbox": b
+                    })
                     
             return detected_items
 

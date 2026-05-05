@@ -22,12 +22,15 @@ class CheckoutService:
         current_time = time.time()
         new_additions = []
 
-        for item in detected_items:
-            last_time = session["last_detected"].get(item, 0)
+        for item_data in detected_items:
+            item_name = item_data.get("name") if isinstance(item_data, dict) else item_data
+            item_conf = item_data.get("confidence", 0.0) if isinstance(item_data, dict) else 0.0
+            
+            last_time = session["last_detected"].get(item_name, 0)
             
             if current_time - last_time > 3.0:
-                session["last_detected"][item] = current_time
-                new_item = {"id": str(uuid.uuid4()), "name": item}
+                session["last_detected"][item_name] = current_time
+                new_item = {"id": str(uuid.uuid4()), "name": item_name, "confidence": item_conf}
                 session["items"].append(new_item)
                 new_additions.append(new_item)
                 

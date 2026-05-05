@@ -32,13 +32,14 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
             
             items, new_additions = CheckoutService.process_detected_items(session_id, detected_items)
             
-            if new_additions:
-                await websocket.send_text(json.dumps({
-                    "event": "new_detection",
-                    "items": items,
-                    "just_detected": new_additions
-                }))
-                
+            # Sending data every frame so frontend can draw bounding boxes
+            await websocket.send_text(json.dumps({
+                "event": "frame_result",
+                "detections": detected_items,
+                "inventory": items,
+                "just_detected": new_additions
+            }))
+            
             await asyncio.sleep(0.01)
                 
     except WebSocketDisconnect:

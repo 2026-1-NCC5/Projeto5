@@ -1,0 +1,153 @@
+.container {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.tableWrapper {
+  padding: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 15px;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table td {
+  padding: 14px 15px;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Alinhamento de colunas sincronizado com o footer */
+.colName { width: 40%; }
+.colWeight { width: 15%; }
+.colPrice { width: 25%; }
+.colConf { width: 20%; text-align: right !important; }
+
+.cellName {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qtdBadge {
+  font-size: 0.7rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cellConf {
+  text-align: right;
+}
+
+.confBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.confValue {
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.miniBar {
+  width: 60px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+.high .fill, .high .confValue, .high span { color: #10b981; }
+.high .fill { background-color: #10b981; }
+
+.medium .fill, .medium .confValue, .medium span { color: #facc15; }
+.medium .fill { background-color: #facc15; }
+
+.low .fill, .low .confValue, .low span { color: #ef4444; }
+.low .fill { background-color: #ef4444; }
+
+.footer {
+  margin-top: auto;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 2px solid rgba(255, 255, 255, 0.05);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.footerGrid {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.footerColName { width: 40%; color: #94a3b8; font-size: 0.8rem; font-weight: 700; }
+.footerColWeight { width: 15%; color: #cbd5e1; font-size: 1rem; }
+.footerColPrice { width: 25%; }
+.footerColConf { width: 20%; text-align: right; }
+
+.totalValue {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.globalConf {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.globalConf span {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.globalConf small {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.empty {
+  text-align: center !important;
+  color: #475569;
+  padding: 30px !important;
+  font-style: italic;
+}

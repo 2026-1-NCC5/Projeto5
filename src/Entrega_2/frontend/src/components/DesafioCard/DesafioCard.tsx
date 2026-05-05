@@ -24,7 +24,7 @@ export default function DesafioCard({ desafio }: { desafio: Desafio }) {
   const estaAtivo = hoje >= inicio && hoje <= fim;
 
   // Link para entrar na área de turmas do desafio
-  const hrefLink = `/projeto/${slugProjeto}/desafios/${desafio.slug}/turmas`;
+  const hrefLink = `/${slugProjeto}/${desafio.slug}`;
 
   return (
     <div className={styles.card}>

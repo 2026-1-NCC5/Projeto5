@@ -20,7 +20,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   if (!slugProjeto) return null;
 
   // Agora a detecção é baseada na subpasta /desafios/[slug_desafio]
-  const renderDesafio = !!slugDesafio && pathname.includes(`/desafios/${slugDesafio}`);
+  const renderDesafio = !!slugDesafio && pathname.includes(`/${slugDesafio}`);
 
   return (
     <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>

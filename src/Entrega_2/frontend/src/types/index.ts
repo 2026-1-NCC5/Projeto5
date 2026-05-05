@@ -32,3 +32,36 @@ export interface Desafio {
   projetoSlug: string;
   status?: 'ATIVO' | 'INATIVO' | 'PLANEJADO';
 }
+
+export interface Turma {
+  id: string | number;
+  nome: string;
+  quantidade: number;
+  slug: string;
+}
+
+export interface Aluno {
+  id?: string | number;
+  nome: string;
+  email: string;
+  ra: string;
+  turma: Turma;
+}
+
+export interface ColetaItem {
+  id: string;
+  nome: string;
+  labelNome: string;
+  preco: number;
+  peso: number;
+  grau_de_confianca: number;
+}
+
+export interface Item {
+  id: string;
+  nome: string;
+  peso: number;
+  preco: number;
+  comprimento: number;
+  largura: number;
+}
