@@ -4,7 +4,7 @@ import { turmasMock } from '../list/turma';
 
 export const turmaHandlers = [
   // GET: Listar todas as turmas[cite: 6]
-  http.get('*/turmas', () => {
+  http.get('*/api/turmas', () => {
     return HttpResponse.json(turmasMock);
   }),
 

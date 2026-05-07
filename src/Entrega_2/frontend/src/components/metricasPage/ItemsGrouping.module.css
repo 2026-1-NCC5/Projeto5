@@ -1,0 +1,82 @@
+.container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 24px 0;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.itemName {
+  font-weight: 600;
+}
+
+.itemValue {
+  font-variant-numeric: tabular-nums;
+}
+
+.percentCell {
+  font-weight: 600;
+  color: var(--accent-lavender);
+}
+
+.table tfoot td {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  background-color: rgba(138, 116, 248, 0.15); /* light lavender highlight */
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
+
+.footerLabel {
+  text-align: right;
+  color: white;
+}
+
+.footerValue {
+  color: var(--accent-lavender);
+  font-variant-numeric: tabular-nums;
+}

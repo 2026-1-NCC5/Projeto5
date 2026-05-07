@@ -6,6 +6,7 @@ import './globals.css';
 import styles from './layout.module.css';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Navbar from '@/components/Navbar/Navbar';
+import { ProjectProvider } from '@/contexts/ProjectContext';
 
 // Inicialização do MSW para ambiente de desenvolvimento[cite: 1, 5]
 if (process.env.NODE_ENV === 'development') {
@@ -36,25 +37,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <div className={styles.wrapper}>
-          <Navbar />
-          
-          <div className={styles.container}>
-            {showSidebar && (
-              <Sidebar 
-                isCollapsed={isSidebarCollapsed} 
-                onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
-              />
-            )}
+        <ProjectProvider>
+          <div className={styles.wrapper}>
+            <Navbar />
             
-            <main className={`
-              ${styles.content} 
-              ${showSidebar ? (isSidebarCollapsed ? styles.withSidebarCollapsed : styles.withSidebarOpen) : ''}
-            `}>
-              {children}
-            </main>
+            <div className={styles.container}>
+              {showSidebar && (
+                <Sidebar 
+                  isCollapsed={isSidebarCollapsed} 
+                  onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+                />
+              )}
+              
+              <main className={`
+                ${styles.content} 
+                ${showSidebar ? (isSidebarCollapsed ? styles.withSidebarCollapsed : styles.withSidebarOpen) : ''}
+              `}>
+                {children}
+              </main>
+            </div>
           </div>
-        </div>
+        </ProjectProvider>
       </body>
     </html>
   );

@@ -5,10 +5,13 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import DesafioCard from '@/components/DesafioCard/DesafioCard';
 import styles from './page.module.css';
+import { useProject } from '@/contexts/ProjectContext';
+import { Desafio } from '@/types';
 
 export default function DesafiosPage() {
   const { slug_projeto } = useParams();
-  const [desafios, setDesafios] = useState([]);
+  const { papel } = useProject();
+  const [desafios, setDesafios] = useState<Desafio[]>([]);
   const [busca, setBusca] = useState('');
   const [filtroStatus, setFiltroStatus] = useState<'todos' | 'ativos' | 'encerrados'>('todos');
 
@@ -40,16 +43,19 @@ export default function DesafiosPage() {
           <h1 className={styles.mainTitle}>Desafios do Projeto</h1>
           <p className={styles.subTitle}>Gerencie cronogramas e atividades operacionais.</p>
         </div>
-        {/* Botão para criar novo desafio dentro deste projeto específico[cite: 4, 7] */}
-        <Link 
-          href={`/projeto/${slug_projeto}/desafios/novo_desafio`} 
-          className={styles.newProjectBtn}
-        >
-          + Criar Desafio
-        </Link>
+        
+        {/* Apenas Admins podem criar novos desafios */}
+        {papel === 'adm' && (
+          <Link 
+            href={`/projeto/${slug_projeto}/desafios/novo_desafio`} 
+            className={styles.newProjectBtn}
+          >
+            + Criar Desafio
+          </Link>
+        )}
       </header>
 
-      {/* Toolbar com Search e Select[cite: 9, 10] */}
+      {/* Toolbar com Search e Select */}
       <section className={styles.toolbar}>
         <div className={styles.searchWrapper}>
           <span className={`material-symbols-outlined ${styles.searchIcon}`}>search</span>

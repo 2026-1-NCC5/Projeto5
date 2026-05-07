@@ -15,18 +15,36 @@ export default function Navbar() {
   // Referência para o container que envolve o avatar e o box
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mock do usuário
+  // Estado do usuário logado
   const [user, setUser] = useState<User>({
-    nome: 'Duda',
-    email: 'duda.lucena@outlook.com',
+    id: '',
+    nome: '',
+    email: '',
     avatar: 'https://lh3.googleusercontent.com/a/default-user',
     preferences: { theme: 'dark' }
   });
 
   useEffect(() => {
-    // 1. Verifica token
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+    // Função auxiliar para ler cookies de forma limpa
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(';').shift();
+      return undefined;
+    };
+
+    const token = getCookie('token');
     setIsAuthenticated(!!token);
+
+    if (token) {
+      fetch('/api/auth/me')
+        .then(res => {
+          if (!res.ok) throw new Error();
+          return res.json();
+        })
+        .then(data => setUser(data))
+        .catch(err => console.error("Erro ao carregar perfil:", err));
+    }
 
     // 2. Função para detectar clique fora
     const handleClickOutside = (event: MouseEvent) => {

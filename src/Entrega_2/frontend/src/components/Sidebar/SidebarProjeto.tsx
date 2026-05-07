@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.css';
+import { useProject } from '@/contexts/ProjectContext';
 
 interface SidebarProjetoProps {
   slugProjeto: string;
@@ -10,6 +11,7 @@ interface SidebarProjetoProps {
 
 export function SidebarProjeto({ slugProjeto, isCollapsed }: SidebarProjetoProps) {
   const pathname = usePathname();
+  const { papel } = useProject();
   
   const menu = [
     { 
@@ -22,17 +24,20 @@ export function SidebarProjeto({ slugProjeto, isCollapsed }: SidebarProjetoProps
       icon: 'info', 
       path: `/${slugProjeto}/informacoes_do_projeto` 
     },
-    { 
+  ];
+
+  // Adiciona Métricas apenas se for ADM
+  if (papel === 'adm') {
+    menu.push({ 
       name: 'Métricas (Dashboard)', 
       icon: 'show_chart', 
       path: `/${slugProjeto}/metricas_do_projeto` 
-    },
-  ];
+    });
+  }
 
   return (
     <nav className={styles.menuList}>
       {menu.map((item) => {
-        // Verifica se é a página exata de desafios ou as outras abas[cite: 6]
         const isActive = pathname === item.path;
         return (
           <Link 

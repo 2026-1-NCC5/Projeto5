@@ -32,7 +32,7 @@ export default function NovoDesafioPage() {
     };
 
     try {
-      const response = await fetch(`https://api.scancount.com/projetos/${slug_projeto}/desafios`, {
+      const response = await fetch(`/api/projetos/${slug_projeto}/desafios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novoDesafio),

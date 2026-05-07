@@ -20,9 +20,10 @@ export default function PerfilBox({ user, onLogout, onThemeChange }: PerfilBoxPr
           </div>
         </Link>
         <div className={styles.userInfo}>
-          <p className={styles.email}>{user.email}</p>
-          <Link href="/perfil" className={styles.greeting}>
-            Olá, {user.nome}!
+          <h3 className={styles.userName}>{user.nome}</h3>
+          <p className={styles.userEmail}>{user.email}</p>
+          <Link href="/perfil" className={styles.profileLink}>
+            Ver meu perfil
           </Link>
         </div>
       </div>

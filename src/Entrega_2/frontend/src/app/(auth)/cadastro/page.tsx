@@ -1,9 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import styles from './page.module.css';
 
 export default function CadastroPage() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/projetos';
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Lógica para chamar o endpoint POST /usuarios/ do seu backend FastAPI
@@ -76,7 +80,7 @@ export default function CadastroPage() {
         </form>
 
         <div className={styles.footer}>
-          Já possui uma conta? <Link href="/login">Entre aqui</Link>
+          Já possui uma conta? <Link href={`/login${callbackUrl !== '/projetos' ? `?callbackUrl=${callbackUrl}` : ''}`}>Entre aqui</Link>
         </div>
       </div>
     </main>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styles from './Sidebar.module.css';
 import { SidebarProjeto } from './SidebarProjeto';
 import { SidebarDesafio } from './SidebarDesafio';
+import { SidebarTurma } from './SidebarTurma';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -16,11 +17,13 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   
   const slugProjeto = params.slug_projeto as string;
   const slugDesafio = params.slug_desafio as string;
+  const slugTurma = params.slug_turma as string;
 
   if (!slugProjeto) return null;
 
   // Agora a detecção é baseada na subpasta /desafios/[slug_desafio]
   const renderDesafio = !!slugDesafio && pathname.includes(`/${slugDesafio}`);
+  const renderTurma = !!slugTurma && pathname.includes(`/${slugTurma}`);
 
   return (
     <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
@@ -31,8 +34,15 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       </button>
 
       <div className={styles.tenantHeader}></div>
-
-      {renderDesafio ? (
+      
+      {renderTurma ? (
+        <SidebarTurma 
+          slugProjeto={slugProjeto} 
+          slugDesafio={slugDesafio} 
+          slugTurma={slugTurma} 
+          isCollapsed={isCollapsed} 
+        />
+      ) : renderDesafio ? (
         <SidebarDesafio 
           slugProjeto={slugProjeto} 
           slugDesafio={slugDesafio} 

@@ -1,38 +1,63 @@
 import { http, HttpResponse } from 'msw';
 import { Projeto } from '@/types';
 import { projetosMock } from '../list/projeto';
+import { userProjectRolesMock } from '../list/userProjectRole';
 
 // Banco de dados em memória para projetos (iniciado com o mock)
 let projetos: Projeto[] = [...projetosMock];
 
 export const projetoHandlers = [
-  http.get('*/projetos/', () => HttpResponse.json(projetos)),
-  
-  http.post('*/projetos/', async ({ request }) => {
-    const novo = await request.json() as Projeto;
-    projetos.push(novo);
-    return HttpResponse.json(novo, { status: 201 });
+  // Handler unificado para listagem de projetos
+  http.get('*/api/projetos/', ({ request }) => {
+    const cookies = request.headers.get('cookie') || '';
+    const userIdMatch = cookies.match(/user_id=([^;]+)/);
+    const userId = userIdMatch ? userIdMatch[1] : null;
+
+    const projetosComPapel = projetos.map(p => {
+      // Busca o papel deste usuário específico para este projeto específico
+      const roleRelation = userProjectRolesMock.find(
+        r => String(r.userId) === String(userId) && String(r.projectId) === String(p.id)
+      );
+      
+      return {
+        ...p,
+        papel: roleRelation ? roleRelation.papel : 'membro'
+      };
+    });
+
+    return HttpResponse.json(projetosComPapel);
   }),
 
-// src/mocks/handlers/projeto.ts
+  // Suporte a rotas sem /api/ (caso existam chamadas legadas)
+  http.get('*/projetos/', ({ request }) => {
+    const cookies = request.headers.get('cookie') || '';
+    const userIdMatch = cookies.match(/user_id=([^;]+)/);
+    const userId = userIdMatch ? userIdMatch[1] : null;
 
-http.post('*/projetos/', async ({ request }) => {
-  const dados = await request.json() as any;
+    const projetosComPapel = projetos.map(p => {
+      const roleRelation = userProjectRolesMock.find(
+        r => String(r.userId) === String(userId) && String(r.projectId) === String(p.id)
+      );
+      return { ...p, papel: roleRelation ? roleRelation.papel : 'membro' };
+    });
+    return HttpResponse.json(projetosComPapel);
+  }),
 
-  const novoProjeto: Projeto = {
-    // Garante um ID único usando o timestamp para evitar o erro de 'key'
-    id: Date.now(), 
-    nome: dados.nome,
-    slug: dados.slug,
-    tipo: dados.tipo,
-    // Garante que o papel nunca seja undefined para não quebrar o toUpperCase()
-    papel: 'adm', 
-    ativo: true,
-    dataCriacao: new Date().toLocaleDateString('pt-BR'),
-    imagem: `https://picsum.photos/seed/${dados.slug}/600/400`
-  };
+  http.post('*/api/projetos/', async ({ request }) => {
+    const dados = await request.json() as any;
 
-  projetos.push(novoProjeto);
-  return HttpResponse.json(novoProjeto, { status: 201 });
-    })
+    const novoProjeto: Projeto = {
+      id: Date.now(), 
+      nome: dados.nome,
+      slug: dados.slug,
+      tipo: dados.tipo,
+      papel: 'adm', 
+      ativo: true,
+      dataCriacao: new Date().toLocaleDateString('pt-BR'),
+      imagem: `https://picsum.photos/seed/${dados.slug}/600/400`
+    };
+
+    projetos.push(novoProjeto);
+    return HttpResponse.json(novoProjeto, { status: 201 });
+  })
 ];

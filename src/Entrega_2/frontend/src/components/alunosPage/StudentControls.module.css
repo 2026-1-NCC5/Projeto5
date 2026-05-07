@@ -1,0 +1,70 @@
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.searchGroup {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 20px;
+}
+
+.searchInput {
+  width: 100%;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px 12px 12px 40px;
+  color: white;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  border-color: var(--primary-purple);
+  background: rgba(168, 85, 247, 0.05);
+  outline: none;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.selectWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectWrapper label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.selectWrapper select {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.selectWrapper select:focus {
+  border-color: var(--primary-purple);
+  outline: none;
+}

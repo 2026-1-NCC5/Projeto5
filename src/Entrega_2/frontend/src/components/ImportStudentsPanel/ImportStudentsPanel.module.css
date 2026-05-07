@@ -1,0 +1,87 @@
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.panelIcon {
+  color: var(--primary-purple);
+}
+
+.panelTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.dropzone {
+  flex: 1;
+  border: 2px dashed #334155;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s;
+}
+
+.dropzone:hover {
+  border-color: var(--primary-purple);
+}
+
+.uploadIconCircle {
+  width: 64px;
+  height: 64px;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-purple);
+  margin-bottom: 16px;
+}
+
+.cardStats {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.infoBox {
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--panel-border);
+}
+
+.infoIcon {
+  color: #eab308;
+}
+
+.infoText {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.infoText b {
+  color: var(--accent-lavender);
+}

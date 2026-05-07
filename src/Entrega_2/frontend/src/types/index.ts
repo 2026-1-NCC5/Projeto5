@@ -1,36 +1,38 @@
 export type ProjetoPapel = 'adm' | 'membro';
 export type ProjetoTipo = 'Comercial' | 'Departamento de Empresa' | 'Projeto Social' | 'Projeto Social Estudantil';
 
-export interface Projeto {
-  id: number | string;
-  nome: string;
-  slug: string;          
-  imagem: string;
-  dataCriacao: string;
-  ativo: boolean;
-  papel: ProjetoPapel;    
-  tipo: ProjetoTipo;    
-}
-
-export interface UserPreferences {
-  theme: 'light' | 'dark';
-}
-
 export interface User {
+  id: string | number;
   nome: string;
   email: string;
   avatar: string;
   preferences: UserPreferences;
 }
 
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+}
+
+export interface Projeto {
+  id: number | string;
+  nome: string;
+  slug: string;
+  imagem: string;
+  dataCriacao: string;
+  papel: ProjetoPapel;
+  tipo: ProjetoTipo;
+  ativo: boolean;
+}
+  
 export interface Desafio {
   id: string | number;
   nome: string;
   slug: string;
+  projetoSlug: string;
   dataInicio: string;
   dataFim: string;
-  projetoSlug: string;
-  status?: 'ATIVO' | 'INATIVO' | 'PLANEJADO';
+  ativo: boolean;
+  projeto?: Projeto;
 }
 
 export interface Turma {
@@ -38,6 +40,7 @@ export interface Turma {
   nome: string;
   quantidade: number;
   slug: string;
+  desafio?: Desafio;
 }
 
 export interface Aluno {
@@ -46,15 +49,28 @@ export interface Aluno {
   email: string;
   ra: string;
   turma: Turma;
+  vinculo: User | null;
+  grupoNome?: string;
 }
 
-export interface ColetaItem {
-  id: string;
+export interface Grupo {
+  id?: string | number;
   nome: string;
-  labelNome: string;
-  preco: number;
-  peso: number;
-  grau_de_confianca: number;
+  alunos: Aluno[];
+  coletas: Coleta[];
+  pesoTotal: number;
+  precoTotal: number;
+  turma: Turma;
+}
+
+export interface Coleta {
+  id: string;
+  dataHora: string;
+  itens: Item[];
+  precoTotal: number;
+  pesoTotal: number;
+  grupo: Grupo;
+  aluno: Aluno;
 }
 
 export interface Item {
@@ -64,4 +80,20 @@ export interface Item {
   preco: number;
   comprimento: number;
   largura: number;
+}
+
+export interface MetricasDashboard {
+  totalQuilos: number;
+  totalDinheiro: number;
+  totalAlunos: number;
+  totalGrupos: number;
+  totalTurmas: number;
+  mediaQuilosPorAluno: number;
+  mediaQuilosPorGrupo: number;
+  mediaQuilosPorTurma: number;
+  pizzaItems: { nome: string; percentual: number }[];
+  progressao: { data: string; itens: number; dinheiro: number }[];
+  kilosPorItem: { nome: string; quilos: number }[];
+  rankingGrupos: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
+  rankingTurmas: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
 }

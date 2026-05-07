@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.rankingBox {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.tableWrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  text-align: left;
+  padding: 8px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.table td {
+  padding: 8px;
+  color: var(--text-primary);
+}
+
+.posCol {
+  width: 40px;
+  text-align: center;
+}
+
+.nameCol {
+  font-weight: 600;
+}
+
+.top1 { background-color: rgba(255, 215, 0, 0.05); }
+.top2 { background-color: rgba(192, 192, 192, 0.05); }
+.top3 { background-color: rgba(205, 127, 50, 0.05); }
+
+.viewMore {
+  font-size: 12px;
+  color: var(--accent-lavender);
+  text-decoration: none;
+  font-weight: 600;
+  align-self: flex-end;
+  transition: opacity 0.2s;
+}
+
+.viewMore:hover {
+  opacity: 0.8;
+}

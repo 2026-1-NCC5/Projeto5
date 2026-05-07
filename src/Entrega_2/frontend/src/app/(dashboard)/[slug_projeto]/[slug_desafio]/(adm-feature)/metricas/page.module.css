@@ -1,0 +1,126 @@
+.container {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.headerTitle {
+  flex: 1;
+}
+
+.filterTrigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filterTrigger:hover {
+  border-color: var(--accent-lavender);
+  background-color: rgba(138, 116, 248, 0.1);
+  transform: translateY(-2px);
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 850;
+  color: white;
+  letter-spacing: -0.04em;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.backLink {
+  display: inline-block;
+  color: var(--accent-lavender);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  transition: opacity 0.2s;
+}
+
+.backLink:hover {
+  opacity: 0.8;
+}
+
+.dashboardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.topSection {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.chartsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pieAndTableGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.loading {
+  padding: 100px;
+  text-align: center;
+  color: var(--accent-lavender);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.error {
+  padding: 40px;
+  text-align: center;
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@media (max-width: 1200px) {
+  .pieAndTableGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filterTrigger {
+    justify-content: center;
+  }
+}

@@ -13,7 +13,7 @@ export default function ProjetosPage() {
   const [filtroPapel, setFiltroPapel] = useState<'todos' | 'adm' | 'membro'>('todos');
 
   useEffect(() => {
-    fetch('https://api.scancount.com/projetos/')
+    fetch('/api/projetos/')
       .then((res) => res.json())
       .then((data) => setProjetos(data));
   }, []);

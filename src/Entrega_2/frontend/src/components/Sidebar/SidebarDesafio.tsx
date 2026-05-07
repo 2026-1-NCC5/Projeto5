@@ -9,19 +9,38 @@ interface SidebarDesafioProps {
   isCollapsed: boolean;
 }
 
+import { useProject } from '@/contexts/ProjectContext';
+
 export function SidebarDesafio({ slugProjeto, slugDesafio, isCollapsed }: SidebarDesafioProps) {
   const pathname = usePathname();
-  // Caminho base atualizado para refletir a nova pasta /desafios/[slug_desafio][cite: 4, 5]
+  const { papel } = useProject();
   const basePath = `/${slugProjeto}/${slugDesafio}`;
   
-  const menu = [
-    { name: 'Turmas', icon: 'school', path: `${basePath}/turmas` },
-    { name: 'Métricas (Dashboard)', icon: 'show_chart', path: `${basePath}/metricas` },
-    { name: 'AI Checkout', icon: 'photo_camera', path: `${basePath}/checkout` },
-  ];
+  const menu = [];
+
+  if (papel === 'adm') {
+    menu.push(
+      { name: 'Turmas', icon: 'school', path: `${basePath}/turmas` },
+      { name: 'Métricas (Dashboard)', icon: 'show_chart', path: `${basePath}/metricas` }
+    );
+  } else {
+    menu.push(
+      { name: 'Home', icon: 'home', path: `${basePath}/home` },
+      { name: 'Registrar Coleta', icon: 'photo_camera', path: `${basePath}/registrar_coleta` }
+    );
+  }
+
+  // AI Checkout talvez seja para ambos? Vou deixar fora do condicional se for o caso
+  // ou incluir no membro se for a ferramenta deles.
+  // menu.push({ name: 'AI Checkout', icon: 'photo_camera', path: `${basePath}/checkout` });
 
   return (
     <nav className={styles.menuList}>
+      <Link href={`/${slugProjeto}`} className={styles.backLink}>
+        <span className="material-symbols-outlined">arrow_back</span>
+        {!isCollapsed && <span>Voltar para Projeto</span>}
+      </Link>
+      
       {menu.map((item) => (
         <Link 
           key={item.name} 

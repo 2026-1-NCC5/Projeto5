@@ -1,0 +1,58 @@
+.container {
+  padding: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.headerArea {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
+
+.mainTitle {
+  font-size: 38px;
+  font-weight: 850;
+  color: var(--foreground);
+  letter-spacing: -0.04em;
+}
+
+.subTitle {
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* Listagem e Scroll[cite: 4] */
+.turmasScrollArea {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0 30px 0;
+  margin-bottom: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+  align-items: center;
+}
+
+.turmasScrollArea::-webkit-scrollbar {
+  height: 8px;
+}
+
+.turmasScrollArea::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 10px;
+}
+
+/* Grid de Gestão[cite: 4] */
+.managementGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

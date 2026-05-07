@@ -39,7 +39,7 @@ export default function NovoProjetoPage() {
     };
 
     try {
-      const response = await fetch('https://api.scancount.com/projetos/', {
+      const response = await fetch('/api/projetos/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novoProjeto),

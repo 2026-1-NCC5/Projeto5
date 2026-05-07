@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './page.module.css';
 
@@ -10,13 +10,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/projetos';
 
  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.scancount.com/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -28,12 +30,13 @@ export default function LoginPage() {
         // 1. Salva no localStorage para uso interno do frontend[cite: 9]
         localStorage.setItem('token', data.access_token);
         
-        // 2. SALVA NOS COOKIES - Essencial para o Middleware funcionar
+        // 2. SALVA NOS COOKIES - Essencial para o Middleware e Mocks funcionarem
         // O "path=/" torna o cookie acessível em todo o site
         document.cookie = `token=${data.access_token}; path=/; max-age=3600; SameSite=Lax`;
+        document.cookie = `user_id=${data.userId}; path=/; max-age=3600; SameSite=Lax`;
 
         // 3. Redireciona
-        router.push('/projetos');
+        router.push(callbackUrl);
         
         // Dica: Se ainda assim travar, use router.refresh() para forçar o Next.js 
         // a ler o novo cookie imediatamente no Middleware
@@ -87,7 +90,7 @@ export default function LoginPage() {
         </form>
 
         <div className={styles.footer}>
-          Não tem uma conta? <Link href="/cadastro">Cadastre-se</Link>
+          Não tem uma conta? <Link href={`/cadastro${callbackUrl !== '/projetos' ? `?callbackUrl=${callbackUrl}` : ''}`}>Cadastre-se</Link>
         </div>
       </div>
     </main>
