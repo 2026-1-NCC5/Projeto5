@@ -8,7 +8,7 @@ export const mockAlunos: Aluno[] = [
     ra: '2201456',
     email: 'alice.oliveira@fecap.br',
     turma: turmasMock[0],
-    vinculo: { nome: 'Alice', email: 'alice.oliveira@fecap.br', avatar: '', preferences: { theme: 'dark' } },
+    vinculo: { id: '2201456', nome: 'Alice', email: 'alice.oliveira@fecap.br', avatar: '', preferences: { theme: 'dark' } },
     grupoNome: 'Alpha'
   },
   {
@@ -26,7 +26,7 @@ export const mockAlunos: Aluno[] = [
     ra: '2201332',
     email: 'carla.souza@fecap.br',
     turma: turmasMock[0],
-    vinculo: { nome: 'Carla', email: 'carla.souza@fecap.br', avatar: '', preferences: { theme: 'dark' } },
+    vinculo: { id: '2201332', nome: 'Carla', email: 'carla.souza@fecap.br', avatar: '', preferences: { theme: 'dark' } },
     grupoNome: 'Alpha'
   },
   {

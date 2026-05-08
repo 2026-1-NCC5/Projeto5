@@ -1,0 +1,163 @@
+.card {
+  background: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.cardHeader h2 {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardHeader h2 span {
+  color: var(--primary-purple);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.table td {
+  padding: 16px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.expandableRow {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.expandableRow:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.expandIcon {
+  font-size: 20px;
+  color: #64748b;
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expandIcon.rotated {
+  transform: rotate(180deg);
+  color: var(--primary-purple);
+}
+
+.detailsRow {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.detailsContainer {
+  padding: 0 16px 16px 56px;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 2px solid var(--panel-border);
+  padding-left: 16px;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.detailName {
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.detailQtd {
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--primary-purple);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.detailInfo {
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgeItens { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.badgeDinheiro { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+.badgeResgate { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+.historySummary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.summaryBox {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+}
+
+.summaryLabel {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.summaryValue {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.negative {
+  color: #ef4444;
+}

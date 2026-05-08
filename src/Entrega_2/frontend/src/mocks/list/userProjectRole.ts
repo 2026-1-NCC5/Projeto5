@@ -26,5 +26,15 @@ export const userProjectRolesMock: UserProjectRole[] = [
     userId: 2, // Member User
     projectId: 2, // Sustentabilidade Urbana
     papel: 'adm'
+  },
+  {
+    userId: 1,
+    projectId: 3, // Projeto Teste ADM
+    papel: 'adm'
+  },
+  {
+    userId: 1,
+    projectId: 4, // Projeto Teste Membro
+    papel: 'membro'
   }
 ];

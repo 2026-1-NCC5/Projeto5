@@ -1,8 +1,13 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .rankingBox {

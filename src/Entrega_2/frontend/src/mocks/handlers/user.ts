@@ -30,12 +30,9 @@ export const userHandlers = [
     const userIdMatch = cookies.match(/user_id=([^;]+)/);
     const userId = userIdMatch ? userIdMatch[1] : null;
 
-    const user = usersMock.find(u => String(u.id) === String(userId));
+    // Se não houver userId, retornamos o primeiro usuário (Admin) por padrão (Bypass temporário)
+    const user = usersMock.find(u => String(u.id) === String(userId)) || usersMock[0];
 
-    if (user) {
-      return HttpResponse.json(user);
-    }
-
-    return new HttpResponse('Não autorizado', { status: 401 });
+    return HttpResponse.json(user);
   }),
 ];

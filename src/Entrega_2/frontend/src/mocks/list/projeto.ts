@@ -20,5 +20,25 @@ export const projetosMock: Projeto[] = [
     ativo: true,
     papel: 'membro', // Será sobrescrito pelo handler
     tipo: 'Projeto Social'
+  },
+  {
+    id: 3,
+    nome: "Projeto Teste ADM",
+    slug: "teste-adm",
+    imagem: 'https://picsum.photos/seed/adm/600/400',
+    dataCriacao: '07/05/2026',
+    ativo: true,
+    papel: 'adm',
+    tipo: 'Comercial'
+  },
+  {
+    id: 4,
+    nome: "Projeto Teste Membro",
+    slug: "teste-membro",
+    imagem: 'https://picsum.photos/seed/member/600/400',
+    dataCriacao: '07/05/2026',
+    ativo: true,
+    papel: 'membro',
+    tipo: 'Departamento de Empresa'
   }
 ];

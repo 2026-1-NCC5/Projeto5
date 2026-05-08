@@ -1,0 +1,87 @@
+.card {
+  background: var(--panel-bg);
+  backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.cardHeader h2 {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardHeader h2 span {
+  color: var(--primary-purple);
+}
+
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rankingItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.rankingItem.isMyGroup {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.pos {
+  width: 28px;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.rankingItem.isMyGroup .pos {
+  color: var(--primary-purple);
+}
+
+.groupInfo {
+  flex: 1;
+}
+
+.groupName {
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+}
+
+.myGroupTag {
+  font-size: 10px;
+  background: var(--primary-purple);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+.groupStats {
+  text-align: right;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.groupStats b {
+  color: var(--foreground);
+}

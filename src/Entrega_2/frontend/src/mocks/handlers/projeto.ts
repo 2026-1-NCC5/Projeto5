@@ -11,7 +11,7 @@ export const projetoHandlers = [
   http.get('*/api/projetos/', ({ request }) => {
     const cookies = request.headers.get('cookie') || '';
     const userIdMatch = cookies.match(/user_id=([^;]+)/);
-    const userId = userIdMatch ? userIdMatch[1] : null;
+    const userId = userIdMatch ? userIdMatch[1] : '1';
 
     const projetosComPapel = projetos.map(p => {
       // Busca o papel deste usuário específico para este projeto específico
@@ -32,7 +32,7 @@ export const projetoHandlers = [
   http.get('*/projetos/', ({ request }) => {
     const cookies = request.headers.get('cookie') || '';
     const userIdMatch = cookies.match(/user_id=([^;]+)/);
-    const userId = userIdMatch ? userIdMatch[1] : null;
+    const userId = userIdMatch ? userIdMatch[1] : '1';
 
     const projetosComPapel = projetos.map(p => {
       const roleRelation = userProjectRolesMock.find(

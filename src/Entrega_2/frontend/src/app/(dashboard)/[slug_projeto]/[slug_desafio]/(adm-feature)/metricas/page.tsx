@@ -82,11 +82,12 @@ export default function MetricasPage() {
         <div className={styles.loading}>Calculando métricas do período...</div>
       ) : metricas ? (
         <div className={styles.dashboardContent}>
-          <div className={styles.topSection}>
+          {/* 1. Cards no Topo (Linha única) */}
+          <section className={styles.summarySection}>
             <SummaryCards data={metricas} />
-            <Rankings data={metricas} limit={5} />
-          </div>
+          </section>
 
+          {/* 2. Filtros */}
           <MetricasFilters 
             turmas={turmasDisponiveis}
             selectedTurmas={selectedTurmas}
@@ -97,14 +98,21 @@ export default function MetricasPage() {
             setDataFim={setDataFim}
           />
           
-          <div className={styles.chartsSection}>
+          {/* 3. Gráfico de Linha */}
+          <section className={styles.chartFullWidth}>
             <LineChartCard data={metricas} />
-            
-            <div className={styles.pieAndTableGrid}>
-              <PieChartCard data={metricas} />
-              <ItemsGrouping data={metricas} />
-            </div>
+          </section>
+
+          {/* 4. Pizza e Tabela */}
+          <div className={styles.pieAndTableGrid}>
+            <PieChartCard data={metricas} />
+            <ItemsGrouping data={metricas} />
           </div>
+
+          {/* 5. Rankings lado a lado no rodapé */}
+          <section className={styles.bottomSection}>
+            <Rankings data={metricas} limit={5} />
+          </section>
         </div>
       ) : (
         <div className={styles.error}>Erro ao carregar o dashboard de métricas.</div>

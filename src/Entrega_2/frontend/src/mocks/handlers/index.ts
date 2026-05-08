@@ -7,6 +7,7 @@ import { checkoutHandlers } from './checkout';
 import { alunoHandlers } from './aluno';
 import { grupoHandlers } from './grupo';
 import { metricasHandlers } from './metricas';
+import { registroHandlers } from './registro';
 
 export const handlers = [
   ...projetoHandlers,
@@ -17,5 +18,6 @@ export const handlers = [
   ...checkoutHandlers,
   ...alunoHandlers,
   ...grupoHandlers,
-  ...metricasHandlers
+  ...metricasHandlers,
+  ...registroHandlers
 ];

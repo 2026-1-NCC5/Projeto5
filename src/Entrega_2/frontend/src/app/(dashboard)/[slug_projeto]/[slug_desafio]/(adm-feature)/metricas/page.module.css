@@ -71,17 +71,16 @@
   gap: 32px;
 }
 
-.topSection {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 32px;
-  align-items: stretch;
+.summarySection {
+  width: 100%;
 }
 
-.chartsSection {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+.chartFullWidth {
+  width: 100%;
+}
+
+.bottomSection {
+  width: 100%;
 }
 
 .pieAndTableGrid {
