@@ -9,7 +9,7 @@ export const turmaHandlers = [
   }),
 
   // POST: Cadastro de aluno individual[cite: 6]
-  http.post('*/alunos', async ({ request }) => {
+  http.post('*/api/alunos', async ({ request }) => {
     const novoAluno = await request.json() as Aluno;
 
     // Simulação de resposta do backend
@@ -23,7 +23,7 @@ export const turmaHandlers = [
   }),
 
   // POST: Importação em massa (CSV/Excel)[cite: 6]
-  http.post('*/alunos/importar', async ({ request }) => {
+  http.post('*/api/alunos/importar', async ({ request }) => {
     const formData = await request.formData();
     const arquivo = formData.get('file');
 

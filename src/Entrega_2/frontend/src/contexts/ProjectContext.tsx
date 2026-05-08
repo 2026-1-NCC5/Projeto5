@@ -77,7 +77,15 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
             }
             
             // Lógica de proteção de rotas client-side
-            const adminRoutes = ['/turmas', '/metricas', '/grupos', '/alunos', '/novo_desafio'];
+            const adminRoutes = [
+              '/turmas', 
+              '/metricas', 
+              '/grupos', 
+              '/alunos', 
+              '/novo_desafio', 
+              '/informacoes', 
+              '/informacoes_do_projeto'
+            ];
             const memberRoutes = ['/home', '/registrar_coleta'];
 
             const isTryingAdminRoute = adminRoutes.some(route => pathname.includes(route));

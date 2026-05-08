@@ -1,27 +1,27 @@
 .row {
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .row:hover {
-  background-color: var(--bg-hover);
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .expandedRow {
-  background-color: var(--bg-secondary);
+  background-color: rgba(255, 255, 255, 0.02);
   border-bottom: none;
 }
 
 .cell {
-  padding: 16px;
-  color: var(--text-primary);
+  padding: 16px 24px;
+  color: #cbd5e1;
   font-size: 14px;
 }
 
 .expandCell {
-  padding: 16px 8px 16px 16px;
-  width: 40px;
+  padding: 16px 8px 16px 24px;
+  width: 56px;
   text-align: center;
 }
 
@@ -39,7 +39,7 @@
 
 .grupoName {
   font-weight: 600;
-  color: var(--text-primary);
+  color: white;
 }
 
 .badge {
@@ -55,8 +55,8 @@
 
 /* Expanded Details Row */
 .detailsRow {
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--panel-border);
+  background-color: rgba(255, 255, 255, 0.01);
 }
 
 .detailsCell {
@@ -83,20 +83,20 @@
 }
 
 .detailsSection {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: white;
   margin: 0 0 16px 0;
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--panel-border);
 }
 
 /* Members List */
@@ -113,20 +113,20 @@
   display: flex;
   flex-direction: column;
   padding: 12px;
-  background-color: var(--bg-secondary);
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
 }
 
 .memberName {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  color: var(--text-primary);
+  color: white;
 }
 
 .memberRa {
   font-size: 12px;
-  color: var(--text-muted);
+  color: #94a3b8;
   margin-top: 4px;
 }
 
@@ -145,19 +145,19 @@
 .historyTable td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .historyTable th {
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
   font-size: 11px;
 }
 
 .historyTable td {
-  color: var(--text-primary);
+  color: #cbd5e1;
 }
 
 .historyTable tfoot td {

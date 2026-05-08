@@ -6,12 +6,12 @@ let alunos = [...mockAlunos];
 
 export const alunoHandlers = [
   // GET all alunos
-  http.get('*/alunos', () => {
+  http.get('*/api/alunos', () => {
     return HttpResponse.json(alunos);
   }),
 
   // POST new aluno
-  http.post('*/alunos', async ({ request }) => {
+  http.post('*/api/alunos', async ({ request }) => {
     const newAluno = await request.json() as Aluno;
     newAluno.id = Math.floor(Math.random() * 10000);
     alunos.push(newAluno);
@@ -19,7 +19,7 @@ export const alunoHandlers = [
   }),
 
   // PUT update aluno
-  http.put('*/alunos/:id', async ({ params, request }) => {
+  http.put('*/api/alunos/:id', async ({ params, request }) => {
     const { id } = params;
     const updatedData = await request.json() as Partial<Aluno>;
     
@@ -32,7 +32,7 @@ export const alunoHandlers = [
   }),
 
   // DELETE aluno
-  http.delete('*/alunos/:id', ({ params }) => {
+  http.delete('*/api/alunos/:id', ({ params }) => {
     const { id } = params;
     alunos = alunos.filter(a => a.id?.toString() !== id);
     return new HttpResponse(null, { status: 204 });

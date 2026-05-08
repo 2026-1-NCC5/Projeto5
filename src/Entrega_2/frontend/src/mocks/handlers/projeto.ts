@@ -59,5 +59,27 @@ export const projetoHandlers = [
 
     projetos.push(novoProjeto);
     return HttpResponse.json(novoProjeto, { status: 201 });
+  }),
+
+  // Update projeto info
+  http.put('*/api/projetos/:slug', async ({ request, params }) => {
+    const slug = params.slug as string;
+    const dados = await request.json() as Partial<Projeto>;
+
+    const index = projetos.findIndex(p => p.slug === slug);
+    if (index === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    // Atualiza o projeto preservando ID e data de criação se não enviados
+    projetos[index] = {
+      ...projetos[index],
+      ...dados,
+      // Garante que o slug mude se o nome mudar (opcional, mas comum)
+      slug: dados.nome ? dados.nome.toLowerCase().replace(/\s+/g, '-') : projetos[index].slug
+    };
+
+    console.log(`MSW: Projeto ${slug} atualizado:`, projetos[index]);
+    return HttpResponse.json(projetos[index]);
   })
 ];

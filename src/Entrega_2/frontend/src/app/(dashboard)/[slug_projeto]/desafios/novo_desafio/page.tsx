@@ -42,7 +42,7 @@ export default function NovoDesafioPage() {
         router.push(`/projeto/${slug_projeto}/desafios`);
         router.refresh();
       } else {
-        alert('Erro ao criar o desafio.');
+        alert('Erro ao criar a edição.');
         setIsSubmitting(false);
       }
     } catch (error) {
@@ -57,14 +57,14 @@ export default function NovoDesafioPage() {
         <header className={styles.header}>
           <Link href={`/projeto/${slug_projeto}/desafios`} className={styles.backBtn}>
             <span className="material-symbols-outlined">arrow_back</span>
-            Voltar para Desafios
+            Voltar para Edições
           </Link>
-          <h1>Novo Desafio Operacional</h1>
+          <h1>Nova Edição Operacional</h1>
         </header>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label htmlFor="nome">Nome do Desafio</label>
+            <label htmlFor="nome">Nome da Edição</label>
             <input
               type="text"
               id="nome"
@@ -103,7 +103,7 @@ export default function NovoDesafioPage() {
               className={styles.submitBtn} 
               disabled={isSubmitting || !nome}
             >
-              {isSubmitting ? 'Cadastrando...' : 'Confirmar Desafio'}
+              {isSubmitting ? 'Cadastrando...' : 'Confirmar Edição'}
             </button>
             
             <Link href={`/projeto/${slug_projeto}/desafios`} className={styles.cancelBtn}>

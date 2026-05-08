@@ -21,7 +21,8 @@ export function SidebarDesafio({ slugProjeto, slugDesafio, isCollapsed }: Sideba
   if (papel === 'adm') {
     menu.push(
       { name: 'Turmas', icon: 'school', path: `${basePath}/turmas` },
-      { name: 'Métricas (Dashboard)', icon: 'show_chart', path: `${basePath}/metricas` }
+      { name: 'Métricas (Dashboard)', icon: 'show_chart', path: `${basePath}/metricas` },
+      { name: 'Informações', icon: 'info', path: `${basePath}/informacoes` }
     );
   } else {
     menu.push(
@@ -30,9 +31,8 @@ export function SidebarDesafio({ slugProjeto, slugDesafio, isCollapsed }: Sideba
     );
   }
 
-  // AI Checkout talvez seja para ambos? Vou deixar fora do condicional se for o caso
-  // ou incluir no membro se for a ferramenta deles.
-  // menu.push({ name: 'AI Checkout', icon: 'photo_camera', path: `${basePath}/checkout` });
+  // AI Checkout disponível para todos
+  menu.push({ name: 'AI Checkout', icon: 'camera', path: `${basePath}/checkout` });
 
   return (
     <nav className={styles.menuList}>

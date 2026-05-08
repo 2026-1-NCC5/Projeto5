@@ -29,12 +29,13 @@
 }
 
 .statCard {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
   padding: 24px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .statTitle {
@@ -48,7 +49,7 @@
 .statValue {
   font-size: 32px;
   font-weight: 800;
-  color: var(--text-primary);
+  color: white;
 }
 
 .statValue span {
@@ -56,6 +57,19 @@
   font-weight: 500;
   color: var(--text-muted);
   margin-left: 4px;
+}
+
+.tablesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 16px;
 }
 
 .loading {

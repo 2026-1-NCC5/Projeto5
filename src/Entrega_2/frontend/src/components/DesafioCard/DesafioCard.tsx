@@ -54,7 +54,7 @@ export default function DesafioCard({ desafio }: { desafio: Desafio }) {
           </div>
 
           <div className={styles.actionRow}>
-            <span>Acessar Desafio</span>
+            <span>Acessar Edição</span>
             <span className="material-symbols-outlined">arrow_forward</span>
           </div>
         </div>

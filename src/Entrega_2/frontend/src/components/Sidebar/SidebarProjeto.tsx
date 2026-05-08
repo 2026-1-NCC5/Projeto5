@@ -15,7 +15,7 @@ export function SidebarProjeto({ slugProjeto, isCollapsed }: SidebarProjetoProps
   
   const menu = [
     { 
-      name: 'Desafios', 
+      name: 'Edições', 
       icon: 'format_list_bulleted', 
       path: `/${slugProjeto}` 
     },
@@ -26,17 +26,14 @@ export function SidebarProjeto({ slugProjeto, isCollapsed }: SidebarProjetoProps
     },
   ];
 
-  // Adiciona Métricas apenas se for ADM
-  if (papel === 'adm') {
-    menu.push({ 
-      name: 'Métricas (Dashboard)', 
-      icon: 'show_chart', 
-      path: `/${slugProjeto}/metricas_do_projeto` 
-    });
-  }
 
   return (
     <nav className={styles.menuList}>
+      <Link href="/projetos" className={styles.backLink}>
+        <span className="material-symbols-outlined">arrow_back</span>
+        {!isCollapsed && <span>Meus Projetos</span>}
+      </Link>
+
       {menu.map((item) => {
         const isActive = pathname === item.path;
         return (

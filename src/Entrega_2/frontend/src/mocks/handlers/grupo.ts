@@ -4,12 +4,12 @@ import { Grupo } from '@/types';
 
 export const grupoHandlers = [
   // GET /grupos
-  http.get('/grupos', () => {
+  http.get('*/api/grupos', () => {
     return HttpResponse.json(mockGrupos);
   }),
 
   // POST /grupos
-  http.post('/grupos', async ({ request }) => {
+  http.post('*/api/grupos', async ({ request }) => {
     const newGrupo = (await request.json()) as Grupo;
     const id = Date.now().toString();
     const grupoWithId = { ...newGrupo, id, alunos: [], coletas: [], pesoTotal: 0, precoTotal: 0 };
@@ -18,7 +18,7 @@ export const grupoHandlers = [
   }),
 
   // PUT /grupos/:id
-  http.put('/grupos/:id', async ({ request, params }) => {
+  http.put('*/api/grupos/:id', async ({ request, params }) => {
     const { id } = params;
     const updates = (await request.json()) as Partial<Grupo>;
     const index = mockGrupos.findIndex((g) => g.id?.toString() === id);
@@ -31,7 +31,7 @@ export const grupoHandlers = [
   }),
 
   // DELETE /grupos/:id
-  http.delete('/grupos/:id', ({ params }) => {
+  http.delete('*/api/grupos/:id', ({ params }) => {
     const { id } = params;
     const index = mockGrupos.findIndex((g) => g.id?.toString() === id);
 

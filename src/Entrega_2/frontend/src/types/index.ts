@@ -22,6 +22,8 @@ export interface Projeto {
   papel: ProjetoPapel;
   tipo: ProjetoTipo;
   ativo: boolean;
+  descricao?: string;
+  admins?: string[];
 }
   
 export interface Desafio {
@@ -32,6 +34,7 @@ export interface Desafio {
   dataInicio: string;
   dataFim: string;
   ativo: boolean;
+  itensPermitidos?: string[];
   projeto?: Projeto;
 }
 
@@ -96,4 +99,17 @@ export interface MetricasDashboard {
   kilosPorItem: { nome: string; quilos: number }[];
   rankingGrupos: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
   rankingTurmas: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
+}
+
+export interface CheckoutSession {
+  id: string | number;
+  data: string;
+  totalItens: number;
+  responsavel: string;
+}
+
+export interface CheckoutItemSynthesis {
+  itemNome: string;
+  metaAlunos: number;
+  realizadoEdicao: number;
 }

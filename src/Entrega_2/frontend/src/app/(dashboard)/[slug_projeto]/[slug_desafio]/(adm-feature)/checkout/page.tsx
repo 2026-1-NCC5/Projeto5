@@ -1,105 +1,66 @@
 'use client';
 
-import React from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { CheckoutSession, CheckoutItemSynthesis } from '@/types';
+import { SynthesisTable } from '@/components/Checkout/SynthesisTable';
+import { CheckoutHistoryTable } from '@/components/Checkout/CheckoutHistoryTable';
 import styles from './page.module.css';
-import { useCheckoutAI } from '@/hooks/useCheckoutAI';
-import { VisionPanel } from '@/components/Checkout/VisionPanel';
-import { ScannedItemsLog } from '@/components/Checkout/ScannedItemsLog';
-import { ItemsSummary } from '@/components/Checkout/ItemsSummary';
-import { CalibrationPanel } from '@/components/Checkout/CalibrationPanel';
-import { CheckoutService } from '@/services/checkoutService';
-import { useState } from 'react';
 
-export default function CheckoutPage() {
-  const {
-    itens,
-    engineStatus,
-    camStatus,
-    cooldown,
-    setCooldown,
-    isCalibrating,
-    setIsCalibrating,
-    calibrationSize,
-    setCalibrationSize,
-    videoRef,
-    canvasRef,
-    handleCancel
-  } = useCheckoutAI();
+export default function CheckoutOverviewPage() {
+  const params = useParams();
+  const { slug_projeto, slug_desafio } = params;
+  
+  const [sintese, setSintese] = useState<CheckoutItemSynthesis[]>([]);
+  const [historico, setHistorico] = useState<CheckoutSession[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [resSintese, resHistorico] = await Promise.all([
+          fetch('/api/checkout/sintese'),
+          fetch('/api/checkout/historico')
+        ]);
+        
+        if (resSintese.ok) setSintese(await resSintese.json());
+        if (resHistorico.ok) setHistorico(await resHistorico.json());
+      } catch (error) {
+        console.error('Erro ao buscar dados de checkout:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
 
-  const handleFinish = async () => {
-    if (itens.length === 0) {
-      alert('O carrinho está vazio!');
-      return;
-    }
-
-    if (!confirm('Deseja finalizar a conferência de itens?')) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await CheckoutService.submitVerification(itens);
-      alert('Conferência finalizada com sucesso!');
-      handleCancel(); // Limpa o carrinho
-    } catch (error) {
-      console.error(error);
-      alert('Erro ao finalizar conferência. Tente novamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const basePath = `/${slug_projeto}/${slug_desafio}/checkout`;
 
   return (
-    <main className={styles.pageContainer}>
-      <header className={styles.pageHeader}>
+    <main className={styles.container}>
+      <header className={styles.header}>
         <div className={styles.titleGroup}>
-          <h1>Checkout Inteligente</h1>
-          <p>Detecção de produtos em tempo real via ScanCount AI</p>
+          <h1 className={styles.title}>Painel de Conferência (Checkout)</h1>
+          <p className={styles.subtitle}>Acompanhe o progresso da verificação de itens registrados.</p>
         </div>
-        <button 
-          className={styles.finishBtn} 
-          onClick={handleFinish}
-          disabled={isSubmitting || itens.length === 0}
-        >
-          {isSubmitting ? 'Enviando...' : 'Finalizar Conferência'}
-        </button>
+        
+        <Link href={`${basePath}/scanner`} className={styles.newSessionBtn}>
+          <span className="material-symbols-outlined">add_a_photo</span>
+          Iniciar Nova Conferência
+        </Link>
       </header>
 
-      <div className={styles.contentGrid}>
-        {/* Lado Esquerdo: Visão e Configurações */}
-        <div className={styles.leftColumn}>
-          <CalibrationPanel 
-            isCalibrating={isCalibrating}
-            setIsCalibrating={setIsCalibrating}
-            calibrationSize={calibrationSize}
-            setCalibrationSize={setCalibrationSize}
-            cooldown={cooldown}
-            setCooldown={setCooldown}
-          />
-          <VisionPanel 
-            videoRef={videoRef}
-            canvasRef={canvasRef}
-            engineStatus={engineStatus}
-            camStatus={camStatus}
-          />
+      {isLoading ? (
+        <div className={styles.loading}>Carregando dados do checkout...</div>
+      ) : (
+        <div className={styles.content}>
+          <SynthesisTable data={sintese} />
+          <CheckoutHistoryTable sessions={historico} />
         </div>
-
-        {/* Lado Direito: Fluxo e Síntese */}
-        <div className={styles.rightColumn}>
-          <div className={styles.sidebarContent}>
-            <ScannedItemsLog itens={itens} />
-            <ItemsSummary itens={itens} />
-            
-            {itens.length > 0 && (
-              <button className={styles.clearBtn} onClick={handleCancel}>
-                Reiniciar Carrinho
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      )}
     </main>
   );
 }

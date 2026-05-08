@@ -35,7 +35,7 @@ export const desafioHandlers = [
     const desafioCompleto = {
       id: Math.floor(Math.random() * 10000), // Gera um ID aleatório
       ...novoDesafio,
-      projetoSlug: slugProjeto, // Garante o vínculo com o projeto da URL[cite: 7]
+      projetoSlug: slugProjeto, // Garante o vínculo com o projeto da URL
     };
 
     // "Salva" no nosso array temporário
@@ -44,5 +44,25 @@ export const desafioHandlers = [
     console.log('MSW: Novo desafio criado com sucesso:', desafioCompleto);
 
     return HttpResponse.json(desafioCompleto, { status: 201 });
+  }),
+
+  // Update desafio info
+  http.put('*/api/projetos/:slugProjeto/desafios/:slugDesafio', async ({ request, params }) => {
+    const { slugDesafio } = params;
+    const dados = await request.json() as Partial<Desafio>;
+
+    const index = desafiosMock.findIndex(d => d.slug === slugDesafio);
+    if (index === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    desafiosMock[index] = {
+      ...desafiosMock[index],
+      ...dados,
+      slug: dados.nome ? dados.nome.toLowerCase().replace(/\s+/g, '-') : desafiosMock[index].slug
+    };
+
+    console.log(`MSW: Desafio ${slugDesafio} atualizado:`, desafiosMock[index]);
+    return HttpResponse.json(desafiosMock[index]);
   }),
 ];

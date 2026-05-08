@@ -40,7 +40,7 @@ export default function DesafiosPage() {
     <main className={styles.container}>
       <header className={styles.headerArea}>
         <div>
-          <h1 className={styles.mainTitle}>Desafios do Projeto</h1>
+          <h1 className={styles.mainTitle}>Edições do Projeto</h1>
           <p className={styles.subTitle}>Gerencie cronogramas e atividades operacionais.</p>
         </div>
         
@@ -50,7 +50,7 @@ export default function DesafiosPage() {
             href={`/projeto/${slug_projeto}/desafios/novo_desafio`} 
             className={styles.newProjectBtn}
           >
-            + Criar Desafio
+            + Criar Edição
           </Link>
         )}
       </header>
@@ -61,7 +61,7 @@ export default function DesafiosPage() {
           <span className={`material-symbols-outlined ${styles.searchIcon}`}>search</span>
           <input 
             type="text" 
-            placeholder="Buscar desafio por nome..." 
+            placeholder="Buscar edição por nome..." 
             className={styles.searchInput}
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
@@ -94,7 +94,7 @@ export default function DesafiosPage() {
       {desafiosFiltrados.length === 0 && (
         <div className={styles.emptyState}>
           <span className={`material-symbols-outlined ${styles.emptyIcon}`}>folder_off</span>
-          <p>Nenhum desafio encontrado para os filtros selecionados.</p>
+          <p>Nenhuma edição encontrada para os filtros selecionados.</p>
         </div>
       )}
     </main>

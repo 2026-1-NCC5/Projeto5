@@ -23,7 +23,7 @@ export function SidebarTurma({ slugProjeto, slugDesafio, slugTurma, isCollapsed 
     <nav className={styles.menuList}>
       <Link href={`/${slugProjeto}/${slugDesafio}`} className={styles.backLink}>
         <span className="material-symbols-outlined">arrow_back</span>
-        {!isCollapsed && <span>Voltar para Desafio</span>}
+        {!isCollapsed && <span>Voltar para Edição</span>}
       </Link>
 
       {menu.map((item) => (
