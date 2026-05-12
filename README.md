@@ -22,7 +22,7 @@
 ## Descrição
 
 <p align="center">
-<img src="imagens/logo_projeto.png" alt="ScanCount AI" border="0">
+<img src="https://github.com/2026-1-NCC5/Projeto5/blob/main/imagens/BANNER.png?raw=true" alt="ScanCount AI" border="0">
 </p>
 
 O **ScanCount AI** é uma solução de Visão Computacional projetada para transformar a logística de arrecadações em campanhas sociais e gincanas escolares. Utilizando o modelo **YOLOv8** (You Only Look Once), o sistema realiza a detecção e contagem automática de itens em tempo real através de uma interface intuitiva, garantindo precisão e transparência nos dados coletados.
