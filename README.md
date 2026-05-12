@@ -31,6 +31,8 @@ O projeto integra um backend robusto em FastAPI com um dashboard moderno em Next
 
 ## 🛠 Estrutura de pastas
 
+```text
+.
 ├───documentos
 │   ├───Entrega 1
 │   │   ├───Inteligência Artifical e Aprendizado de Máquina
@@ -131,6 +133,7 @@ O projeto integra um backend robusto em FastAPI com um dashboard moderno em Next
                 ├───services
                 ├───types
                 └───utils
+```
 
 A pasta raiz contém a organização principal do projeto:
 
