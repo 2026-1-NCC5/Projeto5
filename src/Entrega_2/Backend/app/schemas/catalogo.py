@@ -1,39 +1,20 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class ItemPermitidoOut(BaseModel):
+class CatalogoBase(BaseModel):
+    nome: str
+    label: str
+    preco: float
+    peso: float
+    largura: Optional[float] = None
+    comprimento: Optional[float] = None
+
+class CatalogoCreate(CatalogoBase):
+    edicao_id: int
+
+class CatalogoOut(CatalogoBase):
     id: int
-    nome: str
-    unidade_medida: str
-    desafio_id: int
+    edicao_id: int
 
     class Config:
         from_attributes = True
-
-class ItemPermitidoCreate(BaseModel):
-    nome: str
-    unidade_medida: str
-    desafio_id: int
-
-class ClonarItensIn(BaseModel):
-    desafio_origem_id: int
-    desafio_destino_id: int
-
-class CatalogoProdutoCreate(BaseModel):
-    codigo_barras: str
-    marca: str
-    peso_volume: float
-    item_id: int
-
-class CatalogoProdutoOut(CatalogoProdutoCreate):
-    cadastrado_por_aluno_id: int
-    item_permitido: Optional[ItemPermitidoOut] = None
-
-    class Config:
-        from_attributes = True
-
-class ValidarCadastrarIn(BaseModel):
-    codigo_barras: str
-    marca: Optional[str] = None
-    peso_volume: Optional[float] = None
-    item_id: Optional[int] = None

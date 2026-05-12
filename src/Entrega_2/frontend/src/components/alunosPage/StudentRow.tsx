@@ -15,11 +15,16 @@ export function StudentRow({ aluno, onUpdate, onDelete }: StudentRowProps) {
     nome: aluno.nome,
     ra: aluno.ra,
     email: aluno.email,
-    grupoNome: aluno.grupoNome || ''
+    grupo: aluno.grupo?.nome || ''
   });
 
   const handleSave = () => {
-    onUpdate(aluno.id!, editData);
+    const { grupo, ...rest } = editData;
+    const payload: Partial<Aluno> = {
+      ...rest,
+      grupo: aluno.grupo ? { ...aluno.grupo, nome: grupo } : undefined
+    };
+    onUpdate(aluno.id!, payload);
     setIsEditing(false);
   };
 
@@ -29,7 +34,7 @@ export function StudentRow({ aluno, onUpdate, onDelete }: StudentRowProps) {
         <td><input value={editData.nome} onChange={e => setEditData({...editData, nome: e.target.value})} className={styles.editInput} /></td>
         <td><input value={editData.ra} onChange={e => setEditData({...editData, ra: e.target.value})} className={styles.editInput} /></td>
         <td><input value={editData.email} onChange={e => setEditData({...editData, email: e.target.value})} className={styles.editInput} /></td>
-        <td><input value={editData.grupoNome} onChange={e => setEditData({...editData, grupoNome: e.target.value})} className={styles.editInput} /></td>
+        <td><input value={editData.grupo} onChange={e => setEditData({...editData, grupo: e.target.value})} className={styles.editInput} /></td>
         <td>
           <span className={aluno.vinculo ? styles.linked : styles.notLinked}>
             {aluno.vinculo ? 'Sim' : 'Não'}
@@ -48,7 +53,7 @@ export function StudentRow({ aluno, onUpdate, onDelete }: StudentRowProps) {
       <td>{aluno.nome}</td>
       <td>{aluno.ra}</td>
       <td>{aluno.email}</td>
-      <td>{aluno.grupoNome || '-'}</td>
+      <td>{aluno.grupo?.nome || '-'}</td>
       <td>
         <span className={aluno.vinculo ? styles.linked : styles.notLinked}>
           {aluno.vinculo ? 'Sim' : 'Não'}

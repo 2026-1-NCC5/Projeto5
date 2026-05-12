@@ -3,7 +3,7 @@ import { useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './Sidebar.module.css';
 import { SidebarProjeto } from './SidebarProjeto';
-import { SidebarDesafio } from './SidebarDesafio';
+import { SidebarEdicao } from './SidebarEdicao';
 import { SidebarTurma } from './SidebarTurma';
 
 interface SidebarProps {
@@ -16,13 +16,14 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
   
   const slugProjeto = params.slug_projeto as string;
-  const slugDesafio = params.slug_desafio as string;
+  const slugEdicao = params.slug_edicao as string;
   const slugTurma = params.slug_turma as string;
+  const username = params.username as string;
 
   if (!slugProjeto) return null;
 
-  // Agora a detecção é baseada na subpasta /desafios/[slug_desafio]
-  const renderDesafio = !!slugDesafio && pathname.includes(`/${slugDesafio}`);
+  // Agora a detecção é baseada na subpasta /[slug_edicao]
+  const renderEdicao = !!slugEdicao && pathname.includes(`/${slugEdicao}`);
   const renderTurma = !!slugTurma && pathname.includes(`/${slugTurma}`);
 
   return (
@@ -37,19 +38,22 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       
       {renderTurma ? (
         <SidebarTurma 
+          username={username}
           slugProjeto={slugProjeto} 
-          slugDesafio={slugDesafio} 
+          slugEdicao={slugEdicao} 
           slugTurma={slugTurma} 
           isCollapsed={isCollapsed} 
         />
-      ) : renderDesafio ? (
-        <SidebarDesafio 
+      ) : renderEdicao ? (
+        <SidebarEdicao 
+          username={username}
           slugProjeto={slugProjeto} 
-          slugDesafio={slugDesafio} 
+          slugEdicao={slugEdicao} 
           isCollapsed={isCollapsed} 
         />
       ) : (
         <SidebarProjeto 
+          username={username}
           slugProjeto={slugProjeto} 
           isCollapsed={isCollapsed} 
         />

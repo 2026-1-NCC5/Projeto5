@@ -1,51 +1,88 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
 from app.core.database import get_db
 from app.models import models
-from app.schemas.turma import TurmaCreate, TurmaOut
-from app.api import deps
+from app.schemas import academic
+from typing import List
+from app.api.deps import get_edicao_context
 
-router = APIRouter(prefix="/turmas", tags=["Gestão de Turmas"])
+# Padronização Hierárquica
+router = APIRouter(prefix="/{username}/{slug_projeto}/{slug_edicao}/turmas", tags=["Turmas"])
 
-@router.post("/", response_model=TurmaOut)
+@router.get("/", response_model=List[academic.TurmaOut])
+def listar_turmas(
+    username: str, slug_projeto: str, slug_edicao: str,
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    return db.query(models.Turma).filter(models.Turma.edicao_id == edicao_ctx.id).all()
+
+@router.get("/{slug_turma}", response_model=academic.TurmaOut)
+def buscar_turma(
+    username: str, slug_projeto: str, slug_edicao: str,
+    slug_turma: str,
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    db_obj = db.query(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma
+    ).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Turma não encontrada nesta edição")
+    return db_obj
+
+@router.post("/", response_model=academic.TurmaOut)
 def criar_turma(
-    dados: TurmaCreate, 
+    username: str, slugProjeto: str, slugEdicao: str,
+    obj_in: academic.TurmaCreate, 
     db: Session = Depends(get_db),
-    current_user: models.Usuario = Depends(deps.get_current_user)
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
 ):
-    # Verifica se o desafio existe
-    desafio = db.query(models.Desafio).filter(models.Desafio.id == dados.desafio_id).first()
-    if not desafio:
-        raise HTTPException(status_code=404, detail="Desafio não encontrado")
-
-    nova_turma = models.Turma(nome=dados.nome, desafio_id=dados.desafio_id)
-    db.add(nova_turma)
+    db_obj = models.Turma(**obj_in.dict(), edicao_id=edicao_ctx.id)
+    db.add(db_obj)
     db.commit()
-    db.refresh(nova_turma)
-    return nova_turma
+    db.refresh(db_obj)
+    return db_obj
 
-@router.get("/desafio/{desafio_id}", response_model=List[TurmaOut])
-def listar_turmas_por_desafio(
-    desafio_id: int, 
-    skip: int = 0,
-    limit: int = 20,
+@router.put("/{slug_turma}", response_model=academic.TurmaOut)
+def atualizar_turma(
+    username: str, slugProjeto: str, slugEdicao: str,
+    slug_turma: str,
+    obj_in: academic.TurmaUpdate,
     db: Session = Depends(get_db),
-    current_user: models.Usuario = Depends(deps.get_current_user)
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
 ):
-    return db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).offset(skip).limit(limit).all()
-
-@router.get("/lista-filtros/{desafio_id}", response_model=list[dict])
-def listar_turmas_para_filtro(
-    desafio_id: int, 
-    skip: int = 0,
-    limit: int = 100,
-    db: Session = Depends(get_db)
-):
-    """
-    Retorna apenas ID e Nome das turmas para preencher o SelectBox do Front-end.
-    """
-    turmas = db.query(models.Turma).filter(models.Turma.desafio_id == desafio_id).offset(skip).limit(limit).all()
+    db_obj = db.query(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma
+    ).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
     
-    # Retornamos um formato que o React Native Picker adora
-    return [{"label": t.nome, "value": t.id} for t in turmas]
+    update_data = obj_in.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_obj, key, value)
+        
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+    return db_obj
+
+@router.delete("/{slug_turma}")
+def deletar_turma(
+    username: str, slugProjeto: str, slugEdicao: str,
+    slug_turma: str,
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    db_obj = db.query(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma
+    ).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Turma não encontrada")
+    
+    db.delete(db_obj)
+    db.commit()
+    return {"message": "Turma deletada com sucesso"}

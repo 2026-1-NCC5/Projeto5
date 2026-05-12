@@ -1,26 +1,23 @@
 import { http, HttpResponse } from 'msw';
-import { mockRegistros } from '../list/registro';
+import { mockRegistros } from '../data';
+import { sanitizeForJSON } from '../utils';
 
 export const registroHandlers = [
-  http.get('*/api/registros/me', () => {
-    // Retornamos os registros do grupo 'Alpha' por padrão para o bypass
-    const groupHistory = mockRegistros.filter(r => r.grupoNome === 'Alpha');
-    return HttpResponse.json(groupHistory);
+  http.get('*/:username/:slugProjeto/:slugEdicao/registros/me', ({ params }) => {
+    const { username, slugProjeto, slugEdicao } = params;
+     const filtered = mockRegistros.filter(r => 
+      r.aluno.turma.edicao.slug === slugEdicao && 
+      r.aluno.turma.edicao.projeto.slug === slugProjeto
+    );
+    return HttpResponse.json(sanitizeForJSON(filtered));
   }),
 
-  http.post('*/api/registros', async ({ request }) => {
+  http.post('*/:username/:slugProjeto/:slugEdicao/registros', async ({ request }) => {
     const data = await request.json() as any;
 
     console.log('MSW: Recebendo novo registro:', data);
 
-    // Simulação de persistência lógica
-    // No "banco" real seriam criadas entradas em:
-    // 1. Tabela 'registro' (id, data, tipo, id_aluno)
-    // 2. Tabela filha correspondente (registro_item, registro_valor ou registro_resgate)
-
     const registroId = Math.floor(Math.random() * 100000);
-
-    // Simula resposta de sucesso
     return HttpResponse.json({
       success: true,
       id: registroId,

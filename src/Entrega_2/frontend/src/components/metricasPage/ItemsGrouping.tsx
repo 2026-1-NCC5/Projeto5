@@ -20,14 +20,14 @@ export function ItemsGrouping({ data }: ItemsGroupingProps) {
             </tr>
           </thead>
           <tbody>
-            {data.kilosPorItem.map((item, index) => {
-              const maxKilos = Math.max(...data.kilosPorItem.map(i => i.quilos));
-              const proportion = (item.quilos / maxKilos) * 100;
+            {(data.distribuicao || []).map((item, index) => {
+              const maxKilos = Math.max(...(data.distribuicao || []).map(i => i.quantidade_kg), 1);
+              const proportion = (item.quantidade_kg / maxKilos) * 100;
               
               return (
                 <tr key={index}>
-                  <td className={styles.itemName}>{item.nome}</td>
-                  <td className={styles.itemValue}>{item.quilos.toFixed(2)} kg</td>
+                  <td className={styles.itemName}>{item.item_nome}</td>
+                  <td className={styles.itemValue}>{item.quantidade_kg.toFixed(2)} kg</td>
                   <td className={styles.percentCell}>
                     {proportion.toFixed(1)}%
                   </td>
@@ -39,7 +39,7 @@ export function ItemsGrouping({ data }: ItemsGroupingProps) {
             <tr>
               <td className={styles.footerLabel}>Total Geral:</td>
               <td colSpan={2} className={styles.footerValue}>
-                {data.kilosPorItem.reduce((acc, curr) => acc + curr.quilos, 0).toFixed(2)} kg
+                {(data.distribuicao || []).reduce((acc, curr) => acc + curr.quantidade_kg, 0).toFixed(2)} kg
               </td>
             </tr>
           </tfoot>

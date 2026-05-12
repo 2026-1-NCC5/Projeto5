@@ -28,11 +28,11 @@ export function SummaryCards({ data }: SummaryCardsProps) {
         <h3 className={styles.sectionTitle}>Totais</h3>
         <div className={styles.compactGrid}>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{formatWeight(data.totalQuilos)}</span>
+            <span className={styles.mainValue}>{formatWeight(data.resumo.total_kg)}</span>
             <span className={styles.description}>arrecadados</span>
           </div>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{formatCurrency(data.totalDinheiro)}</span>
+            <span className={styles.mainValue}>{formatCurrency(data.resumo.total_dinheiro)}</span>
             <span className={styles.description}>em doações</span>
           </div>
         </div>
@@ -42,15 +42,15 @@ export function SummaryCards({ data }: SummaryCardsProps) {
         <h3 className={styles.sectionTitle}>Participação</h3>
         <div className={styles.compactGrid}>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{data.totalAlunos}</span>
+            <span className={styles.mainValue}>{data.resumo.total_alunos}</span>
             <span className={styles.description}>alunos</span>
           </div>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{data.totalGrupos}</span>
+            <span className={styles.mainValue}>{data.resumo.total_grupos}</span>
             <span className={styles.description}>grupos</span>
           </div>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{data.totalTurmas}</span>
+            <span className={styles.mainValue}>{data.resumo.total_turmas}</span>
             <span className={styles.description}>turmas</span>
           </div>
         </div>
@@ -60,15 +60,15 @@ export function SummaryCards({ data }: SummaryCardsProps) {
         <h3 className={styles.sectionTitle}>Médias de Impacto</h3>
         <div className={styles.compactGrid}>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{formatWeight(data.mediaQuilosPorAluno)}</span>
+            <span className={styles.mainValue}>{formatWeight(data.resumo.media_kg_aluno)}</span>
             <span className={styles.description}>por aluno</span>
           </div>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{formatWeight(data.mediaQuilosPorGrupo)}</span>
+            <span className={styles.mainValue}>{formatWeight(data.resumo.media_kg_grupo)}</span>
             <span className={styles.description}>por grupo</span>
           </div>
           <div className={styles.compactCard}>
-            <span className={styles.mainValue}>{formatWeight(data.mediaQuilosPorTurma)}</span>
+            <span className={styles.mainValue}>{formatWeight(data.resumo.media_kg_turma)}</span>
             <span className={styles.description}>por turma</span>
           </div>
         </div>

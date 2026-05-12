@@ -1,85 +1,129 @@
-from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.schemas.aluno import AlunoPreCadastro, AlunoOut, AlunoStatusOut
 from app.models import models
-from app.api import deps
-from app.services.aluno_service import AlunoService
-from app.services.import_service import ImportService
+from app.schemas import academic
+from typing import List, Optional
 
-router = APIRouter(prefix="/alunos", tags=["Gestão de Alunos"])
+from app.api.deps import get_edicao_context
 
-# Rota para o Professor gerar o convite
-@router.post("/pre-cadastro", response_model=AlunoOut)
-def pre_cadastro(dados: AlunoPreCadastro, db: Session = Depends(get_db)):
-    return AlunoService.criar_pre_cadastro(db, dados.nome, dados.email_pre_cadastro, dados.turma_id, dados.ra)
+# Padronização Hierárquica
+router = APIRouter(prefix="/{username}/{slug_projeto}/{slug_edicao}", tags=["Alunos"])
 
-# Rota para o Aluno (logado ou recém-cadastrado) resgatar o vínculo
-@router.post("/resgatar-convite")
-def resgatar(token: str, db: Session = Depends(get_db), current_user = Depends(deps.get_current_user)):
-    res = AlunoService.confirmar_vinculo(db, token, current_user.id)
-    if not res["success"]:
-        raise HTTPException(status_code=400, detail=res["detail"])
-    return res
-
-@router.post("/importar-planilha")
-async def importar_alunos(
-    desafio_id: int,
-    file: UploadFile = File(...),
+# Lista todos os alunos pertencentes a uma edição específica
+@router.get("/alunos", response_model=List[academic.AlunoOut])
+def listar_todos_alunos_edicao(
+    username: str, slug_projeto: str, slug_edicao: str,
     db: Session = Depends(get_db),
-    current_user = Depends(deps.get_current_user)
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
 ):
-    """
-    Recebe um Excel/CSV, cria turmas inexistentes e pré-cadastra todos os alunos.
-    """
-    if not file.filename.endswith(('.xlsx', '.csv')):
-        raise HTTPException(status_code=400, detail="Formato de arquivo inválido. Use Excel ou CSV.")
+    return db.query(models.Aluno).join(models.Turma).filter(models.Turma.edicao_id == edicao_ctx.id).all()
 
-    conteudo = await file.read()
-    resultado = ImportService.processar_planilha_alunos(db, conteudo, desafio_id)
-    
-    return {
-        "message": "Processamento concluído",
-        "detalhes": resultado
-    }
+# Lista apenas os alunos vinculados a uma turma específica dentro do desafio
+@router.get("/{slug_turma}/alunos", response_model=List[academic.AlunoOut])
+def listar_alunos_por_turma(
+    username: str, slugProjeto: str, slugEdicao: str,
+    slug_turma: str, 
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    return db.query(models.Aluno).join(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma
+    ).all()
 
-@router.get("/acompanhamento/{desafio_id}")
-def acompanhar_vinculos(
-    desafio_id: int,
-    turma_id: Optional[int] = None,
-    sem_grupo: Optional[bool] = None, 
-    vinculado: Optional[bool] = None, 
+# Cria um novo registro de aluno vinculado a uma turma
+@router.post("/alunos", response_model=academic.AlunoOut)
+def criar_aluno(
+    username: str, slug_projeto: str, slug_edicao: str,
+    obj_in: academic.AlunoCreate, 
     db: Session = Depends(get_db)
 ):
-    query = db.query(models.Aluno).join(models.Turma).filter(models.Turma.desafio_id == desafio_id)
+    db_obj = models.Aluno(**obj_in.dict())
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+    return db_obj
+
+# Busca os dados detalhados de um aluno específico pelo seu ID
+@router.get("/alunos/{id:int}", response_model=academic.AlunoOut)
+def buscar_aluno(
+    username: str, slug_projeto: str, slug_edicao: str,
+    id: int, 
+    db: Session = Depends(get_db)
+):
+    db_obj = db.query(models.Aluno).filter(models.Aluno.id == id).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    return db_obj
+
+# Atualiza as informações de um aluno (nome, email, RA, turma ou grupo)
+@router.put("/alunos/{id:int}", response_model=academic.AlunoOut)
+def atualizar_aluno(
+    username: str, slug_projeto: str, slug_edicao: str,
+    id: int,
+    obj_in: academic.AlunoUpdate,
+    db: Session = Depends(get_db)
+):
+    db_obj = db.query(models.Aluno).filter(models.Aluno.id == id).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
     
-    if sem_grupo:
-        query = query.filter(models.Aluno.grupo_id == None)
-    # 2. Filtro por Turma
-    if turma_id:
-        query = query.filter(models.Aluno.turma_id == turma_id)
+    # Atualiza apenas os campos enviados (parciais)
+    update_data = obj_in.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_obj, key, value)
+    
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+    return db_obj
 
-    # 3. Filtro por Status de Vínculo
-    if vinculado is True:
-        # Busca apenas quem tem usuario_id preenchido
-        query = query.filter(models.Aluno.usuario_id.isnot(None))
-    elif vinculado is False:
-        # Busca apenas quem ainda é "fantasma" (usuario_id é nulo)
-        query = query.filter(models.Aluno.usuario_id.is_(None))
+# Vincula um Usuário ao Aluno e automaticamente ao Projeto como 'member'
+@router.post("/alunos/{aluno_id:int}/vincular-usuario/{usuario_id:int}")
+def vincular_usuario_aluno(
+    username: str, slug_projeto: str, slug_edicao: str,
+    aluno_id: int, usuario_id: int,
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    aluno = db.query(models.Aluno).filter(models.Aluno.id == aluno_id).first()
+    if not aluno:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    
+    # 1. Atualiza o usuario_id no registro do aluno
+    aluno.usuario_id = usuario_id
+    db.add(aluno)
+    
+    # 2. Cria o vínculo do usuário com o projeto como 'member' (acesso de visualização/participação)
+    # Verificamos se já não existe um vínculo para evitar duplicidade
+    vinculo_existente = db.query(models.VinculoProjeto).filter(
+        models.VinculoProjeto.usuario_id == usuario_id,
+        models.VinculoProjeto.projeto_id == edicao_ctx.projeto_id
+    ).first()
+    
+    if not vinculo_existente:
+        novo_vinculo = models.VinculoProjeto(
+            usuario_id=usuario_id,
+            projeto_id=edicao_ctx.projeto_id,
+            papel="member"
+        )
+        db.add(novo_vinculo)
+    
+    db.commit()
+    return {"message": "Usuário vinculado ao aluno e ao projeto como membro"}
 
-    alunos = query.all()
-
-    # 4. Mapeamento para o Schema (Flattening)
-    return [
-        {
-            "id": a.id,
-            "nome": a.nome,
-            "email_pre_cadastro": a.email_pre_cadastro,
-            "ra": a.ra,
-            "turma_id": a.turma_id,
-            "nome_turma": a.turma.nome,
-            "vinculado": a.usuario_id is not None
-        }
-        for a in alunos
-    ]
+# Remove um aluno do banco de dados permanentemente
+@router.delete("/alunos/{id:int}")
+def deletar_aluno(
+    username: str, slug_projeto: str, slug_edicao: str,
+    id: int,
+    db: Session = Depends(get_db)
+):
+    db_obj = db.query(models.Aluno).filter(models.Aluno.id == id).first()
+    if not db_obj:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado")
+    
+    db.delete(db_obj)
+    db.commit()
+    return {"message": "Aluno deletado com sucesso"}

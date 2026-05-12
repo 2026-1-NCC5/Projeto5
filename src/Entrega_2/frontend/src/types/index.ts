@@ -1,115 +1,189 @@
+// --- AUTH TYPES ---
 export type ProjetoPapel = 'adm' | 'membro';
 export type ProjetoTipo = 'Comercial' | 'Departamento de Empresa' | 'Projeto Social' | 'Projeto Social Estudantil';
-
-export interface User {
-  id: string | number;
-  nome: string;
-  email: string;
-  avatar: string;
-  preferences: UserPreferences;
-}
 
 export interface UserPreferences {
   theme: 'light' | 'dark';
 }
 
-export interface Projeto {
-  id: number | string;
+export interface User {
+  id: number;
   nome: string;
-  slug: string;
-  imagem: string;
-  dataCriacao: string;
-  papel: ProjetoPapel;
-  tipo: ProjetoTipo;
-  ativo: boolean;
-  descricao?: string;
-  admins?: string[];
+  username: string;
+  email: string;
+  avatar: string;
+  preferences: UserPreferences;
 }
-  
-export interface Desafio {
-  id: string | number;
+
+// --- CORE TYPES ---
+export interface Projeto {
+  id: number;
   nome: string;
   slug: string;
-  projetoSlug: string;
-  dataInicio: string;
-  dataFim: string;
-  ativo: boolean;
-  itensPermitidos?: string[];
+  imagem?: string;
+  descricao?: string;
+  status: string;
+  tipo: ProjetoTipo;
+  display: boolean;
+  data_criacao: string;
+  papel?: ProjetoPapel;
+}
+
+export interface Edicao {
+  id: number;
+  projeto_id: number;
+  nome: string;
+  slug: string;
+  semestre?: string;
+  data_inicio: string;
+  data_fim: string;
+  min_alunos_por_grupo: number;
+  max_alunos_por_grupo: number;
+  status: string;
+  imagem?: string;
   projeto?: Projeto;
 }
 
 export interface Turma {
-  id: string | number;
+  id: number;
+  edicao_id: number;
   nome: string;
-  quantidade: number;
   slug: string;
-  desafio?: Desafio;
+  qtd_alunos: number;
+  grupos?: Grupo[];
 }
 
+// --- ACADEMIC TYPES ---
 export interface Aluno {
-  id?: string | number;
+  id: number;
   nome: string;
   email: string;
   ra: string;
-  turma: Turma;
-  vinculo: User | null;
-  grupoNome?: string;
+  turma_id: number;
+  usuario_id?: number | null;
+  turma?: Turma;
+  grupo?: Grupo;
+  vinculo?: User | null;
 }
 
 export interface Grupo {
-  id?: string | number;
+  id: number;
   nome: string;
-  alunos: Aluno[];
-  coletas: Coleta[];
-  pesoTotal: number;
-  precoTotal: number;
-  turma: Turma;
+  turma_id: number;
+  alunos?: Aluno[];
+  coletas?: Coleta[];
+  peso_total?: number;
+  valor_total?: number;
+}
+
+export type ConviteStatus = 'pendente' | 'aceito' | 'recusado';
+
+export interface Convite {
+  id: number;
+  criador_id: number;
+  convidado_id: number;
+  grupo_id: number;
+  nome_criador: string;
+  nome_grupo: string;
+  data_criacao: string;
+  status: ConviteStatus;
+  criador?: Aluno;
+  convidado?: Aluno;
+  grupo?: Grupo;
+}
+
+// --- INVENTORY TYPES ---
+export interface Item {
+  id: number;
+  edicao_id?: number;
+  nome: string;
+  label?: string;
+  preco: number;
+  peso: number;
+  largura?: number;
+  comprimento?: number;
+}
+
+export interface RegistroItem {
+  id: number;
+  registro_id: number;
+  item_id: number;
+  data_hora: string;
+  item?: Item;
+}
+
+export interface ColetaItem {
+  id: number | string;
+  nome: string;
+  preco: number;
+  peso: number;
+  grau_de_confianca: number;
 }
 
 export interface Coleta {
-  id: string;
-  dataHora: string;
-  itens: Item[];
-  precoTotal: number;
-  pesoTotal: number;
-  grupo: Grupo;
-  aluno: Aluno;
+  id: number;
+  grupo_id: number;
+  aluno_id: number;
+  data_hora: string;
+  peso_total: number;
+  valor_total: number;
+  itens?: Item[];
+  aluno?: Aluno;
+  grupo?: Grupo;
 }
 
-export interface Item {
-  id: string;
+// --- ANALYTICS TYPES ---
+export interface ResumoGeral {
+  total_kg: number;
+  total_dinheiro: number;
+  total_alunos: number;
+  total_grupos: number;
+  total_turmas: number;
+  media_kg_aluno: number;
+  media_dinheiro_aluno: number;
+  media_kg_grupo: number;
+  media_dinheiro_grupo: number;
+  media_kg_turma: number;
+  media_dinheiro_turma: number;
+}
+
+export interface DistribuicaoItem {
+  item_nome: string;
+  quantidade_kg: number;
+  porcentagem: number;
+}
+
+export interface EvolucaoDiaria {
+  data: string;
+  kg: number;
+  dinheiro: number;
+}
+
+export interface RankingItem {
+  posicao: number;
   nome: string;
-  peso: number;
-  preco: number;
-  comprimento: number;
-  largura: number;
+  kg: number;
+  valor: number;
 }
 
 export interface MetricasDashboard {
-  totalQuilos: number;
-  totalDinheiro: number;
-  totalAlunos: number;
-  totalGrupos: number;
-  totalTurmas: number;
-  mediaQuilosPorAluno: number;
-  mediaQuilosPorGrupo: number;
-  mediaQuilosPorTurma: number;
-  pizzaItems: { nome: string; percentual: number }[];
-  progressao: { data: string; itens: number; dinheiro: number }[];
-  kilosPorItem: { nome: string; quilos: number }[];
-  rankingGrupos: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
-  rankingTurmas: { posicao: number; nome: string; quilos: number; dinheiro: number }[];
+  resumo: ResumoGeral;
+  distribuicao: DistribuicaoItem[];
+  evolucao: EvolucaoDiaria[];
+  ranking_grupos?: RankingItem[];
+  ranking_turmas?: RankingItem[];
+  turmas_disponiveis: { id: number; nome: string }[];
 }
-
 export interface CheckoutSession {
-  id: string | number;
+  id: number | string;
   data: string;
-  totalItens: number;
-  responsavel: string;
+  total_itens: number;
+  responsavel: User;
+  edicao: Edicao;
 }
 
 export interface CheckoutItemSynthesis {
-  itemNome: string;
-  metaAlunos: number;
-  realizadoEdicao: number;
+  item_nome: string;
+  meta_alunos: number;
+  realizado_edicao: number;
 }

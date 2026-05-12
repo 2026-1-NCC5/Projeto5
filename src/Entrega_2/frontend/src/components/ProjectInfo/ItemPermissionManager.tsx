@@ -17,7 +17,11 @@ export function ItemPermissionManager({
 }: ItemPermissionManagerProps) {
   const [query, setQuery] = useState('');
   const [showManualForm, setShowManualForm] = useState(false);
-  const [manualItem, setManualItem] = useState({ nome: '', peso: 0, preco: 0 });
+  const [manualItem, setManualItem] = useState<{ nome: string; peso: number; preco: number } & Partial<Item>>({ 
+    nome: '', 
+    peso: 0, 
+    preco: 0 
+  });
 
   const filteredCatalog = useMemo(() => {
     if (!query) return [];

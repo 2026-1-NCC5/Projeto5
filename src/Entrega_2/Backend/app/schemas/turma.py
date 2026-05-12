@@ -1,14 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class TurmaCreate(BaseModel):
-    nome: str  # Ex: "CC3A"
-    desafio_id: int
-
-class TurmaOut(BaseModel):
-    id: int
+class TurmaBase(BaseModel):
     nome: str
-    desafio_id: int
+    slug: Optional[str] = None
+
+class TurmaCreate(TurmaBase):
+    pass
+
+class TurmaOut(TurmaBase):
+    id: int
+    edicao_id: int
+    slug: str
 
     class Config:
         from_attributes = True

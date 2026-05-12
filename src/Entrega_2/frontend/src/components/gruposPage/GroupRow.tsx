@@ -25,14 +25,14 @@ export function GroupRow({ grupo }: GroupRowProps) {
         </td>
         <td className={styles.cell}>
           <div className={styles.badge}>
-            {grupo.alunos.length} {grupo.alunos.length === 1 ? 'Membro' : 'Membros'}
+            {(grupo.alunos?.length || 0)} {(grupo.alunos?.length === 1 ? 'Membro' : 'Membros')}
           </div>
         </td>
         <td className={styles.cell}>
-          {(grupo.pesoTotal || 0).toFixed(2)} kg
+          {(grupo.peso_total || 0).toFixed(2)} kg
         </td>
         <td className={styles.cell}>
-          R$ {(grupo.precoTotal || 0).toFixed(2)}
+          R$ {(grupo.valor_total || 0).toFixed(2)}
         </td>
       </tr>
 
@@ -42,7 +42,7 @@ export function GroupRow({ grupo }: GroupRowProps) {
             <div className={styles.detailsContainer}>
               <div className={styles.detailsSection}>
                 <h4 className={styles.sectionTitle}>Integrantes do Grupo</h4>
-                {grupo.alunos.length > 0 ? (
+                {grupo.alunos && grupo.alunos.length > 0 ? (
                   <ul className={styles.memberList}>
                     {grupo.alunos.map((aluno: Aluno) => (
                       <li key={aluno.id} className={styles.memberItem}>
@@ -73,11 +73,11 @@ export function GroupRow({ grupo }: GroupRowProps) {
                       <tbody>
                         {grupo.coletas.map((coleta: Coleta) => (
                           <tr key={coleta.id}>
-                            <td>{new Date(coleta.dataHora).toLocaleDateString('pt-BR')}</td>
+                            <td>{new Date(coleta.data_hora).toLocaleDateString('pt-BR')}</td>
                             <td>Itens</td>
                             <td>{coleta.itens ? coleta.itens.length : 0}</td>
-                            <td>{coleta.pesoTotal.toFixed(2)} kg</td>
-                            <td>R$ {coleta.precoTotal.toFixed(2)}</td>
+                            <td>{(coleta.peso_total || 0).toFixed(2)} kg</td>
+                            <td>R$ {(coleta.valor_total || 0).toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -88,10 +88,10 @@ export function GroupRow({ grupo }: GroupRowProps) {
                             {grupo.coletas.reduce((acc, c) => acc + (c.itens ? c.itens.length : 0), 0)}
                           </td>
                           <td>
-                            {grupo.coletas.reduce((acc, c) => acc + c.pesoTotal, 0).toFixed(2)} kg
+                            {grupo.coletas.reduce((acc, c) => acc + (c.peso_total || 0), 0).toFixed(2)} kg
                           </td>
                           <td>
-                            R$ {grupo.coletas.reduce((acc, c) => acc + c.precoTotal, 0).toFixed(2)}
+                            R$ {grupo.coletas.reduce((acc, c) => acc + (c.valor_total || 0), 0).toFixed(2)}
                           </td>
                         </tr>
                       </tfoot>

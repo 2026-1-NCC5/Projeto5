@@ -10,17 +10,17 @@ interface ItemsListProps {
 export const ItemsList: React.FC<ItemsListProps> = ({ itens, handleCancel }) => {
   const summaryByItem = itens.reduce((acc, item) => {
     if (!acc[item.nome]) {
-      acc[item.nome] = { qtd: 0, pesoTotal: 0, precoTotal: 0 };
+      acc[item.nome] = { qtd: 0, peso_total: 0, valor_total: 0 };
     }
     acc[item.nome].qtd += 1;
-    acc[item.nome].pesoTotal += item.peso;
-    acc[item.nome].precoTotal += item.preco;
+    acc[item.nome].peso_total += item.peso;
+    acc[item.nome].valor_total += item.preco;
     return acc;
-  }, {} as Record<string, { qtd: number; pesoTotal: number; precoTotal: number }>);
+  }, {} as Record<string, { qtd: number; peso_total: number; valor_total: number }>);
 
   const totalQtd = itens.length;
-  const totalPeso = itens.reduce((acc, item) => acc + item.peso, 0);
-  const totalPreco = itens.reduce((acc, item) => acc + item.preco, 0);
+  const total_peso = itens.reduce((acc, item) => acc + item.peso, 0);
+  const total_valor = itens.reduce((acc, item) => acc + item.preco, 0);
 
   return (
     <div className={styles.container}>
@@ -44,8 +44,8 @@ export const ItemsList: React.FC<ItemsListProps> = ({ itens, handleCancel }) => 
               <tr key={nome}>
                 <td>{nome}</td>
                 <td>{data.qtd}x</td>
-                <td>{data.pesoTotal.toFixed(2)} kg</td>
-                <td>R$ {data.precoTotal.toFixed(2)}</td>
+                <td>{data.peso_total.toFixed(2)} kg</td>
+                <td>R$ {data.valor_total.toFixed(2)}</td>
               </tr>
             ))}
             {itens.length === 0 && (
@@ -64,11 +64,11 @@ export const ItemsList: React.FC<ItemsListProps> = ({ itens, handleCancel }) => 
         </div>
         <div className={styles.summaryItem}>
           <span>Peso Total</span>
-          <strong>{totalPeso.toFixed(2)} kg</strong>
+          <strong>{total_peso.toFixed(2)} kg</strong>
         </div>
         <div className={`${styles.summaryItem} ${styles.total}`}>
           <span>Subtotal</span>
-          <strong>R$ {totalPreco.toFixed(2)}</strong>
+          <strong>R$ {total_valor.toFixed(2)}</strong>
         </div>
       </div>
     </div>

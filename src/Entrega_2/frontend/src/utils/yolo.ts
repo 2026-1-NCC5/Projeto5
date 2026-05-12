@@ -5,7 +5,8 @@ export const LABELS = [
   'pacote_de_feijao', // 1
   'pacote_de_macarrão', // 2
   'pacote_de_fuba', // 3
-  'pacote_de_acucar' // 4
+  'pacote_de_acucar', // 4
+  'garrafa_de_oleo' // 5
 ];
 
 /**
@@ -78,7 +79,7 @@ export function processOutput(
   modelHeight: number
 ) {
   const data = output.data as Float32Array;
-  const numClasses = 5; // Arroz, Feijao, Macarrao, Fuba, Acucar
+  const numClasses = 6; // Arroz, Feijao, Macarrao, Fuba, Acucar, Oleo
   const numRows = 4 + numClasses; // 9
   const numCols = 8400; // YOLOv8 default anchors
 

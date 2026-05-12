@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import * as ort from 'onnxruntime-web';
 import { ColetaItem } from '@/types';
-import { mockItemsBase } from '@/mocks/list/item';
+import { mockItemsBase } from '@/mocks/data';
 import { preprocess, processOutput } from '@/utils/yolo';
 import { MeasurementService } from '@/services/mensureService';
 
@@ -11,7 +11,8 @@ import { MeasurementService } from '@/services/mensureService';
 ort.env.wasm.wasmPaths = '/';
 
 export interface ExtendedColetaItem extends ColetaItem {
-  id: string;
+  id: string; // ID único para a lista (UI)
+  catalogoId: number; // ID real do banco de dados
   labelNome: string;
   bbox?: [number, number, number, number];
 }
@@ -141,6 +142,7 @@ export function useCheckoutAI() {
 
         return {
           id: Math.random().toString(36).substr(2, 9),
+          catalogoId: variant?.id || 0,
           nome: variant?.nome || 'Produto Desconhecido',
           labelNome: det.name,
           preco: variant?.preco || 0,

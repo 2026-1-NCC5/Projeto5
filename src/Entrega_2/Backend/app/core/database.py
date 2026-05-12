@@ -1,21 +1,20 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from .config import settings
+import os
+from dotenv import load_dotenv
 
-# O engine é quem realmente conversa com o banco
-if settings.DATABASE_URL.startswith("sqlite"):
-    engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    engine = create_engine(settings.DATABASE_URL)
+load_dotenv()
 
-# Cada requisição ao banco usará uma Session local
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./database.db")
+
+engine = create_engine(
+    DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Classe base para nossos modelos (tabelas)
 Base = declarative_base()
 
-# Dependência que será usada nos endpoints do FastAPI
 def get_db():
     db = SessionLocal()
     try:

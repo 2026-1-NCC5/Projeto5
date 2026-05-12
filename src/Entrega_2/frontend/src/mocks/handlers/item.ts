@@ -1,29 +1,24 @@
 import { http, HttpResponse } from 'msw';
-import { mockItemsBase } from '../list/item';
+import { mockItemsBase } from '../data';
 
 export const itemHandlers = [
-  http.get('*/api/itens', () => {
-    // Retorna o objeto base com todas as labels e suas variantes
+  // GET items (Multi-tenant Real)
+  http.get('*/:username/:slugProjeto/:slugEdicao/items', () => {
     return HttpResponse.json(mockItemsBase);
   }),
 
-  // Rota extra opcional para pegar uma lista única de todas as variantes de todos os produtos
-  http.get('*/api/itens/catalogo', () => {
+  // GET catalogo (Multi-tenant Real)
+  http.get('*/:username/:slugProjeto/:slugEdicao/items/catalogo', () => {
     const allVariants = Object.values(mockItemsBase).flatMap(item => item.variants);
     return HttpResponse.json(allVariants);
   }),
 
-  http.post('*/api/itens', async ({ request }) => {
+  // POST: Adicionar novo item (Multi-tenant Real)
+  http.post('*/:username/:slugProjeto/:slugEdicao/items', async ({ request }) => {
     const newItem = await request.json() as any;
-    const itemWithId = {
-      ...newItem,
-      id: Date.now().toString()
-    };
-    
-    // Simplificadamente, apenas logamos e retornamos, 
-    // já que o mockItemsBase é complexo e não queremos quebrar a estrutura de engine de IA
-    console.log('MSW: Novo item criado:', itemWithId);
-    
+    const itemWithId = { ...newItem, id: Date.now() };
+    console.log('MSW: Item criado hierarquicamente:', itemWithId);
     return HttpResponse.json(itemWithId, { status: 201 });
   }),
 ];
+

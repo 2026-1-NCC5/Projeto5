@@ -1,37 +1,22 @@
 import { http, HttpResponse } from 'msw';
-import { mockGrupos } from '../list/grupo';
+import { mockGrupos } from '../data';
 import { Grupo } from '@/types';
+import { sanitizeForJSON } from '../utils';
 
 export const grupoHandlers = [
-  // GET /grupos
-  http.get('*/api/grupos', () => {
-    return HttpResponse.json(mockGrupos);
-  }),
-
-  // POST /grupos
-  http.post('*/api/grupos', async ({ request }) => {
-    const newGrupo = (await request.json()) as Grupo;
-    const id = Date.now().toString();
-    const grupoWithId = { ...newGrupo, id, alunos: [], coletas: [], pesoTotal: 0, precoTotal: 0 };
-    mockGrupos.push(grupoWithId);
-    return HttpResponse.json(grupoWithId, { status: 201 });
-  }),
-
-  // PUT /grupos/:id
-  http.put('*/api/grupos/:id', async ({ request, params }) => {
-    const { id } = params;
-    const updates = (await request.json()) as Partial<Grupo>;
-    const index = mockGrupos.findIndex((g) => g.id?.toString() === id);
-
-    if (index !== -1) {
-      mockGrupos[index] = { ...mockGrupos[index], ...updates };
-      return HttpResponse.json(mockGrupos[index]);
-    }
-    return new HttpResponse(null, { status: 404 });
+  // Listagem ultra-filtrada (Multi-tenant Real)
+  http.get('*/:username/:slugProjeto/:slugEdicao/:slugTurma/grupos', ({ params }) => {
+    const { username, slugProjeto, slugEdicao, slugTurma } = params;
+    const filtered = mockGrupos.filter(g => 
+      g.turma.slug === slugTurma && 
+      g.turma.edicao.slug === slugEdicao && 
+      g.turma.edicao.projeto.slug === slugProjeto
+    );
+    return HttpResponse.json(sanitizeForJSON(filtered));
   }),
 
   // DELETE /grupos/:id
-  http.delete('*/api/grupos/:id', ({ params }) => {
+  http.delete('*/:username/:slugProjeto/:slugEdicao/:slugTurma/grupos/:id', ({ params }) => {
     const { id } = params;
     const index = mockGrupos.findIndex((g) => g.id?.toString() === id);
 

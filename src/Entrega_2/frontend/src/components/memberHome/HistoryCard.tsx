@@ -14,10 +14,10 @@ interface RegistroHistory {
   id: number;
   data: string;
   tipo: 'itens' | 'dinheiro' | 'resgate';
-  alunoNome: string;
-  grupoNome: string;
-  totalPeso: number;
-  totalValor: number;
+  aluno: { nome: string };
+  grupo: { nome: string };
+  total_peso: number;
+  total_valor: number;
   detalhes?: RegistroDetalhe[];
 }
 
@@ -31,8 +31,8 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ historico, grupoNome }
 
   const totalGrupo = useMemo(() => {
     return historico.reduce((acc, curr) => {
-      acc.peso += curr.totalPeso;
-      acc.valor += curr.totalValor;
+      acc.peso += curr.total_peso || 0;
+      acc.valor += curr.total_valor || 0;
       return acc;
     }, { peso: 0, valor: 0 });
   }, [historico]);
@@ -93,11 +93,11 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ historico, grupoNome }
                         {reg.tipo}
                       </span>
                     </td>
-                    <td>{reg.alunoNome}</td>
-                    <td>{reg.totalPeso > 0 ? `${reg.totalPeso.toFixed(1)} kg` : '-'}</td>
+                    <td>{reg.aluno.nome}</td>
+                    <td>{reg.total_peso > 0 ? `${reg.total_peso.toFixed(1)} kg` : '-'}</td>
                     <td>
-                      <span style={{ color: reg.totalValor < 0 ? '#ef4444' : '#22c55e' }}>
-                        R$ {Math.abs(reg.totalValor).toFixed(2)}
+                      <span style={{ color: reg.total_valor < 0 ? '#ef4444' : '#22c55e' }}>
+                        R$ {Math.abs(reg.total_valor).toFixed(2)}
                       </span>
                     </td>
                   </tr>

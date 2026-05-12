@@ -4,15 +4,16 @@ import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.css';
 
 interface SidebarTurmaProps {
+  username: string;
   slugProjeto: string;
-  slugDesafio: string;
+  slugEdicao: string;
   slugTurma: string;
   isCollapsed: boolean;
 }
 
-export function SidebarTurma({ slugProjeto, slugDesafio, slugTurma, isCollapsed }: SidebarTurmaProps) {
+export function SidebarTurma({ username, slugProjeto, slugEdicao, slugTurma, isCollapsed }: SidebarTurmaProps) {
   const pathname = usePathname();
-  const basePath = `/${slugProjeto}/${slugDesafio}/${slugTurma}`;
+  const basePath = `/${username}/${slugProjeto}/${slugEdicao}/${slugTurma}`;
   
   const menu = [
     { name: 'Alunos', icon: 'group', path: `${basePath}/alunos` },
@@ -21,7 +22,7 @@ export function SidebarTurma({ slugProjeto, slugDesafio, slugTurma, isCollapsed 
 
   return (
     <nav className={styles.menuList}>
-      <Link href={`/${slugProjeto}/${slugDesafio}`} className={styles.backLink}>
+      <Link href={`/${username}/${slugProjeto}/${slugEdicao}`} className={styles.backLink}>
         <span className="material-symbols-outlined">arrow_back</span>
         {!isCollapsed && <span>Voltar para Edição</span>}
       </Link>

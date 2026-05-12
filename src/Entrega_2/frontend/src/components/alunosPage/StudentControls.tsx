@@ -3,8 +3,8 @@ import styles from './StudentControls.module.css';
 interface StudentControlsProps {
   searchTerm: string;
   setSearchTerm: (v: string) => void;
-  sortField: 'nome' | 'grupoNome';
-  setSortField: (v: 'nome' | 'grupoNome') => void;
+  sortField: 'nome' | 'grupo';
+  setSortField: (v: 'nome' | 'grupo') => void;
   sortOrder: 'asc' | 'desc';
   setSortOrder: (v: 'asc' | 'desc') => void;
 }
@@ -35,7 +35,7 @@ export function StudentControls({
           <label>Ordenar por:</label>
           <select value={sortField} onChange={(e) => setSortField(e.target.value as any)}>
             <option value="nome">Nome</option>
-            <option value="grupoNome">Grupo</option>
+            <option value="grupo">Grupo</option>
           </select>
         </div>
 

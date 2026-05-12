@@ -9,14 +9,14 @@ interface ItemsSummaryProps {
 export const ItemsSummary: React.FC<ItemsSummaryProps> = ({ itens }) => {
   const summaryByItem = itens.reduce((acc, item) => {
     if (!acc[item.nome]) {
-      acc[item.nome] = { qtd: 0, pesoTotal: 0, precoTotal: 0, confTotal: 0 };
+      acc[item.nome] = { qtd: 0, peso_total: 0, valor_total: 0, conf_total: 0 };
     }
     acc[item.nome].qtd += 1;
-    acc[item.nome].pesoTotal += item.peso;
-    acc[item.nome].precoTotal += item.preco;
-    acc[item.nome].confTotal += item.grau_de_confianca;
+    acc[item.nome].peso_total += item.peso;
+    acc[item.nome].valor_total += item.preco;
+    acc[item.nome].conf_total += item.grau_de_confianca;
     return acc;
-  }, {} as Record<string, { qtd: number; pesoTotal: number; precoTotal: number; confTotal: number }>);
+  }, {} as Record<string, { qtd: number; peso_total: number; valor_total: number; conf_total: number }>);
 
   const totalPreco = itens.reduce((acc, item) => acc + item.preco, 0);
   const totalPeso = itens.reduce((acc, item) => acc + item.peso, 0);
@@ -42,15 +42,15 @@ export const ItemsSummary: React.FC<ItemsSummaryProps> = ({ itens }) => {
           </thead>
           <tbody>
             {Object.entries(summaryByItem).map(([nome, data]) => {
-              const avgConf = data.confTotal / data.qtd;
+              const avgConf = data.conf_total / data.qtd;
               return (
                 <tr key={nome}>
                   <td className={styles.cellName}>
                     <span className={styles.qtdBadge}>{data.qtd}x</span>
                     {nome}
                   </td>
-                  <td className={styles.cellWeight}>{data.pesoTotal.toFixed(2)}kg</td>
-                  <td className={styles.cellPrice}>R$ {data.precoTotal.toFixed(2)}</td>
+                  <td className={styles.cellWeight}>{data.peso_total.toFixed(2)}kg</td>
+                  <td className={styles.cellPrice}>R$ {data.valor_total.toFixed(2)}</td>
                   <td className={styles.cellConf}>
                     <div className={`${styles.confBox} ${
                       avgConf >= 0.8 ? styles.high : 

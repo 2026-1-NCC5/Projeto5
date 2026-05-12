@@ -1,162 +1,141 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-import uuid # Para gerar o código único
-from typing import List
-from app.api import deps
-from app.models import models
-from app.schemas import grupo as schemas # Supondo que você criou os schemas de grupo
 from app.core.database import get_db
+from app.models import models
+from app.schemas import academic
+from typing import List
+from app.api.deps import get_edicao_context
 
-router = APIRouter(prefix="/grupos", tags=["Grupos e Convites"])
+# Padronização Hierárquica
+router = APIRouter(prefix="/{username}/{slug_projeto}/{slug_edicao}", tags=["Grupos"])
 
-@router.post("/criar", status_code=201)
-def criar_grupo(
-    grupo_in: schemas.GrupoCreate, 
+# Endpoint Mestre de Grupos: Lista grupos de uma turma e as regras da edição
+@router.get("/{slug_turma}/grupos", response_model=academic.GrupoMestreOut)
+def listar_grupos(
+    username: str, slug_projeto: str, slug_edicao: str,
+    slug_turma: str,
+    apenas_incompletos: bool = False, # < min_alunos
+    apenas_disponiveis: bool = False, # < max_alunos
     db: Session = Depends(get_db),
-    current_user = Depends(deps.get_current_user)
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
 ):
-    # 1. Busca o registro de Aluno do usuário logado
-    aluno_criador = db.query(models.Aluno).filter(models.Aluno.usuario_id == current_user.id).first()
-    
-    if not aluno_criador:
-        raise HTTPException(status_code=404, detail="Perfil de aluno não encontrado para este usuário.")
-
-    if aluno_criador.grupo_id is not None:
-        raise HTTPException(status_code=400, detail="Você já pertence a um grupo e não pode criar outro.")
-
-    # 2. Gera um código de convite único (Ex: 6 primeiros caracteres de um UUID)
-    codigo_gerado = str(uuid.uuid4()).upper()[:6]
-
-    # 3. Cria o novo grupo vinculado à mesma turma do aluno
-    novo_grupo = models.Grupo(
-        nome_projeto=grupo_in.nome_projeto,
-        codigo_convite=codigo_gerado,
-        turma_id=aluno_criador.turma_id,
-        lider_id=aluno_criador.id
+    # 1. Base Query: Todos os grupos desta turma/edição
+    query_base = db.query(models.Grupo).join(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma
     )
     
-    db.add(novo_grupo)
-    db.flush() # Para pegar o ID do grupo antes do commit final
-
-    # 4. Vincula o criador ao grupo imediatamente
-    aluno_criador.grupo_id = novo_grupo.id
-
-    db.commit()
-    db.refresh(novo_grupo)
+    todos_grupos = query_base.all()
+    qtd_total = len(todos_grupos)
+    
+    # 2. Aplicar Filtros de Lógica de Negócio (se solicitado)
+    grupos_filtrados = todos_grupos
+    
+    if apenas_incompletos:
+        grupos_filtrados = [g for g in grupos_filtrados if len(g.alunos) < edicao_ctx.min_alunos_por_grupo]
+        
+    if apenas_disponiveis:
+        grupos_filtrados = [g for g in grupos_filtrados if len(g.alunos) < edicao_ctx.max_alunos_por_grupo]
 
     return {
-        "message": "Grupo criado com sucesso!",
-        "grupo": {
-            "id": novo_grupo.id,
-            "nome_projeto": novo_grupo.nome_projeto,
-            "codigo_convite": novo_grupo.codigo_convite,
-            "turma_id": novo_grupo.turma_id,
-            "lider_id": novo_grupo.lider_id
-        }
+        "min_alunos_por_grupo": edicao_ctx.min_alunos_por_grupo,
+        "max_alunos_por_grupo": edicao_ctx.max_alunos_por_grupo,
+        "quantidade_exibida": len(grupos_filtrados),
+        "quantidade_total": qtd_total,
+        "grupos": grupos_filtrados
     }
 
-# 1. Enviar Convite (O que faltava para o Líder!)
-@router.post("/convidar", status_code=201)
-def enviar_convite(
-    aluno_id: int, 
-    grupo_id: int, 
+# Lista alunos da turma que ainda não possuem um grupo vinculado
+@router.get("/{slug_turma}/alunos-sem-grupo", response_model=List[academic.AlunoOut])
+def listar_alunos_sem_grupo(
+    username: str, slugProjeto: str, slugEdicao: str,
+    slug_turma: str,
     db: Session = Depends(get_db),
-    current_user = Depends(deps.get_current_user)
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
 ):
-    # Opcional: Validar se quem está convidando é o líder do grupo
-    # ...
-    
-    # Verifica se o aluno já tem grupo
-    aluno = db.query(models.Aluno).filter(models.Aluno.id == aluno_id).first()
-    if aluno.grupo_id:
-        raise HTTPException(status_code=400, detail="Este aluno já pertence a um grupo.")
+    return db.query(models.Aluno).join(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Turma.slug == slug_turma,
+        models.Aluno.grupo_id == None
+    ).all()
 
-    novo_convite = models.ConviteGrupo(grupo_id=grupo_id, aluno_id=aluno_id)
-    db.add(novo_convite)
-    db.commit()
-    return {"message": "Convite enviado com sucesso!"}
-
-# 2. Alunos Disponíveis (Sua rota com ajuste de Schema)
-@router.get("/alunos-disponiveis/{turma_id}")
-def listar_disponiveis(
-    turma_id: int, 
-    skip: int = 0,
-    limit: int = 20,
+@router.post("/grupos", response_model=academic.GrupoOut)
+def criar_grupo(
+    username: str, slugProjeto: str, slugEdicao: str,
+    obj_in: academic.GrupoCreate, 
     db: Session = Depends(get_db)
 ):
-    return db.query(models.Aluno).filter(
-        models.Aluno.turma_id == turma_id,
-        models.Aluno.grupo_id == None
-    ).offset(skip).limit(limit).all()
-
-# 3. Meus Convites (Ajustado com Join para o Front ver o nome do Grupo)
-@router.get("/meus-convites")
-def ver_convites(
-    skip: int = 0,
-    limit: int = 20,
-    db: Session = Depends(get_db), 
-    current_user = Depends(deps.get_current_user)
-):
-    aluno = db.query(models.Aluno).filter(models.Aluno.usuario_id == current_user.id).first()
-    if not aluno:
-        raise HTTPException(status_code=404, detail="Perfil de aluno não encontrado.")
-    
-    # Usamos o join para garantir que o objeto Grupo venha junto e o Front saiba QUEM convidou
-    return db.query(models.ConviteGrupo).filter(
-        models.ConviteGrupo.aluno_id == aluno.id
-    ).offset(skip).limit(limit).all()
-
-# 4. Aceitar Convite (A lógica de limpeza que conversamos)
-@router.post("/aceitar-convite/{convite_id}")
-def aceitar_convite(
-    convite_id: int, 
-    db: Session = Depends(get_db), 
-    current_user = Depends(deps.get_current_user)
-):
-    aluno = db.query(models.Aluno).filter(models.Aluno.usuario_id == current_user.id).first()
-    convite = db.query(models.ConviteGrupo).filter(models.ConviteGrupo.id == convite_id).first()
-
-    if not convite or convite.aluno_id != aluno.id:
-        raise HTTPException(status_code=404, detail="Convite não encontrado.")
-
-    # Vincula o aluno ao grupo
-    aluno.grupo_id = convite.grupo_id
-
-    # LIMPEZA: Remove todos os convites pendentes desse aluno
-    db.query(models.ConviteGrupo).filter(models.ConviteGrupo.aluno_id == aluno.id).delete()
-    
+    db_obj = models.Grupo(**obj_in.dict())
+    db.add(db_obj)
     db.commit()
-    return {"message": "Você entrou no grupo com sucesso!"}
+    db.refresh(db_obj)
+    return db_obj
 
-# 5. Alocação Manual (Professor)
-@router.put("/professor/alocar-manual")
-def alocar_aluno(aluno_id: int, grupo_id: int, db: Session = Depends(get_db)):
-    aluno = db.query(models.Aluno).filter(models.Aluno.id == aluno_id).first()
-    if not aluno:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    
-    aluno.grupo_id = grupo_id
-    db.query(models.ConviteGrupo).filter(models.ConviteGrupo.aluno_id == aluno_id).delete()
-    
-    db.commit()
-    return {"message": "Aluno alocado com sucesso pelo professor."}
-
-@router.post("/entrar-por-codigo")
-def entrar_por_codigo(
-    codigo: str, 
-    db: Session = Depends(get_db),
-    current_user = Depends(deps.get_current_user)
+# Deletar um grupo e liberar todos os seus membros
+@router.delete("/grupos/{grupo_id}")
+def deletar_grupo(
+    username: str, slugProjeto: str, slugEdicao: str,
+    grupo_id: int,
+    db: Session = Depends(get_db)
 ):
-    grupo = db.query(models.Grupo).filter(models.Grupo.codigo_convite == codigo.upper()).first()
+    grupo = db.query(models.Grupo).filter(models.Grupo.id == grupo_id).first()
     if not grupo:
-        raise HTTPException(status_code=404, detail="Código de grupo inválido.")
+        raise HTTPException(status_code=404, detail="Grupo não encontrado")
     
-    aluno = db.query(models.Aluno).filter(models.Aluno.usuario_id == current_user.id).first()
-    
-    # Valida se é da mesma turma
-    if aluno.turma_id != grupo.turma_id:
-        raise HTTPException(status_code=400, detail="Você só pode entrar em grupos da sua própria turma.")
+    # 1. Limpeza de Atividades (Registros)
+    # Buscamos os IDs de todos os registros do grupo para apagar os filhos primeiro
+    registro_ids = db.query(models.Registro.id).filter(models.Registro.grupo_id == grupo_id).all()
+    registro_ids = [r[0] for r in registro_ids] # Transforma em lista simples
 
-    aluno.grupo_id = grupo.id
+    if registro_ids:
+        # Apaga os filhos (itens físicos e entradas/saídas de dinheiro)
+        db.query(models.RegistroItem).filter(models.RegistroItem.registro_id.in_(registro_ids)).delete(synchronize_session=False)
+        db.query(models.RegistroDinheiro).filter(models.RegistroDinheiro.registro_id.in_(registro_ids)).delete(synchronize_session=False)
+        db.query(models.ResgateDinheiro).filter(models.ResgateDinheiro.registro_id.in_(registro_ids)).delete(synchronize_session=False)
+        
+        # Apaga os registros pai
+        db.query(models.Registro).filter(models.Registro.id.in_(registro_ids)).delete(synchronize_session=False)
+
+    # 2. Deleta todos os convites vinculados a este grupo
+    db.query(models.ConviteGrupo).filter(models.ConviteGrupo.grupo_id == grupo_id).delete()
+
+    # 3. "Libera" os alunos setando grupo_id como NULL
+    db.query(models.Aluno).filter(models.Aluno.grupo_id == grupo_id).update({models.Aluno.grupo_id: None})
+    
+    # 4. Deleta o grupo
+    db.delete(grupo)
     db.commit()
-    return {"message": f"Você entrou no grupo {grupo.nome_projeto}!"}
+    return {"message": "Grupo, registros e convites deletados, membros liberados"}
+
+# Remover um aluno específico de um grupo
+@router.post("/grupos/{grupo_id}/remover/{aluno_id}")
+def remover_aluno_do_grupo(
+    username: str, slugProjeto: str, slugEdicao: str,
+    grupo_id: int,
+    aluno_id: int,
+    db: Session = Depends(get_db)
+):
+    aluno = db.query(models.Aluno).filter(
+        models.Aluno.id == aluno_id,
+        models.Aluno.grupo_id == grupo_id
+    ).first()
+    
+    if not aluno:
+        raise HTTPException(status_code=404, detail="Aluno não encontrado neste grupo")
+    
+    aluno.grupo_id = None
+    db.add(aluno)
+    db.commit()
+    return {"message": "Aluno removido do grupo com sucesso"}
+
+# Lista todos os alunos da edição que ainda estão sem grupo (Disponíveis para convite)
+@router.get("/alunos-sem-grupo", response_model=List[academic.AlunoOut])
+def listar_alunos_sem_grupo(
+    username: str, slugProjeto: str, slugEdicao: str,
+    db: Session = Depends(get_db),
+    edicao_ctx: models.Edicao = Depends(get_edicao_context)
+):
+    return db.query(models.Aluno).join(models.Turma).filter(
+        models.Turma.edicao_id == edicao_ctx.id,
+        models.Aluno.grupo_id == None
+    ).all()

@@ -1,19 +1,30 @@
 from pydantic import BaseModel
+from typing import Optional, List
 from datetime import datetime
-from typing import Optional
 
-# O que o usuário envia para criar um projeto
-class ProjetoCreate(BaseModel):
+class ProjetoBase(BaseModel):
     nome: str
+    slug: str
     descricao: Optional[str] = None
+    imagem: Optional[str] = None
+    status: Optional[str] = "ativo" # Novo campo de status (string)
 
-# O que a API devolve para o usuário (View)
-class ProjetoOut(BaseModel):
+class ProjetoCreate(ProjetoBase):
+    pass
+
+class ProjetoUpdate(BaseModel):
+    nome: Optional[str] = None
+    slug: Optional[str] = None
+    descricao: Optional[str] = None
+    imagem: Optional[str] = None
+    status: Optional[str] = None
+    display: Optional[bool] = None
+
+class ProjetoOut(ProjetoBase):
     id: int
-    nome: str
-    descricao: Optional[str]
+    display: bool
     data_criacao: datetime
-    ativo: bool
+    papel: Optional[str] = None # 'adm' ou 'member'
 
     class Config:
-        from_attributes = True # Permite converter o Model do SQL para JSON
+        from_attributes = True

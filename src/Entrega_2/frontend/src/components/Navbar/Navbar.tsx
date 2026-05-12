@@ -8,87 +8,46 @@ import PerfilBox from '../PerfilBox/PerfilBox';
 import { User } from '@/types';
 
 import { useProject } from '@/contexts/ProjectContext';
+import { apiFetch } from '@/services/api';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Navbar() {
-  const { projeto, desafio, turma } = useProject();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { projeto, edicao, turma, user, isLoading: isProjectLoading } = useProject();
+  const { logout } = useAuth();
   const [isBoxOpen, setIsBoxOpen] = useState(false);
   const pathname = usePathname();
   
   // Referência para o container que envolve o avatar e o box
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Estado do usuário logado
-  const [user, setUser] = useState<User>({
-    id: '',
-    nome: '',
-    email: '',
-    avatar: 'https://lh3.googleusercontent.com/a/default-user',
-    preferences: { theme: 'dark' }
-  });
+  // O estado de autenticação agora vem do contexto global
+  const isAuthenticated = !!user;
 
   useEffect(() => {
-    // Função auxiliar para ler cookies de forma limpa
-    const getCookie = (name: string) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop()?.split(';').shift();
-      return undefined;
-    };
-
-    const token = getCookie('token') || 'bypass-token';
-    setIsAuthenticated(true); // Forçamos true para bypassar o firewall
-
-    // Sempre tentamos carregar o usuário, mesmo sem token real
-    fetch('/api/auth/me')
-        .then(res => {
-          if (res.status === 401) {
-            // Se o servidor retornar 401, removemos os cookies e o estado
-            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            setIsAuthenticated(false);
-            return null;
-          }
-          if (!res.ok) throw new Error("Erro na resposta do servidor");
-          return res.json();
-        })
-        .then(data => {
-          if (data) setUser(data);
-        })
-        .catch(err => {
-          // Só logamos erros reais de rede ou servidor (não 401)
-          console.error("Erro ao carregar perfil:", err);
-        });
-
-    // 2. Função para detectar clique fora
+    // Detectar clique fora do menu de perfil
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsBoxOpen(false);
       }
     };
 
-    // Adiciona o evento ao carregar o componente
     document.addEventListener('mousedown', handleClickOutside);
-    
-    // Cleanup: remove o evento ao desmontar para evitar vazamento de memória
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [pathname]);
+  }, []);
+
+  // Formata o avatar com fallback
+  const userAvatar = user?.avatar || `https://ui-avatars.com/api/?name=${user?.nome || 'User'}&background=6366f1&color=fff`;
 
   const toggleTheme = (theme: 'light' | 'dark') => {
-    setUser({ ...user, preferences: { theme } });
+    // Aqui poderíamos chamar uma API para salvar a preferência
     document.documentElement.setAttribute('data-theme', theme);
   };
 
   const handleLogout = () => {
-    // Remove todos os cookies relacionados à autenticação
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    
-    setIsAuthenticated(false);
     setIsBoxOpen(false);
-    window.location.href = '/login';
+    logout();
   };
 
   return (
@@ -96,18 +55,18 @@ export default function Navbar() {
       <div className={styles.leftSection}>
         <Link href="/" className={styles.logo}>ScanCount AI</Link>
 
-        {projeto && (
+        {projeto && user && (
           <nav className={styles.breadcrumbs}>
             <span className={styles.breadcrumbSeparator}>/</span>
-            <Link href={`/${projeto.slug}`} className={styles.breadcrumbItem}>
+            <Link href={`/${user.username}/${projeto.slug}`} className={styles.breadcrumbItem}>
               {projeto.nome}
             </Link>
 
-            {desafio && (
+            {edicao && (
               <>
                 <span className={styles.breadcrumbSeparator}>/</span>
-                <Link href={`/${projeto.slug}/${desafio.slug}`} className={styles.breadcrumbItem}>
-                  {desafio.nome}
+                <Link href={`/${user.username}/${projeto.slug}/${edicao.slug}`} className={styles.breadcrumbItem}>
+                  {edicao.nome}
                 </Link>
               </>
             )}
@@ -115,7 +74,7 @@ export default function Navbar() {
             {turma && (
               <>
                 <span className={styles.breadcrumbSeparator}>/</span>
-                <Link href={`/${projeto.slug}/${desafio?.slug}/${turma.slug}`} className={`${styles.breadcrumbItem} ${styles.currentPath}`}>
+                <Link href={`/${user.username}/${projeto.slug}/${edicao?.slug}/${turma.slug}`} className={`${styles.breadcrumbItem} ${styles.currentPath}`}>
                   {turma.nome}
                 </Link>
               </>
@@ -126,7 +85,6 @@ export default function Navbar() {
 
       <div className={styles.navActions}>
         {isAuthenticated ? (
-          /* Adicionamos a ref no wrapper que contém o trigger e o box */
           <div className={styles.authenticatedWrapper} ref={containerRef}>
             <span className={`material-symbols-outlined ${styles.icon}`}>notifications</span>
             
@@ -135,7 +93,7 @@ export default function Navbar() {
               onClick={() => setIsBoxOpen(!isBoxOpen)}
             >
               <div className={styles.avatarContainer}>
-                <img src={user.avatar} alt="User Profile" />
+                <img src={userAvatar} alt="User Profile" />
               </div>
             </div>
 

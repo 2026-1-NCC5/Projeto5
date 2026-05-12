@@ -4,19 +4,20 @@ import styles from './TurmaCard.module.css';
 
 interface TurmaCardProps {
   turma: Turma;
+  username: string;
   slugProjeto: string;
-  slugDesafio: string;
+  slugEdicao: string;
 }
 
-export function TurmaCard({ turma, slugProjeto, slugDesafio }: TurmaCardProps) {
+export function TurmaCard({ turma, username, slugProjeto, slugEdicao }: TurmaCardProps) {
   return (
     <Link 
-      href={`/${slugProjeto}/${slugDesafio}/${turma.slug}`}
+      href={`/${username}/${slugProjeto}/${slugEdicao}/${turma.slug}`}
       className={styles.turmaCard}
     >
       <span className={styles.cardCodigo}>{turma.slug}</span>
       <h3 className={styles.cardTitle}>{turma.nome}</h3>
-      <p className={styles.cardStats}>{turma.quantidade} alunos inscritos</p>
+      <p className={styles.cardStats}>{turma.qtd_alunos} alunos inscritos</p>
     </Link>
   );
 }

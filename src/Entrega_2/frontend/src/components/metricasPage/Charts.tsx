@@ -32,17 +32,17 @@ export function PieChartCard({ data }: ChartsProps) {
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie
-              data={data.pizzaItems}
+              data={data.distribuicao || []}
               cx="50%"
               cy="50%"
               labelLine={false}
               outerRadius={100}
               fill="#8884d8"
-              dataKey="percentual"
-              nameKey="nome"
-              label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+              dataKey="porcentagem"
+              nameKey="item_nome"
+              label={({ name, value }) => `${name} ${(value || 0).toFixed(0)}%`}
             >
-              {data.pizzaItems.map((entry, index) => (
+              {(data.distribuicao || []).map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -80,7 +80,7 @@ export function LineChartCard({ data }: ChartsProps) {
       <div className={styles.chartArea}>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
-            data={data.progressao}
+            data={data.evolucao || []}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
@@ -93,7 +93,7 @@ export function LineChartCard({ data }: ChartsProps) {
             <Line 
               yAxisId="left"
               type="monotone" 
-              dataKey="itens" 
+              dataKey="kg" 
               name="Itens (kg)" 
               stroke="#8A74F8" 
               strokeWidth={3}

@@ -1,178 +1,225 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, Float, func
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float, DateTime, Table, UniqueConstraint, event
+from sqlalchemy.orm import relationship, validates
+from sqlalchemy.sql import func
+from app.core.database import Base
 from fastapi.security import OAuth2PasswordBearer
-from app.core.database import Base, engine
+import re
+import unicodedata
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+def slugify(text: str) -> str:
+    """Transforma 'Nome do Projeto' em 'nome-do-projeto'"""
+    if not text:
+        return ""
+    # Remove acentos
+    text = unicodedata.normalize('NFD', text)
+    text = text.encode('ascii', 'ignore').decode('utf-8')
+    # Lowercase e remove caracteres especiais
+    text = text.lower()
+    text = re.sub(r'[^\w\s-]', '', text)
+    # Espaços e hifens duplicados para um único hífen
+    text = re.sub(r'[-\s]+', '-', text).strip('-')
+    return text
 
-# --- USUÁRIO E ACESSO ---
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+
 class Usuario(Base):
     __tablename__ = "usuario"
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, nullable=False)
+    sobrenome = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
+    username = Column(String, unique=True, index=True, nullable=False)
+    celular = Column(String, nullable=True)
     senha = Column(String, nullable=False)
+    avatar = Column(String, nullable=True)
+    ativo = Column(Boolean, default=True)
     
-    preferencia = relationship("Preferencia", back_populates="usuario", uselist=False)
-    vinculos = relationship("VinculoProjeto", back_populates="usuario")
-    aluno = relationship("Aluno", back_populates="usuario", uselist=False)
+    projetos = relationship("VinculoProjeto", back_populates="usuario")
+    checkouts_realizados = relationship("Checkout", back_populates="adm")
 
-class Preferencia(Base):
-    __tablename__ = "preferencia"
-    id = Column(Integer, primary_key=True)
-    usuario_id = Column(Integer, ForeignKey("usuario.id"))
-    tema = Column(String, default="light") # light | dark
-    notificacoes_ativas = Column(Boolean, default=True)
+class Projeto(Base):
+    __tablename__ = "projeto"
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String)
+    slug = Column(String, index=True)
+    criador_id = Column(Integer, ForeignKey("usuario.id")) # Namespace do slug
+    descricao = Column(String, nullable=True)
+    imagem = Column(String, nullable=True)
+    status = Column(String, nullable=False)
+    display = Column(Boolean, default=True)
+    data_criacao = Column(DateTime(timezone=True), server_default=func.now())
     
-    usuario = relationship("Usuario", back_populates="preferencia")
+    # O slug é único para aquele criador
+    __table_args__ = (UniqueConstraint('criador_id', 'slug', name='_usuario_projeto_slug_uc'),)
+
+    usuarios = relationship("VinculoProjeto", back_populates="projeto")
+    edicoes = relationship("Edicao", back_populates="projeto")
+    criador = relationship("Usuario")
 
 class VinculoProjeto(Base):
     __tablename__ = "vinculo_projeto"
-    usuario_id = Column(Integer, ForeignKey("usuario.id"), primary_key=True)
-    projeto_id = Column(Integer, ForeignKey("projeto.id"), primary_key=True)
-    papel = Column(String) # PROFESSOR | ALUNO | ADM
+    id = Column(Integer, primary_key=True, index=True)
+    usuario_id = Column(Integer, ForeignKey("usuario.id"))
+    projeto_id = Column(Integer, ForeignKey("projeto.id"))
+    papel = Column(String) # 'adm' | 'membro'
     
-    usuario = relationship("Usuario", back_populates="vinculos")
-    projeto = relationship("Projeto", back_populates="vinculos")
+    usuario = relationship("Usuario", back_populates="projetos")
+    projeto = relationship("Projeto", back_populates="usuarios")
 
-# --- ORGANIZAÇÃO DO PROJETO ---
-class Projeto(Base):
-    __tablename__ = "projeto"
-    id = Column(Integer, primary_key=True)
-    nome = Column(String, nullable=False)
-    descricao = Column(String)
-    data_criacao = Column(DateTime, server_default=func.now())
+class Edicao(Base):
+    __tablename__ = "edicao"
+    id = Column(Integer, primary_key=True, index=True)
+    projeto_id = Column(Integer, ForeignKey("projeto.id"))
+    nome = Column(String)
+    slug = Column(String, index=True)
+    semestre = Column(String, nullable=True)
+    data_inicio = Column(DateTime, nullable=True)
+    data_fim = Column(DateTime, nullable=True)
+    min_alunos_por_grupo = Column(Integer, default=2)
+    max_alunos_por_grupo = Column(Integer, default=6)
     ativo = Column(Boolean, default=True)
     
-    vinculos = relationship("VinculoProjeto", back_populates="projeto")
-    desafios = relationship("Desafio", back_populates="projeto")
+    # O slug é único dentro do projeto
+    __table_args__ = (UniqueConstraint('projeto_id', 'slug', name='_projeto_edicao_slug_uc'),)
 
-class Desafio(Base):
-    __tablename__ = "desafio"
-    id = Column(Integer, primary_key=True)
-    projeto_id = Column(Integer, ForeignKey("projeto.id"))
-    semestre = Column(String)
-    data_inicio = Column(DateTime)
-    data_fim = Column(DateTime)
-    prazo_auto_grupo = Column(DateTime)
-    min_alunos_por_grupo = Column(Integer, default=1)
-    max_alunos_por_grupo = Column(Integer, default=10)
-    
-    projeto = relationship("Projeto", back_populates="desafios")
-    turmas = relationship("Turma", back_populates="desafio")
+    projeto = relationship("Projeto", back_populates="edicoes")
+    turmas = relationship("Turma", back_populates="edicao")
+    itens_permitidos = relationship("Catalogo", back_populates="edicao")
+    checkouts = relationship("Checkout", back_populates="edicao")
 
 class Turma(Base):
     __tablename__ = "turma"
-    id = Column(Integer, primary_key=True)
-    desafio_id = Column(Integer, ForeignKey("desafio.id"))
+    id = Column(Integer, primary_key=True, index=True)
+    edicao_id = Column(Integer, ForeignKey("edicao.id"))
     nome = Column(String)
+    slug = Column(String, index=True)
     
-    desafio = relationship("Desafio", back_populates="turmas")
-    alunos = relationship("Aluno", back_populates="turma")
+    # O slug é único dentro da edição
+    __table_args__ = (UniqueConstraint('edicao_id', 'slug', name='_edicao_turma_slug_uc'),)
 
-class Grupo(Base):
-    __tablename__ = "grupo"
-    id = Column(Integer, primary_key=True)
-    turma_id = Column(Integer, ForeignKey("turma.id"))
-    lider_id = Column(Integer, ForeignKey("aluno.id"))
-    nome_projeto = Column(String)
-    codigo_convite = Column(String, unique=True)
-    
-    alunos = relationship("Aluno", foreign_keys="[Aluno.grupo_id]", back_populates="grupo")
+    edicao = relationship("Edicao", back_populates="turmas")
+    alunos = relationship("Aluno", back_populates="turma")
 
 class Aluno(Base):
     __tablename__ = "aluno"
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=True) 
-    email_pre_cadastro = Column(String, nullable=True)
-    token_convite = Column(String, unique=True, nullable=True)
-    ra = Column(String, unique=True, index=True, nullable=True)
+    turma_id = Column(Integer, ForeignKey("turma.id"))
     usuario_id = Column(Integer, ForeignKey("usuario.id"), nullable=True)
-    turma_id = Column(Integer, ForeignKey("turma.id"), nullable=False)
+    nome = Column(String)
+    email = Column(String, unique=True)
+    ra = Column(String, unique=True)
+    
+    turma = relationship("Turma", back_populates="alunos")
     grupo_id = Column(Integer, ForeignKey("grupo.id"), nullable=True)
-    matricula = Column(String)
+    grupo = relationship("Grupo", back_populates="alunos")
+    convites_enviados = relationship("ConviteGrupo", foreign_keys="[ConviteGrupo.criador_id]", back_populates="criador")
+    convites_recebidos = relationship("ConviteGrupo", foreign_keys="[ConviteGrupo.convidado_id]", back_populates="convidado")
 
-    usuario = relationship("Usuario", back_populates="aluno")
+class Grupo(Base):
+    __tablename__ = "grupo"
+    id = Column(Integer, primary_key=True, index=True)
+    turma_id = Column(Integer, ForeignKey("turma.id"))
+    nome = Column(String)
+    
+    alunos = relationship("Aluno", back_populates="grupo")
     turma = relationship("Turma")
-    grupo = relationship("Grupo", foreign_keys=[grupo_id], back_populates="alunos")
+    coletas = relationship("Registro", back_populates="grupo")
 
 class ConviteGrupo(Base):
-    __tablename__ = "convites_grupo"
-
+    __tablename__ = "convite_grupo" 
     id = Column(Integer, primary_key=True, index=True)
-    grupo_id = Column(Integer, ForeignKey("grupo.id"), nullable=False)
-    aluno_id = Column(Integer, ForeignKey("aluno.id"), nullable=False)
-    status = Column(String, default="pendente")
-    data_envio = Column(DateTime, default=func.now())
-
+    criador_id = Column(Integer, ForeignKey("aluno.id"))
+    convidado_id = Column(Integer, ForeignKey("aluno.id"))
+    grupo_id = Column(Integer, ForeignKey("grupo.id"))
+    data_criacao = Column(DateTime(timezone=True), server_default=func.now())
+    status = Column(String, default="pendente") ##pendente/aceito
+    
+    criador = relationship("Aluno", foreign_keys=[criador_id], back_populates="convites_enviados")
+    convidado = relationship("Aluno", foreign_keys=[convidado_id], back_populates="convites_recebidos")
     grupo = relationship("Grupo")
-    aluno = relationship("Aluno", backref="convites_recebidos")
-    
-class Convite(Base):
-    __tablename__ = "convite"
 
-    id = Column(Integer, primary_key=True)
-    email_pre_cadastro = Column(String, nullable=False)
-    turma_id = Column(Integer, ForeignKey("turma.id"), nullable=False)
-    token_convite = Column(String, nullable=False)
-    utilizado = Column(Boolean, default=False)
-    data_criacao = Column(DateTime, server_default=func.now())
-    
-# --- FINANCEIRO E DOAÇÕES ---
-class ArrecadacaoDinheiro(Base):
-    __tablename__ = "arrecadacao_dinheiro"
-    id = Column(Integer, primary_key=True)
-    aluno_id = Column(Integer, ForeignKey("aluno.id"))
-    valor = Column(Float)
-    origem = Column(String)
-    data = Column(DateTime, server_default=func.now())
-
-class Doacao(Base):
-    __tablename__ = "doacao"
-    id = Column(Integer, primary_key=True)
-    aluno_id = Column(Integer, ForeignKey("aluno.id"))
-    tipo_origem = Column(String) # DIRETA | COMPRA_ARRECADACAO
-    data_registro = Column(DateTime, server_default=func.now())
-    
-    itens = relationship("ItemDoado", back_populates="doacao")
-
-class ItemDoado(Base):
-    __tablename__ = "item_doado"
-    id = Column(Integer, primary_key=True)
-    doacao_id = Column(Integer, ForeignKey("doacao.id"))
-    codigo_barras = Column(String, ForeignKey("catalogo_produto.codigo_barras"))
-    quantidade = Column(Integer)
-    
-    doacao = relationship("Doacao", back_populates="itens")
-
-# --- CATÁLOGO E IA ---
-class ItemPermitido(Base):
-    __tablename__ = "item_permitido"
-    id = Column(Integer, primary_key=True)
-    desafio_id = Column(Integer, ForeignKey("desafio.id"))
+class Catalogo(Base):
+    __tablename__ = "catalogo"
+    id = Column(Integer, primary_key=True, index=True)
+    edicao_id = Column(Integer, ForeignKey("edicao.id"))
     nome = Column(String)
-    unidade_medida = Column(String)
-
-    desafio = relationship("Desafio")
-
-class CatalogoProduto(Base):
-    __tablename__ = "catalogo_produto"
-    codigo_barras = Column(String, primary_key=True) # EAN-13
-    item_id = Column(Integer, ForeignKey("item_permitido.id"))
-    cadastrado_por_aluno_id = Column(Integer, ForeignKey("aluno.id"))
-    marca = Column(String)
-    peso_volume = Column(Float)
+    label = Column(String)
+    preco = Column(Float)
+    peso = Column(Float)
+    largura = Column(Float)
+    comprimento = Column(Float)
     
-    item_permitido = relationship("ItemPermitido")
-    criador = relationship("Aluno", foreign_keys=[cadastrado_por_aluno_id])
+    edicao = relationship("Edicao", back_populates="itens_permitidos")
+    itens = relationship("RegistroItem", back_populates="catalogo")
+    checkout_itens = relationship("CheckoutItem", back_populates="catalogo")
 
-class ReconhecimentoIA(Base):
-    __tablename__ = "reconhecimento_ia"
-    id = Column(Integer, primary_key=True)
-    usuario_id = Column(Integer, ForeignKey("usuario.id")) # ADM
-    item_id = Column(Integer, ForeignKey("item_permitido.id"))
-    quantidade_contada = Column(Integer)
-    data_apuracao = Column(DateTime, server_default=func.now())
+class Registro(Base):
+    __tablename__ = "registro"
+    id = Column(Integer, primary_key=True, index=True)
+    edicao_id = Column(Integer, ForeignKey("edicao.id"))
+    grupo_id = Column(Integer, ForeignKey("grupo.id"))
+    aluno_id = Column(Integer, ForeignKey("aluno.id"))
+    data_hora = Column(DateTime(timezone=True), server_default=func.now())
+    tipo = Column(String)
+    
+    edicao = relationship("Edicao")
+    grupo = relationship("Grupo", back_populates="coletas")
+    aluno = relationship("Aluno")
+    itens = relationship("RegistroItem", back_populates="registro")
+    entrada_dinheiro = relationship("RegistroDinheiro", back_populates="registro", uselist=False)
+    resgate_dinheiro = relationship("ResgateDinheiro", back_populates="registro", uselist=False)
 
-# Cria as tabelas associadas aos modelos se elas ainda não existirem
-Base.metadata.create_all(bind=engine)
+class RegistroItem(Base):
+    __tablename__ = "registro_itens"
+    id = Column(Integer, primary_key=True, index=True)
+    registro_id = Column(Integer, ForeignKey("registro.id"))
+    item_id = Column(Integer, ForeignKey("catalogo.id"))
+    
+    registro = relationship("Registro", back_populates="itens")
+    catalogo = relationship("Catalogo", back_populates="itens")
+
+class RegistroDinheiro(Base):
+    __tablename__ = "registro_dinheiro"
+    id = Column(Integer, primary_key=True, index=True)
+    registro_id = Column(Integer, ForeignKey("registro.id"))
+    valor = Column(Float)
+
+    registro = relationship("Registro", back_populates="entrada_dinheiro")
+
+class ResgateDinheiro(Base):
+    __tablename__ = "resgate_dinheiro"
+    id = Column(Integer, primary_key=True, index=True)
+    registro_id = Column(Integer, ForeignKey("registro.id"))
+    valor = Column(Float)
+
+    registro = relationship("Registro", back_populates="resgate_dinheiro")
+
+class Checkout(Base):
+    __tablename__ = "checkout"
+    id = Column(Integer, primary_key=True, index=True)
+    data_criacao = Column(DateTime(timezone=True), server_default=func.now())
+    edicao_id = Column(Integer, ForeignKey("edicao.id"))
+    adm_id = Column(Integer, ForeignKey("usuario.id"))
+
+    edicao = relationship("Edicao", back_populates="checkouts")
+    adm = relationship("Usuario", back_populates="checkouts_realizados")
+    itens = relationship("CheckoutItem", back_populates="checkout")
+
+class CheckoutItem(Base):
+    __tablename__ = "checkout_itens"
+    id = Column(Integer, primary_key=True, index=True)
+    checkout_id = Column(Integer, ForeignKey("checkout.id"))
+    item_id = Column(Integer, ForeignKey("catalogo.id"))
+    
+    checkout = relationship("Checkout", back_populates="itens")
+    catalogo = relationship("Catalogo", back_populates="checkout_itens")
+
+# Listeners para gerar slugs automaticamente
+def auto_slug(mapper, connection, target):
+    if hasattr(target, 'nome') and target.nome:
+        target.slug = slugify(target.nome)
+
+# Registrando os eventos para cada classe que usa slug automático
+for cls in [Projeto, Edicao, Turma]:
+    event.listen(cls, 'before_insert', auto_slug)
+    event.listen(cls, 'before_update', auto_slug)

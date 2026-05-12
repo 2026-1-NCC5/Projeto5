@@ -8,15 +8,18 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import Navbar from '@/components/Navbar/Navbar';
 import { ProjectProvider } from '@/contexts/ProjectContext';
 
-// Inicialização do MSW para ambiente de desenvolvimento[cite: 1, 5]
-if (process.env.NODE_ENV === 'development') {
-  if (typeof window !== 'undefined') {
+/* 
+// Inicialização do MSW para ambiente de desenvolvimento (DESATIVADO PARA TESTES NO BACKEND REAL)
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  if (!(window as any).mswStarted) {
     const { worker } = require('@/mocks/browser');
     worker.start({
       onUnhandledRequest: 'bypass',
-    });
+    }).catch(console.error);
+    (window as any).mswStarted = true;
   }
 }
+*/
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

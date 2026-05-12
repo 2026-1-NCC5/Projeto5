@@ -20,13 +20,13 @@ export function SynthesisTable({ data }: SynthesisTableProps) {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, idx) => {
-              const progress = Math.min(Math.round((item.realizadoEdicao / item.metaAlunos) * 100), 100);
+            {data?.map((item, idx) => {
+              const progress = Math.min(Math.round((item.realizado_edicao / item.meta_alunos) * 100), 100);
               return (
                 <tr key={idx}>
-                  <td className={styles.itemName}>{item.itemNome}</td>
-                  <td className={styles.center}>{item.metaAlunos}</td>
-                  <td className={styles.center}>{item.realizadoEdicao}</td>
+                  <td className={styles.itemName}>{item.item_nome}</td>
+                  <td className={styles.center}>{item.meta_alunos}</td>
+                  <td className={styles.center}>{item.realizado_edicao}</td>
                   <td>
                     <div className={styles.progressContainer}>
                       <div className={styles.progressBar}>

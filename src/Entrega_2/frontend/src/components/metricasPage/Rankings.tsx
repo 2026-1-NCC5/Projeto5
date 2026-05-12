@@ -9,7 +9,7 @@ interface RankingsProps {
 }
 
 export function Rankings({ data, limit }: RankingsProps) {
-  const { slug_projeto, slug_desafio } = useParams();
+  const { username, slug_projeto, slug_edicao } = useParams();
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', { 
@@ -19,10 +19,13 @@ export function Rankings({ data, limit }: RankingsProps) {
     }).format(value);
   };
 
-  const topGrupos = limit ? data.rankingGrupos.slice(0, limit) : data.rankingGrupos;
-  const topTurmas = limit ? data.rankingTurmas.slice(0, limit) : data.rankingTurmas;
+  const top_grupos_raw = data.ranking_grupos || [];
+  const top_turmas_raw = data.ranking_turmas || [];
 
-  const rankingFullUrl = `/projeto/${slug_projeto}/desafios/${slug_desafio}/metricas/ranking`;
+  const topGrupos = limit ? top_grupos_raw.slice(0, limit) : top_grupos_raw;
+  const topTurmas = limit ? top_turmas_raw.slice(0, limit) : top_turmas_raw;
+
+  const rankingFullUrl = `/${username}/${slug_projeto}/${slug_edicao}/metricas/ranking`;
   const isDashboard = limit !== undefined;
 
   return (
@@ -51,8 +54,8 @@ export function Rankings({ data, limit }: RankingsProps) {
                     {grupo.posicao === 1 ? '🥇' : grupo.posicao === 2 ? '🥈' : grupo.posicao === 3 ? '🥉' : `${grupo.posicao}º`}
                   </td>
                   <td className={styles.nameCol}>{grupo.nome}</td>
-                  <td>{grupo.quilos.toFixed(1)}</td>
-                  <td>{formatCurrency(grupo.dinheiro)}</td>
+                  <td>{(grupo.kg || 0).toFixed(1)}</td>
+                  <td>{formatCurrency(grupo.valor || 0)}</td>
                 </tr>
               ))}
             </tbody>
@@ -89,8 +92,8 @@ export function Rankings({ data, limit }: RankingsProps) {
                     {turma.posicao === 1 ? '🥇' : turma.posicao === 2 ? '🥈' : turma.posicao === 3 ? '🥉' : `${turma.posicao}º`}
                   </td>
                   <td className={styles.nameCol}>{turma.nome}</td>
-                  <td>{turma.quilos.toFixed(1)}</td>
-                  <td>{formatCurrency(turma.dinheiro)}</td>
+                  <td>{(turma.kg || 0).toFixed(1)}</td>
+                  <td>{formatCurrency(turma.valor || 0)}</td>
                 </tr>
               ))}
             </tbody>

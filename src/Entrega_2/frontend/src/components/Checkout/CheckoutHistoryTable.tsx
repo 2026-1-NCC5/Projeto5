@@ -24,9 +24,9 @@ export function CheckoutHistoryTable({ sessions }: CheckoutHistoryTableProps) {
               sessions.map((session) => (
                 <tr key={session.id}>
                   <td className={styles.sessionId}>{session.id}</td>
-                  <td>{new Date(session.data).toLocaleString('pt-BR')}</td>
-                  <td className={styles.center}>{session.totalItens}</td>
-                  <td>{session.responsavel}</td>
+                  <td>{new Date(session.data || (session as any).data_criacao).toLocaleString('pt-BR')}</td>
+                  <td className={styles.center}>{session.total_itens}</td>
+                  <td>{session.responsavel?.nome || 'Administrador'}</td>
                 </tr>
               ))
             ) : (

@@ -1,5 +1,5 @@
 import { Item } from "@/types";
-import { mockItemsBase } from "@/mocks/list/item";
+import { mockItemsBase } from "@/mocks/data";
 
 export class MeasurementService {
   private ppcm: number = 0; // Pixels Por Centímetro

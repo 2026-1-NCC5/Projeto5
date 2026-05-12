@@ -33,13 +33,13 @@ export default function PerfilBox({ user, onLogout, onThemeChange }: PerfilBoxPr
         <div className={styles.toggleButtons}>
           <button 
             onClick={() => onThemeChange('light')}
-            className={`${styles.themeBtn} ${user.preferences.theme === 'light' ? styles.active : ''}`}
+            className={`${styles.themeBtn} ${user.preferences?.theme === 'light' ? styles.active : ''}`}
           >
             <span className="material-symbols-outlined">light_mode</span>
           </button>
           <button 
             onClick={() => onThemeChange('dark')}
-            className={`${styles.themeBtn} ${user.preferences.theme === 'dark' ? styles.active : ''}`}
+            className={`${styles.themeBtn} ${user.preferences?.theme === 'dark' ? styles.active : ''}`}
           >
             <span className="material-symbols-outlined">dark_mode</span>
           </button>
