@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useProject } from '@/contexts/ProjectContext';
 import { ProjetoTipo, Projeto } from '@/types';
-import { AdminListManager } from '@/components/ProjectInfo/AdminListManager';
+// import { AdminListManager } from '@/components/ProjectInfo/AdminListManager';
 import styles from './page.module.css';
 
 import { useProjetos } from '@/hooks/useProjetos';
@@ -130,10 +130,12 @@ export default function InfoProjetoPage() {
           </div>
         </section>
 
+        {/* 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Gestão de Acesso (Admins)</h2>
           <AdminListManager admins={admins} onUpdate={setAdmins} />
-        </section>
+        </section> 
+        */}
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Status e Visibilidade</h2>
