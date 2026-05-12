@@ -1,118 +1,190 @@
-```sh
-Utilize o site <https://www.toptal.com/developers/gitignore> para gerar seu arquivo gitignore e apague este campo.
-
-Vide tutoriais do PI.
-```
-
 # FECAP - Fundação de Comércio Álvares Penteado
 
 <p align="center">
 <a href= "https://www.fecap.br/"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhZPrRa89Kma0ZZogxm0pi-tCn_TLKeHGVxywp-LXAFGR3B1DPouAJYHgKZGV0XTEf4AE&usqp=CAU" alt="FECAP - Fundação de Comércio Álvares Penteado" border="0"></a>
 </p>
 
-# Nome do Projeto
+# ScanCount AI - Gerenciamento de Arrecadações
 
-## Nome do Grupo
+## Integrantes
+* <a href="#">Duda Lucena Miguel</a>
+* <a href="#">Caroliny Rossi Bittencourt</a>
+* <a href="#">Murilo de Souza Vieira</a>
+* <a href="#">Rafael Alves dos Santos Guimarães</a>
 
-## Integrantes: <a href="https://www.linkedin.com/in/victorbarq/">Goku Sayajin</a>, <a href="https://www.linkedin.com/in/victorbarq/">Saitama One</a>, <a href="https://www.linkedin.com/in/victorbarq/">Ikki de Fenix</a>, <a href="https://www.linkedin.com/in/victorbarq/">Yusuke Urameshi</a>, <a href="https://www.linkedin.com/in/victorbarq/">Roronoa Zoro</a>
-
-## Professores Orientadores: <a href="https://www.linkedin.com/in/victorbarq/">Dr. Victor Von Doom</a>, <a href="https://www.linkedin.com/in/victorbarq/">Me. Saitama</a>, <a href="https://www.linkedin.com/in/victorbarq/">Dr. Strange</a>, <a href="https://www.linkedin.com/in/victorbarq/">Me. Yoda</a>, <a href="https://www.linkedin.com/in/victorbarq/">Dr. Gero</a>
+## Professores Orientadores
+* <a href="#">Rafael Diogo Rossetti</a>
+* <a href="#">Rodnil da Silva Moreira Lisboa</a>
+* <a href="#">Rodrigo da Rosa</a>
+* <a href="#">Marcos Minoru Nakatsugawa</a>
+* <a href="#">Victor Rosetti de Quiroz</a>
 
 ## Descrição
 
 <p align="center">
-<img src="https://pix4free.org/assets/library/2021-01-20/originals/game.jpg" alt="NOME DO JOGO" border="0">
-  Game by <a href="http://www.nyphotographic.com/">Nick Youngson</a> <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> <a href="http://pix4free.org/">Pix4free</a>
+<img src="imagens/logo_projeto.png" alt="ScanCount AI" border="0">
 </p>
 
+O **ScanCount AI** é uma solução de Visão Computacional projetada para transformar a logística de arrecadações em campanhas sociais e gincanas escolares. Utilizando o modelo **YOLOv8** (You Only Look Once), o sistema realiza a detecção e contagem automática de itens em tempo real através de uma interface intuitiva, garantindo precisão e transparência nos dados coletados.
 
-De um a dois parágrafos sobre o que é seu projeto e o que ele faz.
-<br><br>
-Meu projeto ajuda estudantes FECAP a configurarem seus githubs.
-<br><br>
-May the force be with you!
-<br><br>
+O projeto integra um backend robusto em FastAPI com um dashboard moderno em Next.js, permitindo o acompanhamento ao vivo de métricas, rankings de grupos e auditoria de coletas.
 
 ## 🛠 Estrutura de pastas
 
--Raiz<br>
-|<br>
-|-->documentos<br>
-  &emsp;|-->antigos<br>
-  &emsp;|Documentação.docx<br>
-|-->executáveis<br>
-  &emsp;|-->windows<br>
-  &emsp;|-->android<br>
-  &emsp;|-->HTML<br>
-|-->imagens<br>
-|-->src<br>
-  &emsp;|-->Backend<br>
-  &emsp;|-->Frontend<br>
-|readme.md<br>
+├───documentos
+│   ├───Entrega 1
+│   │   ├───Inteligência Artifical e Aprendizado de Máquina
+│   │   ├───Projeto Interdisciplinar Inteligência Artificial
+│   │   ├───Psicologia, Liderança e Soft Skills
+│   │   ├───Sistemas Operacionais e Computação em Nuvem
+│   │   └───Álgebra Linear, Vetores e Geometria Analítica
+│   └───Entrega 2
+│       ├───Disciplina 4
+│       ├───Psicologia, Liderança e Softskills
+│       ├───Sistemas Operacionais e Computação em Nuvem
+│       └───Álgebra Linear, Vetores e Geometria Analítica
+│           └───imgs
+├───imagens
+└───src
+    ├───Entrega 1
+    │   ├───Backend
+    │   └───Frontend
+    │       ├───dataset
+    │       │   ├───images
+    │       │   └───labels
+    │       └───runs
+    │           └───detect
+    │               ├───train
+    │               ├───train10
+    │               ├───train11
+    │               │   └───weights
+    │               ├───train12
+    │               │   └───weights
+    │               ├───train2
+    │               ├───train3
+    │               ├───train4
+    │               ├───train5
+    │               ├───train6
+    │               ├───train7
+    │               ├───train8
+    │               └───train9
+    └───Entrega_2
+        ├───Backend
+        │   └───app
+        │       ├───api
+        │       ├───core
+        │       ├───models
+        │       └───schemas
+        └───frontend
+            ├───public
+            │   └───models
+            └───src
+                ├───app
+                │   ├───(auth)
+                │   │   ├───cadastro
+                │   │   └───login
+                │   └───(dashboard)
+                │       ├───perfil
+                │       └───[username]
+                │           ├───projetos
+                │           │   └───novo
+                │           └───[slug_projeto]
+                │               ├───edicoes
+                │               │   └───nova_edicao
+                │               ├───informacoes_do_projeto
+                │               └───[slug_edicao]
+                │                   ├───(adm-feature)
+                │                   │   ├───checkout
+                │                   │   │   └───scanner
+                │                   │   ├───informacoes
+                │                   │   ├───metricas
+                │                   │   │   └───ranking
+                │                   │   ├───turmas
+                │                   │   └───[slug_turma]
+                │                   │       ├───alunos
+                │                   │       └───grupos
+                │                   └───(member-feature)
+                │                       ├───home
+                │                       └───registrar_coleta
+                ├───components
+                │   ├───alunosPage
+                │   ├───Checkout
+                │   ├───CreateTurmaCard
+                │   ├───EdicaoCard
+                │   ├───gruposPage
+                │   ├───ImportStudentsPanel
+                │   ├───memberHome
+                │   ├───metricasPage
+                │   ├───Navbar
+                │   ├───PerfilBox
+                │   ├───ProjectInfo
+                │   ├───ProjetoCard
+                │   ├───ResourceNotFound
+                │   ├───Sidebar
+                │   ├───StudentRegistrationPanel
+                │   └───TurmaCard
+                ├───contexts
+                ├───hooks
+                ├───mocks
+                │   ├───data
+                │   └───handlers
+                ├───services
+                ├───types
+                └───utils
 
-A pasta raiz contem dois arquivos que devem ser alterados:
+A pasta raiz contém a organização principal do projeto:
 
-<b>README.MD</b>: Arquivo que serve como guia e explicação geral sobre seu projeto. O mesmo que você está lendo agora.
+<b>documentos</b>: Toda a documentação do projeto, incluindo escopo e relatórios.
 
-Há também 4 pastas que seguem da seguinte forma:
+<b>imagens</b>: Ativos visuais e capturas de tela do sistema em funcionamento.
 
-<b>documentos</b>: Toda a documentação estará nesta pasta.
+<b>src</b>: Pasta principal contendo o código-fonte dividido por fases de entrega (Entrega 1 e Entrega 2), com subpastas para o Backend (FastAPI) e Frontend (Next.js).
 
-<b>executáveis</b>: Binários e executáveis do projeto devem estar nesta pasta.
+## 🛠 Instalação e Configuração
+O projeto está dividido em duas partes principais: o **Backend** (API e IA) e o **Frontend** (Interface do Usuário).
 
-<b>imagens</b>: Imagens do sistema
+### 1. Backend (FastAPI + YOLOv8)
+Navegue até a pasta do backend para configurar o ambiente Python:
 
-<b>src</b>: Pasta que contém o código fonte.
-
-## 🛠 Instalação
-
-<b>Android:</b>
-
-Faça o Download do JOGO.apk no seu celular.
-Execute o APK e siga as instruções de seu telefone.
-
-```sh
-Coloque código do prompt de comnando se for necessário
+```bash
+cd src/Entrega_2/Backend
+# Recomendamos o uso de um ambiente virtual
+python -m venv venv
+./venv/Scripts/activate  # Windows
+# Instalar dependências
+pip install -r requirements.txt
+# Iniciar o servidor
+uvicorn app.main:app --reload
 ```
+*O servidor estará disponível em: `http://localhost:8000`*
 
-<b>Windows:</b>
+### 2. Frontend (Next.js 15)
+Navegue até a pasta do frontend para instalar as dependências do Node.js:
 
-Não há instalação! Apenas executável!
-Encontre o JOGO.exe na pasta executáveis e execute-o como qualquer outro programa.
-
-```sh
-Coloque código do prompt de comnando se for necessário
+```bash
+cd src/Entrega_2/frontend
+# Instalar dependências
+npm install
+# Iniciar o servidor de desenvolvimento
+npm run dev
 ```
+*A interface estará disponível em: `http://localhost:3000`*
 
-<b>HTML:</b>
-
-Não há instalação!
-Encontre o index.html na pasta executáveis e execute-o como uma página WEB (através de algum browser).
-
-## 💻 Configuração para Desenvolvimento
-
-Descreva como instalar todas as dependências para desenvolvimento e como rodar um test-suite automatizado de algum tipo. Se necessário, faça isso para múltiplas plataformas.
-
-Para abrir este projeto você necessita das seguintes ferramentas:
-
--<a href="https://godotengine.org/download">GODOT</a>
-
-```sh
-make install
-npm test
-Coloque código do prompt de comnando se for necessário
-```
+## 💻 Tecnologias Utilizadas
+- **Visão Computacional**: YOLOv8 (Ultralytics) via exportação ONNX.
+- **Backend**: FastAPI (Python), SQLAlchemy, SQLite.
+- **Frontend**: Next.js 15, React 19, TailwindCSS, Recharts.
+- **IA/ML Integration**: ONNX Runtime Web para inferência eficiente no navegador.
 
 ## 📋 Licença/License
-Utilize o link <https://chooser-beta.creativecommons.org/> para fazer uma licença CC BY 4.0.
+<a href="https://github.com/2026-1-NCC5/Projeto5">ScanCount-AI</a> © 2026 by <a href="https://github.com/2026-1-NCC5/Projeto5">CDMR</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">
 
 ## 🎓 Referências
+Aqui estão as principais referências e ferramentas utilizadas no desenvolvimento deste projeto:
 
-Aqui estão as referências usadas no projeto.
-
-1. <https://github.com/iuricode/readme-template>
-2. <https://github.com/gabrieldejesus/readme-model>
-3. <https://chooser-beta.creativecommons.org/>
-4. <https://freesound.org/>
-5. <https://www.toptal.com/developers/gitignore>
-6. Músicas por: <a href="https://freesound.org/people/DaveJf/sounds/616544/"> DaveJf </a> e <a href="https://freesound.org/people/DRFX/sounds/338986/"> DRFX </a> ambas com Licença CC 0.
+1. [YOLOv8 by Ultralytics](https://ultralytics.com/yolov8)
+2. [FastAPI Documentation](https://fastapi.tiangolo.com/)
+3. [Next.js Documentation](https://nextjs.org/docs)
+4. [ONNX Runtime Web](https://onnxruntime.ai/docs/tutorials/web/)
+5. [Recharts - Composable Charting Library](https://recharts.org/)
+6. [FECAP - Fundação de Comércio Álvares Penteado](https://www.fecap.br/)
