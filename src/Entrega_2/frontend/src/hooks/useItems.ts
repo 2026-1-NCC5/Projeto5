@@ -12,7 +12,7 @@ export function useItems() {
     setIsLoading(true);
     setError(null);
     try {
-      const url = `${username}/${slugProjeto}/${slugEdicao}/catalogo`;
+      const url = `${username}/${slugProjeto}/${slugEdicao}/catalogo/`;
       const res = await apiFetch(url);
       if (!res.ok) throw new Error('Falha ao carregar catálogo de itens');
       const data = await res.json();
@@ -26,7 +26,7 @@ export function useItems() {
 
   const addItem = async (username: string, slugProjeto: string, slugEdicao: string, dados: Partial<Item>) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
@@ -43,7 +43,7 @@ export function useItems() {
 
   const updateItem = async (username: string, slugProjeto: string, slugEdicao: string, itemId: number, dados: Partial<Item>) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo/${itemId}`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo/${itemId}/`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
@@ -60,7 +60,7 @@ export function useItems() {
 
   const deleteItem = async (username: string, slugProjeto: string, slugEdicao: string, itemId: number) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo/${itemId}`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/catalogo/${itemId}/`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Erro ao excluir item do catálogo');

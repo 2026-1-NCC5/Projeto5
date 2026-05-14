@@ -43,7 +43,7 @@ export function useRegistros() {
 
   const addRegistro = async (username: string, slugProjeto: string, slugEdicao: string, dados: { aluno_id: number, grupo_id: number, tipo: string }) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
@@ -58,7 +58,7 @@ export function useRegistros() {
 
   const addItemAoRegistro = async (username: string, slugProjeto: string, slugEdicao: string, registroId: number, itemId: number) => {
     try {
-      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}/itens?item_id=${itemId}`;
+      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}/itens/?item_id=${itemId}`;
       const res = await apiFetch(url, { method: 'POST' });
       if (!res.ok) throw new Error('Erro ao adicionar item ao registro');
       return await res.json();
@@ -70,7 +70,7 @@ export function useRegistros() {
 
   const addDinheiroAoRegistro = async (username: string, slugProjeto: string, slugEdicao: string, registroId: number, valor: number) => {
     try {
-      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}/dinheiro?valor=${valor}`;
+      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}/dinheiro/?valor=${valor}`;
       const res = await apiFetch(url, { method: 'POST' });
       if (!res.ok) throw new Error('Erro ao registrar valor em dinheiro');
       return await res.json();
@@ -82,7 +82,7 @@ export function useRegistros() {
 
   const deleteRegistro = async (username: string, slugProjeto: string, slugEdicao: string, registroId: number) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros/${registroId}/`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Erro ao excluir registro');
@@ -96,7 +96,7 @@ export function useRegistros() {
 
   const deleteItemRegistro = async (username: string, slugProjeto: string, slugEdicao: string, itemRegistroId: number) => {
     try {
-      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros/itens/${itemRegistroId}`, {
+      const res = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/registros/itens/${itemRegistroId}/`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error('Erro ao remover item');
@@ -109,7 +109,7 @@ export function useRegistros() {
 
   const updateItemRegistro = async (username: string, slugProjeto: string, slugEdicao: string, itemRegistroId: number, novoItemId: number) => {
     try {
-      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/itens/${itemRegistroId}?novo_item_id=${novoItemId}`;
+      const url = `${username}/${slugProjeto}/${slugEdicao}/registros/itens/${itemRegistroId}/?novo_item_id=${novoItemId}`;
       const res = await apiFetch(url, { method: 'PUT' });
       if (!res.ok) throw new Error('Erro ao editar item do registro');
       return await res.json();

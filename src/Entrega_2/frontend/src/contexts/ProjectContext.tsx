@@ -70,7 +70,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         let realUsername = userUsername;
 
         // 1. Fetch Projeto
-        const resProj = await apiFetch(`${username}/projetos`);
+        const resProj = await apiFetch(`${username}/projetos/`);
         
         if (resProj.status === 403) {
           setError({ 
@@ -122,7 +122,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
 
             // 2. Fetch Edição if slug exists
             if (slugEdicao) {
-              const resDes = await apiFetch(`${username}/${slugProjeto}/edicoes`);
+              const resDes = await apiFetch(`${username}/${slugProjeto}/edicoes/`);
               if (resDes.ok && resDes.headers.get('content-type')?.includes('application/json')) {
                 const edicoes: Edicao[] = await resDes.json();
                 const currentEdicao = edicoes.find(e => e.slug === slugEdicao);
@@ -141,7 +141,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
 
                 // 3. Fetch Turma if slug exists
                 if (slugTurma) {
-                  const resTur = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/turmas`);
+                  const resTur = await apiFetch(`${username}/${slugProjeto}/${slugEdicao}/turmas/`);
                   if (resTur.ok && resTur.headers.get('content-type')?.includes('application/json')) {
                     const turmas: Turma[] = await resTur.json();
                     const currentTurma = turmas.find(t => t.slug === slugTurma);
