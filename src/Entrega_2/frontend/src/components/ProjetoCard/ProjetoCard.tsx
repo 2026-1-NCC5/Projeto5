@@ -12,7 +12,7 @@ export default function ProjetoCard({ projeto }: { projeto: Projeto }) {
     <div className={styles.card}>
       <Link href={hrefLink} className={styles.linkWrapper}>
         <div className={styles.banner}>
-          <img src={projeto.imagem} alt={projeto.nome} className={styles.image} />
+          <img src={projeto.imagem || projeto?.imagem || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3'} alt={projeto.nome} className={styles.image} />
           <div className={`${styles.roleBadge} ${projeto.papel === 'adm' ? styles.adm : styles.membro}`}>
             {projeto.papel?.toUpperCase() || 'MEMBRO'}
           </div>
