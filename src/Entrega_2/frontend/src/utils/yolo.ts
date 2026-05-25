@@ -1,12 +1,12 @@
 import { Tensor } from 'onnxruntime-web';
 
 export const LABELS = [
-  'pacote_de_arroz', // 0
-  'pacote_de_feijao', // 1
-  'pacote_de_macarrão', // 2
-  'pacote_de_fuba', // 3
-  'pacote_de_acucar', // 4
-  'garrafa_de_oleo' // 5
+  'garrafa de oleo',   // 0
+  'pacote de acucar',  // 1
+  'pacote de arroz',   // 2
+  'pacote de feijão',  // 3
+  'pacote de fuba',    // 4
+  'pacote de macarrão' // 5
 ];
 
 /**

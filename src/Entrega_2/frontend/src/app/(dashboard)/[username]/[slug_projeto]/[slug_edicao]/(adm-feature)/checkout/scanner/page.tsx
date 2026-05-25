@@ -8,14 +8,26 @@ import { ScannedItemsLog } from '@/components/Checkout/ScannedItemsLog';
 import { ItemsSummary } from '@/components/Checkout/ItemsSummary';
 import { CalibrationPanel } from '@/components/Checkout/CalibrationPanel';
 import { useCheckout } from '@/hooks/useCheckout';
+import { useItems } from '@/hooks/useItems';
 import { useProject } from '@/contexts/ProjectContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function CheckoutPage() {
   const params = useParams();
   const router = useRouter();
+
+  const { items, fetchCatalogo } = useItems();
+
+  useEffect(() => {
+    fetchCatalogo(
+      params.username as string,
+      params.slug_projeto as string,
+      params.slug_edicao as string
+    );
+  }, [fetchCatalogo, params.username, params.slug_projeto, params.slug_edicao]);
+
   const {
     itens,
     engineStatus,
@@ -29,7 +41,7 @@ export default function CheckoutPage() {
     videoRef,
     canvasRef,
     handleCancel
-  } = useCheckoutAI();
+  } = useCheckoutAI(items);
 
   const { user } = useProject();
   const { submitConferencia } = useCheckout();

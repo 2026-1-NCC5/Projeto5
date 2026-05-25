@@ -6,20 +6,8 @@ import './globals.css';
 import styles from './layout.module.css';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Navbar from '@/components/Navbar/Navbar';
-import { ProjectProvider } from '@/contexts/ProjectContext';
+import { ProjectProvider, ProjectContentGuard } from '@/contexts/ProjectContext';
 
-/* 
-// Inicialização do MSW para ambiente de desenvolvimento (DESATIVADO PARA TESTES NO BACKEND REAL)
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-  if (!(window as any).mswStarted) {
-    const { worker } = require('@/mocks/browser');
-    worker.start({
-      onUnhandledRequest: 'bypass',
-    }).catch(console.error);
-    (window as any).mswStarted = true;
-  }
-}
-*/
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,20 +31,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ProjectProvider>
           <div className={styles.wrapper}>
             <Navbar />
-            
+
             <div className={styles.container}>
               {showSidebar && (
-                <Sidebar 
-                  isCollapsed={isSidebarCollapsed} 
-                  onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+                <Sidebar
+                  isCollapsed={isSidebarCollapsed}
+                  onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                 />
               )}
-              
+
               <main className={`
-                ${styles.content} 
+                ${styles.content}
                 ${showSidebar ? (isSidebarCollapsed ? styles.withSidebarCollapsed : styles.withSidebarOpen) : ''}
               `}>
-                {children}
+                <ProjectContentGuard>
+                  {children}
+                </ProjectContentGuard>
               </main>
             </div>
           </div>

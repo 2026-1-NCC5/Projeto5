@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Projeto, ProjetoPapel, Edicao, Turma } from '@/types';
 import ResourceNotFound from '@/components/ResourceNotFound/ResourceNotFound';
 import { apiFetch } from '@/services/api';
@@ -14,6 +14,7 @@ interface ProjectContextType {
   userUsername: string | null;
   user: any | null;
   isLoading: boolean;
+  userLoaded: boolean;
   error: { status: number; message: string; actionPath?: string; actionText?: string } | null;
   refreshUser: () => Promise<void>;
 }
@@ -22,8 +23,6 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export function ProjectProvider({ children }: { children: React.ReactNode }) {
   const params = useParams();
-  const pathname = usePathname();
-  const router = useRouter();
   
   const slugProjeto = params.slug_projeto as string;
   const slugEdicao = params.slug_edicao as string;
@@ -197,42 +196,10 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Efeito SEPARADO apenas para verificação de rotas (Client-Side Route Guard)
-  useEffect(() => {
-    if (!papel || !slugProjeto) return;
-
-    const adminRoutes = [
-      '/turmas', '/metricas', '/grupos', '/alunos', '/nova_edicao', '/informacoes', '/informacoes_do_projeto', '/checkout'
-    ];
-    const memberRoutes = ['/home', '/registrar_coleta'];
-
-    const isTryingAdminRoute = adminRoutes.some(route => pathname.includes(route));
-    const isTryingMemberRoute = memberRoutes.some(route => pathname.includes(route));
-
-    if (papel === 'membro' && isTryingAdminRoute) {
-      console.warn('Acesso negado: Redirecionando membro para home');
-      router.replace(`/${username}/${slugProjeto}/${slugEdicao || ''}/home`);
-    }
-
-    if (papel === 'adm' && isTryingMemberRoute) {
-      console.warn('Acesso negado: Redirecionando adm para turmas');
-      router.replace(`/${username}/${slugProjeto}/${slugEdicao || ''}/turmas`);
-    }
-  }, [pathname, papel, router, username, slugProjeto, slugEdicao]);
 
   return (
-    <ProjectContext.Provider value={{ projeto, edicao, turma, papel, userUsername, user, isLoading, error, refreshUser }}>
-      {(isLoading || !userLoaded) ? (
-        <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'center', height: '100vh', background: '#0a0a0a' }}>
-        </div>
-      ) : error ? (
-        <ResourceNotFound 
-          title={error.status === 403 ? "Acesso Negado" : "Página não encontrada"}
-          message={error.message}
-          actionPath={error.actionPath || `/${username}/projetos`}
-          actionText={error.actionText || "Voltar para Meus Projetos"}
-        />
-      ) : children}
+    <ProjectContext.Provider value={{ projeto, edicao, turma, papel, userUsername, user, isLoading, userLoaded, error, refreshUser }}>
+      {children}
     </ProjectContext.Provider>
   );
 }
@@ -243,4 +210,29 @@ export function useProject() {
     throw new Error('useProject deve ser usado dentro de um ProjectProvider');
   }
   return context;
+}
+
+export function ProjectContentGuard({ children }: { children: React.ReactNode }) {
+  const { isLoading, userLoaded, error, user } = useProject();
+  const params = useParams();
+  const username = params.username as string;
+
+  if (isLoading || !userLoaded) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: '60vh', background: '#0a0a0a' }} />
+    );
+  }
+
+  if (error) {
+    return (
+      <ResourceNotFound
+        title={error.status === 403 ? 'Acesso Negado' : 'Página não encontrada'}
+        message={error.message}
+        actionPath={error.actionPath || `/${username}/projetos`}
+        actionText={error.actionText || 'Voltar para Meus Projetos'}
+      />
+    );
+  }
+
+  return <>{children}</>;
 }

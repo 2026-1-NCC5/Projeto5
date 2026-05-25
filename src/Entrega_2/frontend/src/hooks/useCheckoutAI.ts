@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import * as ort from 'onnxruntime-web';
-import { ColetaItem } from '@/types';
-import { mockItemsBase } from '@/mocks/data';
+import { ColetaItem, Item } from '@/types';
 import { preprocess, processOutput } from '@/utils/yolo';
 import { MeasurementService } from '@/services/mensureService';
 
@@ -23,7 +22,7 @@ export interface CalibrationRect {
   size: number;
 }
 
-export function useCheckoutAI() {
+export function useCheckoutAI(catalog: Item[]) {
   const [itens, setItens] = useState<ExtendedColetaItem[]>([]);
   const [engineStatus, setEngineStatus] = useState('Carregando Modelo...');
   const [camStatus, setCamStatus] = useState('Aguardando permissão...');
@@ -44,8 +43,8 @@ export function useCheckoutAI() {
   useEffect(() => {
     async function loadModel() {
       try {
-        const session = await ort.InferenceSession.create('/models/best.onnx', { 
-          executionProviders: ['webgl', 'wasm'] 
+        const session = await ort.InferenceSession.create('/models/best.onnx', {
+          executionProviders: ['wasm']
         });
         sessionRef.current = session;
         setEngineStatus('Modelo Pronto');
@@ -138,7 +137,7 @@ export function useCheckoutAI() {
 
       const mappedItems: ExtendedColetaItem[] = detected.map((det) => {
         const [x1, y1, x2, y2] = det.bbox;
-        const variant = measurementService.identifyVariation(det.name, x2 - x1, y2 - y1);
+        const variant = measurementService.identifyVariation(det.name, x2 - x1, y2 - y1, catalog);
 
         return {
           id: Math.random().toString(36).substr(2, 9),
@@ -173,7 +172,7 @@ export function useCheckoutAI() {
     } finally {
       isInferencing.current = false;
     }
-  }, [cooldown, drawUI, isCalibrating, measurementService]);
+  }, [catalog, cooldown, drawUI, isCalibrating, measurementService]);
 
   // Camera Init
   useEffect(() => {

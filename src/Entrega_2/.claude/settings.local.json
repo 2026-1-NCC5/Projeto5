@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Remove-Item \"c:\\\\Projeto5\\\\src\\\\Entrega_2\\\\frontend\\\\src\\\\services\\\\checkoutService.ts\")",
+      "Bash(sqlite3 database.db \"SELECT id, nome, label FROM catalogo;\")"
+    ]
+  }
+}

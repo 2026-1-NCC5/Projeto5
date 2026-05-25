@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styles from './page.module.css';
-import { mockItemsBase } from '@/mocks/data';
 import { Item } from '@/types';
 import { useParams } from 'next/navigation';
 import { useRegistros } from '@/hooks/useRegistros';
+import { useItems } from '@/hooks/useItems';
 
 type TipoRegistro = 'itens' | 'dinheiro' | 'resgate';
 
@@ -17,6 +17,7 @@ interface ItemNoRegistro {
 export default function RegistrarColetaPage() {
   const params = useParams();
   const { addRegistro } = useRegistros();
+  const { items, fetchCatalogo } = useItems();
   const [tipo, setTipo] = useState<TipoRegistro>('itens');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,14 +29,17 @@ export default function RegistrarColetaPage() {
   // Estados para Dinheiro/Resgate
   const [valor, setValor] = useState<number>(0);
 
-  // Lista flat de todos os itens disponíveis nos mocks
-  const allAvailableItems = useMemo(() => {
-    return Object.values(mockItemsBase).flatMap(cat => cat.variants);
-  }, []);
+  useEffect(() => {
+    fetchCatalogo(
+      params.username as string,
+      params.slug_projeto as string,
+      params.slug_edicao as string
+    );
+  }, [fetchCatalogo, params.username, params.slug_projeto, params.slug_edicao]);
 
   const handleAddItem = () => {
     if (!selectedItemId) return;
-    const item = allAvailableItems.find(i => i.id === selectedItemId);
+    const item = items.find(i => String(i.id) === selectedItemId);
     if (!item) return;
 
     setItensNoRegistro(prev => [...prev, { item, quantidade }]);
@@ -56,7 +60,6 @@ export default function RegistrarColetaPage() {
   }, [itensNoRegistro]);
 
   const handleFinish = async () => {
-    // Validações
     if (tipo === 'itens' && itensNoRegistro.length === 0) {
       alert('Adicione pelo menos um item!');
       return;
@@ -66,7 +69,7 @@ export default function RegistrarColetaPage() {
       return;
     }
 
-    const confirmMsg = tipo === 'resgate' 
+    const confirmMsg = tipo === 'resgate'
       ? `Confirmar resgate de R$ ${valor.toFixed(2)}?`
       : 'Deseja finalizar este registro?';
 
@@ -79,20 +82,18 @@ export default function RegistrarColetaPage() {
         data: new Date().toISOString(),
         projetoSlug: params.slug_projeto,
         edicaoSlug: params.slug_edicao,
-        // Dados específicos por tipo
         itens: tipo === 'itens' ? itensNoRegistro.map(i => ({ id: i.item.id, qtd: i.quantidade })) : null,
         valor: (tipo === 'dinheiro' || tipo === 'resgate') ? valor : null,
       };
 
       await addRegistro(
-        params.username as string, 
-        params.slug_projeto as string, 
-        params.slug_edicao as string, 
+        params.username as string,
+        params.slug_projeto as string,
+        params.slug_edicao as string,
         payload
       );
 
       alert('Registro realizado com sucesso!');
-      // Reset estados
       setItensNoRegistro([]);
       setValor(0);
     } catch (error: any) {
@@ -110,7 +111,7 @@ export default function RegistrarColetaPage() {
           <h1>Registrar Coleta</h1>
           <p>Selecione o tipo de registro e preencha os dados abaixo</p>
         </div>
-        <button 
+        <button
           className={styles.finishBtn}
           onClick={handleFinish}
           disabled={isSubmitting}
@@ -121,21 +122,21 @@ export default function RegistrarColetaPage() {
       </header>
 
       <div className={styles.tabs}>
-        <button 
+        <button
           className={`${styles.tabBtn} ${tipo === 'itens' ? styles.active : ''}`}
           onClick={() => setTipo('itens')}
         >
           <span className="material-symbols-outlined">inventory_2</span>
           Itens Coletados
         </button>
-        <button 
+        <button
           className={`${styles.tabBtn} ${tipo === 'dinheiro' ? styles.active : ''}`}
           onClick={() => setTipo('dinheiro')}
         >
           <span className="material-symbols-outlined">payments</span>
           Dinheiro
         </button>
-        <button 
+        <button
           className={`${styles.tabBtn} ${tipo === 'resgate' ? styles.active : ''}`}
           onClick={() => setTipo('resgate')}
         >
@@ -150,14 +151,14 @@ export default function RegistrarColetaPage() {
             <div className={styles.addItemRow}>
               <div className={styles.inputGroup}>
                 <label>Produto</label>
-                <select 
+                <select
                   className={styles.select}
                   value={selectedItemId}
                   onChange={(e) => setSelectedItemId(e.target.value)}
                 >
                   <option value="">Selecione um item...</option>
-                  {allAvailableItems.map(item => (
-                    <option key={item.id} value={item.id}>
+                  {items.map(item => (
+                    <option key={item.id} value={String(item.id)}>
                       {item.nome} (Ref: {item.peso}kg)
                     </option>
                   ))}
@@ -165,8 +166,8 @@ export default function RegistrarColetaPage() {
               </div>
               <div className={styles.inputGroup}>
                 <label>Quantidade</label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   className={styles.input}
                   min="1"
                   value={quantidade}
@@ -241,13 +242,13 @@ export default function RegistrarColetaPage() {
               {tipo === 'dinheiro' ? 'Registrar Valor Arrecadado' : 'Declarar Valor para Resgate'}
             </h2>
             <p>
-              {tipo === 'dinheiro' 
+              {tipo === 'dinheiro'
                 ? 'Informe o valor em dinheiro que será adicionado à carteira do grupo.'
                 : 'O valor informado será subtraído do saldo disponível do grupo.'}
             </p>
             <div className={styles.currencyInputContainer}>
               <span className={styles.currencySymbol}>R$</span>
-              <input 
+              <input
                 type="number"
                 step="0.01"
                 className={styles.bigInput}
